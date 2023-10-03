@@ -7,6 +7,7 @@ import { HTTP_RESPONSE } from "../../helper/constants";
 import { getHashPassword, getToken } from "../../helper/auth";
 import { hasPermission } from "../../helper/check_permission";
 import { MANAGER } from "../../config/config";
+import roles from "../../config/roles";
 
 export const addUser = async (req: Request, res: Response) => {
   try {
@@ -119,17 +120,49 @@ export const addUser = async (req: Request, res: Response) => {
 
 export const login = (req: Request, res: Response) => {
   // Create a token
-  console.log("req.user", req.user);
   const token = getToken({ _id: req.user._id });
-
   // Response
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
-  res.json({
-    success: true,
-    token: token,
-    status: "You are successfully logged in!",
+  const {
+    name,
+    username,
+    mobile,
+    staffRole,
+    isActive,
+    _id,
+    updateAt,
+    createdAt,
+  }: IUser = req.user;
+  const roleObj: any = roles.find((r) => r.name === staffRole);
+
+  return responseObj({
+    statusCode: HTTP_RESPONSE.SUCCESS,
+    type: "success",
+    msg: "You are successfully logged in!",
+    error: null,
+    resObj: res,
+    data: {
+      user: {
+        name,
+        username,
+        mobile,
+        staffRole,
+        isActive,
+        _id,
+        updateAt,
+        createdAt,
+        permission: roleObj?.permissions,
+      },
+      token,
+    },
   });
+  // res.json({
+  //   success: true,
+  //   token: token,
+
+  //   status: "You are successfully logged in!",
+  // });
 };
 
 export const assignUserAreaAndStatus = async (req: Request, res: Response) => {

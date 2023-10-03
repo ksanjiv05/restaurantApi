@@ -48,7 +48,7 @@ export const jwtPassport = passport.use(
       jwt_payload: { _id: string },
       done: (arg0: null, arg1: IUser | boolean) => any
     ) => {
-      console.log("jwt_payload", jwt_payload);
+      // console.log("jwt_payload", jwt_payload);
       // Search the user with jwt.payload ID field
       try {
         const user = await User.findOne({ _id: jwt_payload._id });

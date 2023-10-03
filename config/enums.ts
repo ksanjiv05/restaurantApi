@@ -1,37 +1,23 @@
-export enum USER_ROLES {
-  DEFAULT = 0,
-  EMOPLOYEE, // for kitchen management
-  ADMIN, // user management
-  SUPER_ADMIN, // full access
+// Banquet Hall
+// Veg restaurant
+// Ac restaurant
+// Open Air
+// Café Baar Area
+// Dance floor
+// Accommodation (future )
+export enum DEPARTMENT {
+  UNKNOWN = "UNKNOWN",
+  BANQUET_HALL = "BANQUET_HALL",
+  VEG_RESTAURANT = "VEG_RESTAURANT",
+  AC_RESTAURANT = "AC_RESTAURANT",
+  OPEN_AIR = "OPEN_AIR",
+  CAFE_BAAR_AREA = "CAFE_BAAR_AREA",
+  DANCE_FLOOR = "DANCE_FLOOR",
 }
-
-export enum EMOPLOYEE_ROLES {
-  DEFAULT=0,
-  CAFE,
-  WAITER,
-  KITCHAN_MANAGER,
-  INVENTORY_MANAGER,
-  SWIPPER
-}
-
 
 export enum PRODUCT_CATEGORIES {
-    UNKNOWN = 0,
-    NORTH_INDIAN=1,
-    SOUTH_INDIAN,
-    BANGALIES,
-    CHINESE,
-    PIZZA,
-    BURGER,
-    ICE_CREAM,
-    DRINKING_WATER,
-    DESSERTS,
-    BIRYANI
-}
-
-export enum CAFE_SKILL {
   UNKNOWN = 0,
-  NORTH_INDIAN=1,
+  NORTH_INDIAN = 1,
   SOUTH_INDIAN,
   BANGALIES,
   CHINESE,
@@ -40,13 +26,27 @@ export enum CAFE_SKILL {
   ICE_CREAM,
   DRINKING_WATER,
   DESSERTS,
-  BIRYANI
+  BIRYANI,
+}
+
+export enum CAFE_SKILL {
+  UNKNOWN = 0,
+  NORTH_INDIAN = 1,
+  SOUTH_INDIAN,
+  BANGALIES,
+  CHINESE,
+  PIZZA,
+  BURGER,
+  ICE_CREAM,
+  DRINKING_WATER,
+  DESSERTS,
+  BIRYANI,
 }
 
 export enum PRODUCT_QUALITIES {
-    HALF=0,
-    MEDIUM=1,
-    FULL,
+  HALF = 0,
+  MEDIUM = 1,
+  FULL,
 }
 
 export enum ORDER_STATUS {
@@ -54,5 +54,5 @@ export enum ORDER_STATUS {
   ACCEPTED,
   PREPARING,
   READY_TO_SERVE,
-  COMPLETED
+  COMPLETED,
 }
