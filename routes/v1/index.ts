@@ -4,11 +4,14 @@ import {
   assignUserAreaAndStatus,
   deleteUser,
   login,
+  profile,
 } from "../../controllers/authController/auth";
 
 import { upload } from "../../middelware/uploder";
 import passport from "passport";
 import { verifyUser } from "../../middelware/auth";
+import { responseObj } from "../../helper/response";
+import { HTTP_RESPONSE } from "../../helper/constants";
 const router = express.Router();
 
 //user
@@ -16,6 +19,9 @@ router.post("/user", verifyUser, addUser);
 router.delete("/user", verifyUser, deleteUser);
 router.put("/user/manager", verifyUser, assignUserAreaAndStatus);
 router.post("/login", passport.authenticate("local"), login);
+
+//get user profile
+router.get("/user/profile", verifyUser, profile);
 
 // //food product
 // router.post("/product", auth, addFoodProduct);
