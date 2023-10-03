@@ -73,13 +73,13 @@ server.listen(port, () => {
 
 console.log("permission ", hasPermission("FB_MANAGER", "READ", "INVENTORY"));
 
-createRootUser({
-  name: "Root User",
-  mobile: "9999999999",
-  username: "9999999999",
-  staffRole: "DIRECTOR",
-  password: "Test@1234",
-  isActive: true,
-});
+// createRootUser({
+//   name: "Root User",
+//   mobile: "9999999999",
+//   username: "9999999999",
+//   staffRole: "DIRECTOR",
+//   password: "Test@1234",
+//   isActive: true,
+// });
 
 export default io;

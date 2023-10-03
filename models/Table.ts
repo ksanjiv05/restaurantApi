@@ -4,8 +4,10 @@ import logging from "../config/logging";
 import { ITable } from "../interfaces/ITable";
 
 const TableSchema: Schema = new Schema({
-  kid:{
-    type:String
+  tid: {
+    type: String,
+    required: true,
+    unique: true,
   },
   availableSeats: {
     type: Number,
@@ -14,20 +16,34 @@ const TableSchema: Schema = new Schema({
     type: Number,
     required: true,
   },
-  about: {
+  department: {
     type: String,
+    required: true,
   },
   tableNumber: {
     type: Number,
     required: true,
   },
+  isAc: {
+    type: Boolean,
+    required: true,
+  },
+  isMerged: {
+    type: Boolean,
+    default: false,
+  },
+  isSifted: {
+    type: Boolean,
+    default: false,
+  },
+  mergeTables: [String],
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-TableSchema.index({kid:1,tableNumber:1},{unique:true})
+TableSchema.index({ department: 1, tableNumber: 1 }, { unique: true });
 
 TableSchema.pre<ITable>("save", async function (next) {
   next();
