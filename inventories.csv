@@ -1,0 +1,3 @@
+brand,description,expiration,location,price,productModel,quantity,supplier,title,image,supplier
+TestX2,inventory description 2,20/02/2023,patna,910,M-123,89,[],inventory title2,img,supplier1
+test3,description,22/07/2023,panjab,888,k-99,8,,title2,img2,supplier2
