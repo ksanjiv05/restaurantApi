@@ -15,6 +15,7 @@ import logging from "./config/logging";
 import { startListening } from "./socket_init";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { hasPermission } from "./helper/check_permission";
+import { createRootUser } from "./scripts";
 
 dotenv.config();
 
@@ -71,5 +72,14 @@ server.listen(port, () => {
 });
 
 console.log("permission ", hasPermission("FB_MANAGER", "READ", "INVENTORY"));
+
+createRootUser({
+  name: "Root User",
+  mobile: "9999999999",
+  username: "9999999999",
+  staffRole: "DIRECTOR",
+  password: "Test@1234",
+  isActive: true,
+});
 
 export default io;
