@@ -20,6 +20,13 @@ import {
   getTables,
   updateTable,
 } from "../../controllers/tableController/table";
+import {
+  addInventory,
+  deleteInventory,
+  getInventories,
+  getInventory,
+  updateInventory,
+} from "../../controllers/inventoryController/inventory";
 const router = express.Router();
 
 //user
@@ -32,6 +39,13 @@ router.post("/login", passport.authenticate("local"), login);
 
 //get user profile
 router.get("/user/profile", verifyUser, profile);
+
+//inventory
+router.post("/inventory", verifyUser, addInventory);
+router.put("/inventory", verifyUser, updateInventory);
+router.get("/inventory", verifyUser, getInventories);
+router.get("/inventory/:id", verifyUser, getInventory);
+router.delete("/inventory/:id", verifyUser, deleteInventory);
 
 // //food product
 // router.post("/product", auth, addFoodProduct);
