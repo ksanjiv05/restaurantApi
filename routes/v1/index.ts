@@ -6,6 +6,7 @@ import {
   getUsers,
   login,
   profile,
+  updateUser,
 } from "../../controllers/authController/auth";
 
 import { upload } from "../../middelware/uploder";
@@ -31,10 +32,12 @@ const router = express.Router();
 
 //user
 router.post("/user", verifyUser, addUser);
-router.post("/user/:staffRole", verifyUser, getUsers);
+router.get("/user", verifyUser, getUsers);
+router.get("/user/:staffRole", verifyUser, getUsers);
 
-router.delete("/user", verifyUser, deleteUser);
+router.delete("/user/:id", verifyUser, deleteUser);
 router.put("/user/manager", verifyUser, assignUserAreaAndStatus);
+router.put("/user", verifyUser, updateUser);
 router.post("/login", passport.authenticate("local"), login);
 
 //get user profile

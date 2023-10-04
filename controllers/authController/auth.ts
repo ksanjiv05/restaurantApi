@@ -279,7 +279,7 @@ export const updateUser = async (req: Request, res: Response) => {
       staffRole = "",
     }: IUser = req.body;
 
-    if (name == "" || mobile == "" || password == "" || staffRole == "") {
+    if (name == "" || mobile == "") {
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -290,26 +290,37 @@ export const updateUser = async (req: Request, res: Response) => {
       });
     }
 
-    const hashPassword = await getHashPassword(password);
+    const authorized_user_role = req.user?.staffRole;
+    if (!hasPermission(authorized_user_role, "CREATE", staffRole)) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+        type: "error",
+        msg: "Have no permission to create user with this role",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
     delete req.body.password;
-    const newUser = new User(
+    User.updateOne(
       {
-        password: hashPassword,
-        ...req.body,
+        _id: req.body._id,
       },
-      { timestamps: true }
+      {
+        ...req.body,
+      }
     );
-    await newUser.save();
+
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
-      msg: "User added successfully ",
+      msg: "User updated successfully ",
       error: null,
       resObj: res,
-      data: newUser,
+      data: null,
     });
   } catch (error: any) {
-    logging.error("Add User", "unable to add user", error);
+    logging.error("Update User", "unable to update user", error);
     if (error?.message)
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
@@ -332,13 +343,13 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { _id, staffRole }: IUser = req.body;
+    const { id } = req.params;
 
-    if (_id == "") {
+    if (id == "") {
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
-        msg: "Plear provide valid user _id",
+        msg: "Please provide valid user id",
         error: null,
         resObj: res,
         data: null,
@@ -357,7 +368,7 @@ export const deleteUser = async (req: Request, res: Response) => {
       });
     }
 
-    await User.deleteOne({ _id });
+    await User.deleteOne({ _id: id });
 
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
@@ -404,7 +415,7 @@ export const getUsers = async (req: Request, res: Response) => {
       });
     }
 
-    const users = await User.find();
+    const users = await User.find({ staffRole });
 
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
