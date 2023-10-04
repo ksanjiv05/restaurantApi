@@ -33,15 +33,15 @@ const router = express.Router();
 //user
 router.post("/user", verifyUser, addUser);
 router.get("/user", verifyUser, getUsers);
+router.get("/user/profile", verifyUser, profile);
 router.get("/user/:staffRole", verifyUser, getUsers);
 
-router.delete("/user/:id", verifyUser, deleteUser);
+router.delete("/user/:id/:staffRole", verifyUser, deleteUser);
 router.put("/user/manager", verifyUser, assignUserAreaAndStatus);
 router.put("/user", verifyUser, updateUser);
 router.post("/login", passport.authenticate("local"), login);
 
 //get user profile
-router.get("/user/profile", verifyUser, profile);
 
 //inventory
 router.post("/inventory", verifyUser, addInventory);

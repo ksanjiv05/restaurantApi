@@ -302,7 +302,8 @@ export const updateUser = async (req: Request, res: Response) => {
       });
     }
     delete req.body.password;
-    User.updateOne(
+    console.log("req ",req.body)
+    await User.updateOne(
       {
         _id: req.body._id,
       },
@@ -343,7 +344,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id, staffRole } = req.params;
 
     if (id == "") {
       return responseObj({

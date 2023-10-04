@@ -21,3 +21,7 @@ export const INVENTORY: string = "INVENTORY";
 export const ORDER: string = "ORDER";
 export const REPORTS: string = "REPORTS";
 // export const USER_MANAGEMENT: string = "USER_MANAGEMENT";
+
+//shift
+export const DAY_SHIFT = "Day";
+export const NIGHT_SHIFT = "Night";
