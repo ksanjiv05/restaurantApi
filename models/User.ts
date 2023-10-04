@@ -20,10 +20,10 @@ const UserSchema: Schema = new Schema({
   alternateMobile: {
     type: String,
   },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
+  shift: {
+    type: String,
+    // required: true,
+  },
   staffRole: {
     type: String,
     required: true,

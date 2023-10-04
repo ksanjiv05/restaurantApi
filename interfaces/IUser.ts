@@ -7,6 +7,7 @@ interface IUser extends Document {
   alternateMobile?: string;
   password: string;
   staffRole: string;
+  shift: string;
   email?: string;
   address?: string;
   addhar?: string;
