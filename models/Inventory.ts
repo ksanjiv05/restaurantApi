@@ -4,38 +4,21 @@ import logging from "../config/logging";
 import { IInventory } from "../interfaces/IInventory";
 
 const InventorySchema: Schema = new Schema({
-  image:{
+  image: {
     type: String,
-    required: true,
   },
-  title: {
+  name: {
     type: String,
     required: true,
   },
   description: {
     type: String,
   },
-  productModel: {
-    type: String,
-    required: true,
-  },
   brand: {
     type: String,
-    required: true,
   },
   quantity: {
     type: Number,
-    required: true,
-  },
-  inStock: {
-    type: Boolean,
-    default: false,
-    // set: function() {
-    //   console.log("this ",this)
-    //   return this?.quantity>1 }
-  },
-  location: {
-    type: String,
     required: true,
   },
   price: {
@@ -44,21 +27,26 @@ const InventorySchema: Schema = new Schema({
   },
   supplier: {
     type: String,
-    required: true,
   },
   expiration: {
     type: String,
+  },
+  inStock: Boolean,
+  kitchen: {
+    type: String,
     required: true,
   },
-  
-
   createdAt: {
-    type: Date,
+    type: String,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: String,
     default: Date.now,
   },
 });
 
-InventorySchema.index({title:1,brand:1,productModel:1,supplier:1},{unique:true})
+InventorySchema.index({ name: 1, brand: 1 }, { unique: true });
 
 InventorySchema.pre<IInventory>("save", async function (next) {
   next();

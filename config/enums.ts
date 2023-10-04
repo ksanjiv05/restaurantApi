@@ -1,10 +1,3 @@
-// Banquet Hall
-// Veg restaurant
-// Ac restaurant
-// Open Air
-// Café Baar Area
-// Dance floor
-// Accommodation (future )
 export enum DEPARTMENT {
   UNKNOWN = "UNKNOWN",
   BANQUET_HALL = "BANQUET_HALL",
@@ -13,6 +6,16 @@ export enum DEPARTMENT {
   OPEN_AIR = "OPEN_AIR",
   CAFE_BAAR_AREA = "CAFE_BAAR_AREA",
   DANCE_FLOOR = "DANCE_FLOOR",
+}
+
+export enum KITCHEN {
+  UNKNOWN = "UNKNOWN",
+  INDIAN = "INDIAN",
+  CHINESE = "CHINESE",
+  TANDOOR = "TANDOOR",
+  PANTRY = "PANTRY",
+  SOUTH_INDIAN = "SOUTH_INDIAN",
+  CONTINENTAL = "CONTINENTAL",
 }
 
 export enum PRODUCT_CATEGORIES {
