@@ -165,6 +165,44 @@ export const login = (req: Request, res: Response) => {
   // });
 };
 
+export const profile = (req: Request, res: Response) => {
+  // Response
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  const {
+    name,
+    username,
+    mobile,
+    staffRole,
+    isActive,
+    _id,
+    updateAt,
+    createdAt,
+  }: IUser = req.user;
+  const roleObj: any = roles.find((r) => r.name === staffRole);
+
+  return responseObj({
+    statusCode: HTTP_RESPONSE.SUCCESS,
+    type: "success",
+    msg: "You are successfully logged in!",
+    error: null,
+    resObj: res,
+    data: {
+      user: {
+        name,
+        username,
+        mobile,
+        staffRole,
+        isActive,
+        _id,
+        updateAt,
+        createdAt,
+        permission: roleObj?.permissions,
+      },
+    },
+  });
+};
+
 export const assignUserAreaAndStatus = async (req: Request, res: Response) => {
   try {
     const { department = "", isActive = false, _id = "" }: IUser = req.body;

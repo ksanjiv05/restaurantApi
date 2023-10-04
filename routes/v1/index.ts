@@ -4,11 +4,15 @@ import {
   assignUserAreaAndStatus,
   deleteUser,
   login,
+  profile,
 } from "../../controllers/authController/auth";
 
 import { upload } from "../../middelware/uploder";
 import passport from "passport";
 import { verifyUser } from "../../middelware/auth";
+import { responseObj } from "../../helper/response";
+import { HTTP_RESPONSE } from "../../helper/constants";
+import { addTable, deleteTable, getTable, getTables, updateTable } from "../../controllers/tableController/table";
 const router = express.Router();
 
 //user
@@ -17,6 +21,9 @@ router.delete("/user", verifyUser, deleteUser);
 router.put("/user/manager", verifyUser, assignUserAreaAndStatus);
 router.post("/login", passport.authenticate("local"), login);
 
+//get user profile
+router.get("/user/profile", verifyUser, profile);
+
 // //food product
 // router.post("/product", auth, addFoodProduct);
 // router.put("/product", auth, updateFoodProduct);
@@ -24,12 +31,12 @@ router.post("/login", passport.authenticate("local"), login);
 // router.get("/product/:id", getFoodProduct);
 // router.delete("/product/:id", auth, deleteFoodProduct);
 
-// //table
-// router.post("/table", auth, addTable);
-// router.put("/table", auth, updateTable);
-// router.get("/table", getTables);
-// router.get("/table/:id", getTable);
-// router.delete("/table/:id", auth, deleteTable);
+//table
+router.post("/table", verifyUser, addTable);
+router.put("/table", verifyUser, updateTable);
+router.get("/table", verifyUser, getTables);
+router.get("/table/:id", verifyUser, getTable);
+router.delete("/table/:id", verifyUser, deleteTable);
 
 // //employees
 // router.post("/employee", auth, addEmployee);

@@ -49,9 +49,9 @@ export const addTable = async (req: Request, res: Response) => {
     const newTable: ITable = new Table(
       {
         ...req.body,
-      },
-      { timestumps: true }
+      }
     );
+    
     await newTable.save();
 
     return responseObj({
@@ -89,7 +89,7 @@ export const addTable = async (req: Request, res: Response) => {
   }
 };
 
-export const updateTable = async (req: Request, res: Response) => {
+export const updateTableSingle = async (req: Request, res: Response) => {
   try {
     const { _id = "", occupied = 0 } = req.body;
     if (_id == "" || occupied == 0)
@@ -108,6 +108,46 @@ export const updateTable = async (req: Request, res: Response) => {
         $set: {
           availableSeats: occupied,
         },
+      }
+    );
+    return responseObj({
+      statusCode: HTTP_RESPONSE.SUCCESS,
+      type: "success",
+      msg: "hey, you are successfully updated Table",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  } catch (error) {
+    logging.error("Update Table", "unaable to update Table", error);
+    return responseObj({
+      statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
+      type: "error",
+      msg: "unable to process your request",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  }
+};
+
+export const updateTable = async (req: Request, res: Response) => {
+  try {
+    const { _id } = req.body;
+    if (_id == "")
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "please provide a valid Table ID",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+
+    await Table.updateOne(
+      { _id },
+      {
+        ...req.body
       }
     );
     return responseObj({
