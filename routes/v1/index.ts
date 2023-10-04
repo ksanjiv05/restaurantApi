@@ -3,6 +3,7 @@ import {
   addUser,
   assignUserAreaAndStatus,
   deleteUser,
+  getUsers,
   login,
   profile,
 } from "../../controllers/authController/auth";
@@ -12,11 +13,19 @@ import passport from "passport";
 import { verifyUser } from "../../middelware/auth";
 import { responseObj } from "../../helper/response";
 import { HTTP_RESPONSE } from "../../helper/constants";
-import { addTable, deleteTable, getTable, getTables, updateTable } from "../../controllers/tableController/table";
+import {
+  addTable,
+  deleteTable,
+  getTable,
+  getTables,
+  updateTable,
+} from "../../controllers/tableController/table";
 const router = express.Router();
 
 //user
 router.post("/user", verifyUser, addUser);
+router.post("/user/:staffRole", verifyUser, getUsers);
+
 router.delete("/user", verifyUser, deleteUser);
 router.put("/user/manager", verifyUser, assignUserAreaAndStatus);
 router.post("/login", passport.authenticate("local"), login);

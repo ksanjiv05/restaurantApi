@@ -388,3 +388,50 @@ export const deleteUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getUsers = async (req: Request, res: Response) => {
+  try {
+    const { staffRole = "" } = req.params;
+    const authorized_user_role = req.user?.staffRole;
+    if (!hasPermission(authorized_user_role, "READ", staffRole)) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+        type: "error",
+        msg: "Have no permission to delete user with this role",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
+
+    const users = await User.find();
+
+    return responseObj({
+      statusCode: HTTP_RESPONSE.SUCCESS,
+      type: "success",
+      msg: "user list ",
+      error: null,
+      resObj: res,
+      data: users,
+    });
+  } catch (error: any) {
+    logging.error("Get Users", "unable to get users", error);
+    if (error?.message)
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: error?.message,
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    return responseObj({
+      statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
+      type: "error",
+      msg: error?.message || "unable to process your request",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  }
+};
