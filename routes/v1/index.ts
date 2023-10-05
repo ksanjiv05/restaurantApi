@@ -28,6 +28,12 @@ import {
   getInventory,
   updateInventory,
 } from "../../controllers/inventoryController/inventory";
+import {
+  addOrder,
+  updateOrder,
+  getOrders,
+  getOrder,
+} from "../../controllers/orderController/order";
 const router = express.Router();
 
 //user
@@ -63,7 +69,11 @@ router.put("/table", verifyUser, updateTable);
 router.get("/table", verifyUser, getTables);
 router.get("/table/:id", verifyUser, getTable);
 router.delete("/table/:id", verifyUser, deleteTable);
-
+// //order
+router.post("/order", verifyUser, addOrder);
+router.put("/order", verifyUser, updateOrder);
+router.get("/order", verifyUser, getOrders);
+router.get("/order/:id", verifyUser, getOrder);
 // //employees
 // router.post("/employee", auth, addEmployee);
 // router.put("/employee", auth, updateEmployee);
@@ -75,12 +85,6 @@ router.delete("/table/:id", verifyUser, deleteTable);
 // router.post("/customer", addCustomer);
 // router.get("/customer", auth, getCustomers);
 // router.get("/customer/:id", auth, getCustomer);
-
-// //order
-// router.post("/order", addOrder);
-// router.put("/order", auth, updateOrder);
-// router.get("/order", auth, getOrders);
-// router.get("/order/:id", auth, getOrder);
 
 // //kitchen
 // router.post("/kitchen", auth, addKitichan);

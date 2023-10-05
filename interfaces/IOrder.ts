@@ -1,14 +1,21 @@
-import {Document} from "mongoose"
-import { ORDER_STATUS } from "../config/enums"
+import { Document } from "mongoose";
+import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../config/enums";
 
-export interface IOrder extends Document{
-    pids:string[],
-    kid:string,
-    tableNumber:number,
-    tableId:string,
-    customerId:string,
-    status:ORDER_STATUS
-    cafeId?:string,
-    waiterId?:string,
-    waitingTime:string
+export interface IOrder extends Document {
+  mId: string;
+  pids: string[];
+  tableId: string;
+  customerName: string;
+  customerMobile: string;
+  department: DEPARTMENT;
+  allocatedKitchen: KITCHEN;
+  status: ORDER_STATUS;
+  orderValue: number;
+  isPaid?: boolean;
+  paymentId?: string;
+  paymentMode?: "CASH" | "CARD" | "UPI";
+  captainId?: string;
+  waitingTime: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

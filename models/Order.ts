@@ -10,31 +10,47 @@ const OrderSchema: Schema = new Schema({
       required: true,
     },
   ],
-  kid:{
+  kid: {
     type: String,
-    required : true,
+    required: true,
   },
-  tableNumber: {
-    type: Number,
+  mId: {
+    type: String,
     required: true,
   },
   tableId: {
     type: String,
+    required: true,
   },
-  customerId: {
+  customerName: String,
+  customerMobile: String,
+  department: {
+    type: String,
+    required: true,
+  },
+  allocatedKitchen: {
     type: String,
     required: true,
   },
   status: {
+    type: String,
+  },
+  orderValue: {
     type: Number,
     required: true,
   },
-  cafeId: {
-    type: String,
-    // required: true,
+  isPaid: {
+    type: Boolean,
+    default: false,
   },
-  waiterId: String,
+  paymentId: String,
+  paymentMode: String,
+  captainId: String,
   waitingTime: String,
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -50,5 +66,3 @@ OrderSchema.post<IOrder>("save", function () {
 });
 
 export default mongoose.model<IOrder>("Order", OrderSchema);
-
-

@@ -46,12 +46,10 @@ export const addTable = async (req: Request, res: Response) => {
     req.body.tid = isMerged
       ? `${department}-merge-${tableNumber}`
       : `${department}-${tableNumber}`;
-    const newTable: ITable = new Table(
-      {
-        ...req.body,
-      }
-    );
-    
+    const newTable: ITable = new Table({
+      ...req.body,
+    });
+
     await newTable.save();
 
     return responseObj({
@@ -147,7 +145,7 @@ export const updateTable = async (req: Request, res: Response) => {
     await Table.updateOne(
       { _id },
       {
-        ...req.body
+        ...req.body,
       }
     );
     return responseObj({
@@ -170,6 +168,46 @@ export const updateTable = async (req: Request, res: Response) => {
     });
   }
 };
+
+// export const siftTable = async (req: Request, res: Response) => {
+//   try {
+//     const { _id } = req.body;
+//     if (_id == "")
+//       return responseObj({
+//         statusCode: HTTP_RESPONSE.BED_REQUEST,
+//         type: "error",
+//         msg: "please provide a valid Table ID",
+//         error: null,
+//         resObj: res,
+//         data: null,
+//       });
+
+//     await Table.updateOne(
+//       { _id },
+//       {
+//         ...req.body
+//       }
+//     );
+//     return responseObj({
+//       statusCode: HTTP_RESPONSE.SUCCESS,
+//       type: "success",
+//       msg: "hey, you are successfully updated Table",
+//       error: null,
+//       resObj: res,
+//       data: null,
+//     });
+//   } catch (error) {
+//     logging.error("Update Table", "unaable to update Table", error);
+//     return responseObj({
+//       statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
+//       type: "error",
+//       msg: "unable to process your request",
+//       error: null,
+//       resObj: res,
+//       data: null,
+//     });
+//   }
+// };
 
 export const updateTables = async (req: Request, res: Response) => {
   try {
