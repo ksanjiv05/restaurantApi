@@ -302,7 +302,9 @@ export const updateUser = async (req: Request, res: Response) => {
       });
     }
     delete req.body.password;
-    console.log("req ",req.body)
+    req.body.username = mobile;
+
+    console.log("req ", req.body);
     await User.updateOne(
       {
         _id: req.body._id,
