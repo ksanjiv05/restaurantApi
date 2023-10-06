@@ -7,6 +7,7 @@ import FoodProduct from "../../models/FoodProduct";
 
 export const addFoodProduct = async (req: Request, res: Response) => {
   try {
+    const file = req.file;
     const {
       name = "",
       image = "",
@@ -16,7 +17,7 @@ export const addFoodProduct = async (req: Request, res: Response) => {
       category = "",
     }: IFoodProduct = req.body;
 
-    if (name == "" || image == "" || price == 0 || category == "") {
+    if (name == "" || price == 0 || category == "") {
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -43,7 +44,7 @@ export const addFoodProduct = async (req: Request, res: Response) => {
     //     data: null,
     //   });
     // }
-
+    req.body.image = file?.filename;
     const newFoodProduct: IFoodProduct = new FoodProduct(req.body);
     await newFoodProduct.save();
 
@@ -71,6 +72,10 @@ export const addFoodProduct = async (req: Request, res: Response) => {
 export const updateFoodProduct = async (req: Request, res: Response) => {
   try {
     const { _id = "" } = req.body;
+    const file = req.file;
+    if (file) {
+      req.body.image = file?.filename;
+    }
     if (_id == "")
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
