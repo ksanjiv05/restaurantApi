@@ -16,6 +16,8 @@ import { startListening } from "./socket_init";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { hasPermission } from "./helper/check_permission";
 import { createRootUser } from "./scripts";
+import { csvParser, csvToJson } from "./helper/utils";
+import FoodProduct from "./models/FoodProduct";
 
 dotenv.config();
 
@@ -82,4 +84,10 @@ console.log("permission ", hasPermission("FB_MANAGER", "READ", "INVENTORY"));
 //   isActive: true,
 // });
 
+const runTest = async () => {
+  // const data = await csvToJson("food.csv");
+  // console.log("data ", data);
+  // FoodProduct.insertMany(data, { ordered: false });
+};
+runTest();
 export default io;
