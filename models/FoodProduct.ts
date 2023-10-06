@@ -1,21 +1,18 @@
 import mongoose, { Schema } from "mongoose";
-
 import logging from "../config/logging";
 import { IFoodProduct } from "../interfaces/IFoodProduct";
-import { PRODUCT_CATEGORIES } from "../config/enums";
 
 const FoodProductSchema: Schema = new Schema({
   name: {
     type: String,
     required: true,
+    lowercase: true,
   },
   image: {
     type: String,
-    required: true,
   },
   description: {
     type: String,
-    required: true,
   },
   quantity: {
     type: Number,
@@ -26,9 +23,9 @@ const FoodProductSchema: Schema = new Schema({
     default: false,
   },
   category: {
-    type: Number,
-    required: true,
-    default:PRODUCT_CATEGORIES.UNKNOWN
+    type: String,
+    lowercase: true,
+    default: "unknown",
   },
   price: {
     type: Number,
@@ -43,8 +40,8 @@ const FoodProductSchema: Schema = new Schema({
   },
   rating: Number,
   tag: String,
-  isAvailable:Boolean,
-  expiryDate:{
+  isAvailable: Boolean,
+  expiryDate: {
     type: Date,
   },
   createdAt: {
@@ -52,7 +49,8 @@ const FoodProductSchema: Schema = new Schema({
     default: Date.now,
   },
 });
-
+FoodProductSchema.index({ name: 1, isVeg: 1, price: 1 }, { unique: true });
+FoodProductSchema.index({ name: "text", description: "text" });
 
 FoodProductSchema.pre<IFoodProduct>("save", async function (next) {
   next();

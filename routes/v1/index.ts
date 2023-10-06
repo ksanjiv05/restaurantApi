@@ -34,6 +34,14 @@ import {
   getOrders,
   getOrder,
 } from "../../controllers/orderController/order";
+import { addStaticImage } from "../../controllers/staticController/static";
+import {
+  addFoodProduct,
+  deleteFoodProduct,
+  getFoodProduct,
+  getFoodProducts,
+  updateFoodProduct,
+} from "../../controllers/foodController/food";
 const router = express.Router();
 
 //user
@@ -74,32 +82,14 @@ router.post("/order", verifyUser, addOrder);
 router.put("/order", verifyUser, updateOrder);
 router.get("/order", verifyUser, getOrders);
 router.get("/order/:id", verifyUser, getOrder);
-// //employees
-// router.post("/employee", auth, addEmployee);
-// router.put("/employee", auth, updateEmployee);
-// router.get("/employee", auth, getEmployees);
-// router.get("/employee/:id", auth, getEmployee);
-// router.delete("/employee/:id", auth, deleteEmployee);
 
-// //employees
-// router.post("/customer", addCustomer);
-// router.get("/customer", auth, getCustomers);
-// router.get("/customer/:id", auth, getCustomer);
+router.get("/static/upload", upload.single("food"), addStaticImage);
 
-// //kitchen
-// router.post("/kitchen", auth, addKitichan);
-// router.get("/kitchen", auth, getKitchans);
-// router.get("/kitchen/:id", auth, getKitchan);
-
-// //kitichen
-// router.post("/kitchen/employee", auth, addEmployeeToKitchan);
-
-// //inventory
-// router.post("/inventory",auth, addInventory);
-// router.put("/inventory", auth, updateInventory);
-// router.get("/inventory", auth, getInventorys);
-// router.get("/inventory/:id", auth, getInventory);
-
-// router.post("/inventory/csv",auth,upload.single("inventories"), addBulkInventory);
+// //order
+router.post("/food", verifyUser, addFoodProduct);
+router.put("/food", verifyUser, updateFoodProduct);
+router.get("/food", verifyUser, getFoodProducts);
+router.get("/food/:id", verifyUser, getFoodProduct);
+router.delete("/food/:id", verifyUser, deleteFoodProduct);
 
 export default router;
