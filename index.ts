@@ -84,10 +84,10 @@ console.log("permission ", hasPermission("FB_MANAGER", "READ", "INVENTORY"));
 //   isActive: true,
 // });
 
-const runTest = async () => {
-  // const data = await csvToJson("food.csv");
-  // console.log("data ", data);
-  // FoodProduct.insertMany(data, { ordered: false });
-};
-runTest();
+// const runTest = async () => {
+//   const data = await csvToJson("food.csv");
+//   console.log("data ", data);
+//   FoodProduct.insertMany(data, { ordered: false });
+// };
+// runTest();
 export default io;
