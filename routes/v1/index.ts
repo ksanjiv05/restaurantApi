@@ -86,7 +86,7 @@ router.get("/order/:id", verifyUser, getOrder);
 router.get("/static/upload", upload.single("food"), addStaticImage);
 
 // //order
-router.post("/food", verifyUser, upload.single("food"), addFoodProduct);
+router.post("/food", verifyUser, upload.single("image"), addFoodProduct);
 router.put("/food", verifyUser, updateFoodProduct);
 router.get("/food", verifyUser, getFoodProducts);
 router.get("/food/:id", verifyUser, getFoodProduct);

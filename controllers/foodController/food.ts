@@ -128,7 +128,7 @@ export const updateFoodProduct = async (req: Request, res: Response) => {
 
 export const getFoodProducts = async (req: Request, res: Response) => {
   try {
-    const FoodProducts = await FoodProduct.find();
+    const FoodProducts = await FoodProduct.find().sort("-createdAt");
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

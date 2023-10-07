@@ -10,18 +10,12 @@ const OrderSchema: Schema = new Schema({
       required: true,
     },
   ],
-  kid: {
-    type: String,
-    required: true,
-  },
+ 
   mId: {
     type: String,
     required: true,
   },
-  tableId: {
-    type: String,
-    required: true,
-  },
+  tableIds: [],
   customerName: String,
   customerMobile: String,
   department: {
