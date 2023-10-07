@@ -129,6 +129,7 @@ export const login = (req: Request, res: Response) => {
     username,
     mobile,
     staffRole,
+    department,
     isActive,
     _id,
     updateAt,
@@ -148,6 +149,7 @@ export const login = (req: Request, res: Response) => {
         username,
         mobile,
         staffRole,
+        department,
         isActive,
         _id,
         updateAt,
@@ -174,6 +176,7 @@ export const profile = (req: Request, res: Response) => {
     username,
     mobile,
     staffRole,
+    department,
     isActive,
     _id,
     updateAt,
@@ -192,6 +195,7 @@ export const profile = (req: Request, res: Response) => {
         name,
         username,
         mobile,
+        department,
         staffRole,
         isActive,
         _id,
@@ -302,8 +306,6 @@ export const updateUser = async (req: Request, res: Response) => {
       });
     }
     delete req.body.password;
-    req.body.username = mobile;
-
     console.log("req ", req.body);
     await User.updateOne(
       {

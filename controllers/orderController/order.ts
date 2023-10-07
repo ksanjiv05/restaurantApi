@@ -11,7 +11,7 @@ export const addOrder = async (req: Request, res: Response) => {
     const {
       mId = "",
       pids = [],
-      tableId = "",
+      tableIds = [],
       customerName = "",
       // customerMobile="",
       department = DEPARTMENT.UNKNOWN,
@@ -24,7 +24,7 @@ export const addOrder = async (req: Request, res: Response) => {
     if (
       mId == "" ||
       pids.length == 0 ||
-      tableId == "" ||
+      tableIds.length == 0  ||
       customerName == "" ||
       orderValue == 0 ||
       department == DEPARTMENT.UNKNOWN ||
