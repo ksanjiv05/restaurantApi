@@ -5,18 +5,15 @@ import { IFoodProduct } from "../interfaces/IFoodProduct";
 const FoodProductSchema: Schema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Product name is required"],
     lowercase: true,
   },
   image: {
     type: String,
   },
-  description: {
-    type: String,
-  },
-  quantity: {
+  code: {
     type: Number,
-    required: true,
+    required: [true, "Product code is required"],
   },
   isVeg: {
     type: Boolean,
@@ -27,18 +24,19 @@ const FoodProductSchema: Schema = new Schema({
     lowercase: true,
     default: "unknown",
   },
+  subCategory: {
+    type: String,
+    lowercase: true,
+    default: "unknown",
+  },
   price: {
     type: Number,
-    required: true,
-  },
-  discount: {
-    type: Number,
+    required: [true, "Product price is required"],
   },
   isReadyToServe: {
     type: Boolean,
     default: false,
   },
-  rating: Number,
   tag: String,
   isAvailable: Boolean,
   expiryDate: {

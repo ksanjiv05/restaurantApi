@@ -5,7 +5,7 @@ interface IResponseObj {
   statusCode: number;
   type: string | "error";
   msg: string | "";
-  error: string |null;
+  error: string | null | object;
   data: string | object | null;
 }
 

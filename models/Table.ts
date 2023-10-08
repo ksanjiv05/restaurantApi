@@ -14,15 +14,15 @@ const TableSchema: Schema = new Schema({
   },
   totalSeats: {
     type: Number,
-    required: true,
+    required: [true, "Total  occupancy is required"],
   },
   department: {
     type: String,
-    required: true,
+    required: [true, "Department is required"],
   },
   tableNumber: {
     type: Number,
-    required: true,
+    required: [true, "Table number is required"],
   },
   isAc: {
     type: Boolean,

@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 import logging from "../config/logging";
-import { IOrder } from "../interfaces/IOrder";
+import { IWaiting } from "../interfaces/IWaiting";
 
-const OrderSchema: Schema = new Schema({
+const WaitingSchema: Schema = new Schema({
   pids: {
     type: [],
     validate: {
@@ -19,45 +19,24 @@ const OrderSchema: Schema = new Schema({
     type: String,
     required: [true, "Manager Id is required"],
   },
-  tableIds: {
-    type: [String],
-    validate: {
-      validator: function (v: string[]) {
-        return v.length > 0;
-      },
-      message: () => `table id is required!`,
-    },
-  },
+
   customerName: String,
   customerMobile: String,
   department: {
     type: String,
     required: [true, "Department is required"],
   },
-  allocatedKitchen: {
-    type: String,
-    // required: true,
-  },
+
   status: {
     type: String,
     enum: ["PENDING", "ACCEPTED", "REJECTED", "COMPLETED"],
     default: "PENDING",
   },
-  orderValue: {
-    type: Number,
-    required: [true, "Order Value is required"],
-  },
-  isPaid: {
-    type: Boolean,
-    default: false,
-  },
-  paymentId: String,
-  paymentMode: String,
-  captainId: String,
   WaitingToken: {
     type: Number,
-    default: 0,
+    required: [true, "Waiting Value is required"],
   },
+
   updatedAt: {
     type: Date,
     default: Date.now,
@@ -68,12 +47,12 @@ const OrderSchema: Schema = new Schema({
   },
 });
 
-OrderSchema.pre<IOrder>("save", async function (next) {
+WaitingSchema.pre<IWaiting>("save", async function (next) {
   next();
 });
 
-OrderSchema.post<IOrder>("save", function () {
-  logging.info("Mongo", "New Order just added: ");
+WaitingSchema.post<IWaiting>("save", function () {
+  logging.info("Mongo", "New Waiting just added: ");
 });
 
-export default mongoose.model<IOrder>("Order", OrderSchema);
+export default mongoose.model<IWaiting>("Waiting", WaitingSchema);

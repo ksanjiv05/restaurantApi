@@ -17,16 +17,16 @@ export const addFoodProduct = async (req: Request, res: Response) => {
       category = "",
     }: IFoodProduct = req.body;
 
-    if (name == "" || price == 0 || category == "") {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: "please provide a valid name, image, price and category",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // if (name == "" || price == 0 || category == "") {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
+    //     type: "error",
+    //     msg: "please provide a valid name, image, price and category",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
     const date = new Date(expiryDate);
 
     // if (
@@ -46,6 +46,22 @@ export const addFoodProduct = async (req: Request, res: Response) => {
     // }
     req.body.image = file?.filename;
     const newFoodProduct: IFoodProduct = new FoodProduct(req.body);
+    let error: any = newFoodProduct.validateSync();
+    let errors = {};
+
+    Object.keys(error.errors).forEach((key) => {
+      errors[key] = error.errors[key].message;
+    });
+    if (error) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "errors",
+        error: errors,
+        resObj: res,
+        data: null,
+      });
+    }
     await newFoodProduct.save();
 
     return responseObj({

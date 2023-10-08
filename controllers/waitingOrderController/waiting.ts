@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import logging from "../../config/logging";
 import { HTTP_RESPONSE } from "../../helper/constants";
 import { responseObj } from "../../helper/response";
-import { IOrder } from "../../interfaces/IOrder";
-import Order from "../../models/Order";
-import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../../config/enums";
+import { IWaiting } from "../../interfaces/IWaiting";
+import Waiting from "../../models/Waiting";
+import { DEPARTMENT, KITCHEN, Waiting_STATUS } from "../../config/enums";
 
-export const addOrder = async (req: Request, res: Response) => {
+export const addWaitingOrder = async (req: Request, res: Response) => {
   try {
     // const {
     //   mId = "",
@@ -16,34 +16,34 @@ export const addOrder = async (req: Request, res: Response) => {
     //   // customerMobile="",
     //   department = DEPARTMENT.UNKNOWN,
     //   allocatedKitchen = KITCHEN.UNKNOWN,
-    //   status = ORDER_STATUS.PLACED,
+    //   status = Waiting_STATUS.PLACED,
     //   waitingTime = "10",
-    //   orderValue = 0,
-    // }: IOrder = req.body;
+    //   WaitingValue = 0,
+    // }: IWaiting = req.body;
 
     // if (
     //   mId == "" ||
     //   pids.length == 0 ||
     //   tableIds.length == 0 ||
     //   customerName == "" ||
-    //   orderValue == 0 ||
+    //   WaitingValue == 0 ||
     //   department == DEPARTMENT.UNKNOWN ||
     //   allocatedKitchen == KITCHEN.UNKNOWN
     // ) {
     //   return responseObj({
     //     statusCode: HTTP_RESPONSE.BED_REQUEST,
     //     type: "error",
-    //     msg: " please provide manager Id, product ids, table Id, customer Name, department, order value and allocated Kitchen",
+    //     msg: " please provide manager Id, product ids, table Id, customer Name, department, Waiting value and allocated Kitchen",
     //     error: null,
     //     resObj: res,
     //     data: null,
     //   });
     // }
 
-    const newOrder: IOrder = new Order({
+    const newWaiting: IWaiting = new Waiting({
       ...req.body,
     });
-    let error: any = newOrder.validateSync();
+    let error: any = newWaiting.validateSync();
     let errors = {};
 
     Object.keys(error.errors).forEach((key) => {
@@ -59,25 +59,25 @@ export const addOrder = async (req: Request, res: Response) => {
         data: null,
       });
     }
-    await newOrder.save();
+    await newWaiting.save();
 
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
-      msg: "hey, you are successfully added new Order",
+      msg: "hey, you are successfully added new Waiting Order",
       error: null,
       resObj: res,
-      data: newOrder,
+      data: newWaiting,
     });
   } catch (error: any) {
-    logging.error("Add Order", "unable to add Order", error);
+    logging.error("Add Waiting Order", "unable to add Waiting Order", error);
 
     if (error?.message) {
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
         msg: error.message.includes("E11000 duplicate key")
-          ? "duplicate Order"
+          ? "duplicate Waiting Order"
           : error.message,
         error: null,
         resObj: res,
@@ -96,39 +96,43 @@ export const addOrder = async (req: Request, res: Response) => {
   }
 };
 
-export const updateOrder = async (req: Request, res: Response) => {
+export const updateWaitingOrder = async (req: Request, res: Response) => {
   try {
     const {
       _id = "",
-      status = ORDER_STATUS.ACCEPTED,
-      captainId = "",
-    }: IOrder = req.body;
-    if (_id == "" || status == ORDER_STATUS.PLACED)
+      status = Waiting_STATUS.ACCEPTED,
+      WaitingToken = 0,
+    }: IWaiting = req.body;
+    if (_id == "" || status == Waiting_STATUS.PLACED)
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
-        msg: "please provide a valid Order ID and status",
+        msg: "please provide a valid Waiting ID and status",
         error: null,
         resObj: res,
         data: null,
       });
 
-    await Order.updateOne(
+    await Waiting.updateOne(
       { _id },
       {
-        $set: { status, captainId },
+        $set: { WaitingToken },
       }
     );
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
-      msg: "hey, you are successfully updated Order",
+      msg: "hey, you are successfully updated Waiting Order",
       error: null,
       resObj: res,
       data: null,
     });
   } catch (error) {
-    logging.error("Update Order", "unable to update Order", error);
+    logging.error(
+      "Update Waiting Order",
+      "unable to update Waiting Order",
+      error
+    );
     return responseObj({
       statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
       type: "error",
@@ -140,19 +144,19 @@ export const updateOrder = async (req: Request, res: Response) => {
   }
 };
 
-export const getOrders = async (req: Request, res: Response) => {
+export const getWaitingOrders = async (req: Request, res: Response) => {
   try {
-    const orders = await Order.find();
+    const waitings = await Waiting.find();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
-      msg: "your orders",
+      msg: "your Waiting Orders",
       error: null,
       resObj: res,
-      data: orders,
+      data: waitings,
     });
   } catch (error) {
-    logging.error("Get orders", "unable to get orders", error);
+    logging.error("Get Waiting Order", "unable to get Waitings", error);
     return responseObj({
       statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
       type: "error",
@@ -164,63 +168,63 @@ export const getOrders = async (req: Request, res: Response) => {
   }
 };
 
-export const getOrder = async (req: Request, res: Response) => {
-  try {
-    const { id = "" } = req.params;
-    if (id == "")
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: "please provide a valid Order ID",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    const order = await Order.findOne({ _id: id });
-    return responseObj({
-      statusCode: HTTP_RESPONSE.SUCCESS,
-      type: "success",
-      msg: "your Order",
-      error: null,
-      resObj: res,
-      data: order,
-    });
-  } catch (error) {
-    logging.error("Get Order", "unable to get Order", error);
-    return responseObj({
-      statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
-      type: "error",
-      msg: "unable to process your request",
-      error: null,
-      resObj: res,
-      data: null,
-    });
-  }
-};
-
-export const deleteOrder = async (req: Request, res: Response) => {
+export const getWaitingOrder = async (req: Request, res: Response) => {
   try {
     const { id = "" } = req.params;
     if (id == "")
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
-        msg: "please provide a valid Order ID",
+        msg: "please provide a valid Waiting ID",
         error: null,
         resObj: res,
         data: null,
       });
-    await Order.deleteOne({ _id: id });
+    const waiting = await Waiting.findOne({ _id: id });
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
-      msg: "your Order is successfully deleted",
+      msg: "your Waiting",
+      error: null,
+      resObj: res,
+      data: waiting,
+    });
+  } catch (error) {
+    logging.error("Get Waiting Order", "unable to get Waiting", error);
+    return responseObj({
+      statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
+      type: "error",
+      msg: "unable to process your request",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  }
+};
+
+export const deleteWaitingOrder = async (req: Request, res: Response) => {
+  try {
+    const { id = "" } = req.params;
+    if (id == "")
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "please provide a valid Waiting ID",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    await Waiting.deleteOne({ _id: id });
+    return responseObj({
+      statusCode: HTTP_RESPONSE.SUCCESS,
+      type: "success",
+      msg: "your Waiting Order is successfully deleted",
       error: null,
       resObj: res,
       data: null,
     });
   } catch (error) {
-    logging.error("Delete Order", "unable to delete Order", error);
+    logging.error("Delete Waiting Order", "unable to delete Waiting", error);
     return responseObj({
       statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
       type: "error",

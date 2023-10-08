@@ -68,32 +68,28 @@ import { KITCHEN } from "../../config/enums";
 export const addInventory = async (req: Request, res: Response) => {
   try {
     const {
-      name = "",
-      description = "",
-      brand = "",
       quantity = 0,
-      price = 0,
       expiration = "",
       kitchen = KITCHEN.UNKNOWN,
     }: IInventory = req.body;
 
-    if (
-      name == "" ||
-      brand == "" ||
-      quantity == 0 ||
-      price == 0 ||
-      expiration == "" ||
-      kitchen == KITCHEN.UNKNOWN
-    ) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: "please provide product name, brand, quantity, price, expiration, and assigned kitchen ",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // if (
+    //   name == "" ||
+    //   brand == "" ||
+    //   quantity == 0 ||
+    //   price == 0 ||
+    //   expiration == "" ||
+    //   kitchen == KITCHEN.UNKNOWN
+    // ) {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
+    //     type: "error",
+    //     msg: "please provide product name, brand, quantity, price, expiration, and assigned kitchen ",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
 
     const expdate = new Date(expiration).toDateString();
     const inStock = quantity > 0;
@@ -115,6 +111,22 @@ export const addInventory = async (req: Request, res: Response) => {
       expiration: expdate,
       inStock,
     });
+    let error: any = newInventory.validateSync();
+    let errors = {};
+
+    Object.keys(error.errors).forEach((key) => {
+      errors[key] = error.errors[key].message;
+    });
+    if (error) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "errors",
+        error: errors,
+        resObj: res,
+        data: null,
+      });
+    }
     await newInventory.save();
 
     return responseObj({

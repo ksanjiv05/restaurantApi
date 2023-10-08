@@ -29,20 +29,20 @@ export const addTable = async (req: Request, res: Response) => {
       }
     }
 
-    if (
-      totalSeats == 0 ||
-      department == DEPARTMENT.UNKNOWN ||
-      tableNumber == 0
-    ) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: "please provide department, totalSeats, tableNumber",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // if (
+    //   totalSeats == 0 ||
+    //   department == DEPARTMENT.UNKNOWN ||
+    //   tableNumber == 0
+    // ) {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
+    //     type: "error",
+    //     msg: "please provide department, totalSeats, tableNumber",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
     req.body.tid = isMerged
       ? `${department}-merge-${tableNumber}`
       : `${department}-${tableNumber}`;
@@ -50,6 +50,22 @@ export const addTable = async (req: Request, res: Response) => {
       ...req.body,
     });
 
+    let error: any = newTable.validateSync();
+    let errors = {};
+
+    Object.keys(error.errors).forEach((key) => {
+      errors[key] = error.errors[key].message;
+    });
+    if (error) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "errors",
+        error: errors,
+        resObj: res,
+        data: null,
+      });
+    }
     await newTable.save();
 
     return responseObj({

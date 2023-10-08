@@ -12,8 +12,7 @@ import {
 import { upload } from "../../middelware/uploder";
 import passport from "passport";
 import { verifyUser } from "../../middelware/auth";
-import { responseObj } from "../../helper/response";
-import { HTTP_RESPONSE } from "../../helper/constants";
+
 import {
   addTable,
   deleteTable,
@@ -42,6 +41,13 @@ import {
   getFoodProducts,
   updateFoodProduct,
 } from "../../controllers/foodController/food";
+import {
+  addWaitingOrder,
+  deleteWaitingOrder,
+  getWaitingOrder,
+  getWaitingOrders,
+  updateWaitingOrder,
+} from "../../controllers/waitingOrderController/waiting";
 const router = express.Router();
 
 //user
@@ -64,13 +70,6 @@ router.get("/inventory", verifyUser, getInventories);
 router.get("/inventory/:id", verifyUser, getInventory);
 router.delete("/inventory/:id", verifyUser, deleteInventory);
 
-// //food product
-// router.post("/product", auth, addFoodProduct);
-// router.put("/product", auth, updateFoodProduct);
-// router.get("/product", getFoodProducts);
-// router.get("/product/:id", getFoodProduct);
-// router.delete("/product/:id", auth, deleteFoodProduct);
-
 //table
 router.post("/table", verifyUser, addTable);
 router.put("/table", verifyUser, updateTable);
@@ -78,7 +77,7 @@ router.get("/table", verifyUser, getTables);
 router.get("/table/:id", verifyUser, getTable);
 router.delete("/table/:id", verifyUser, deleteTable);
 // //order
-router.post("/order", verifyUser, addOrder);
+router.post("/order", addOrder);
 router.put("/order", verifyUser, updateOrder);
 router.get("/order", verifyUser, getOrders);
 router.get("/order/:id", verifyUser, getOrder);
@@ -91,5 +90,12 @@ router.put("/food", verifyUser, updateFoodProduct);
 router.get("/food", verifyUser, getFoodProducts);
 router.get("/food/:id", verifyUser, getFoodProduct);
 router.delete("/food/:id", verifyUser, deleteFoodProduct);
+
+// //order
+router.post("/order/waiting", verifyUser, addWaitingOrder);
+router.put("/order/waiting", verifyUser, updateWaitingOrder);
+router.get("/order/waiting", verifyUser, getWaitingOrders);
+router.get("/order/waiting/:id", verifyUser, getWaitingOrder);
+router.delete("/order/waiting/:id", verifyUser, deleteWaitingOrder);
 
 export default router;

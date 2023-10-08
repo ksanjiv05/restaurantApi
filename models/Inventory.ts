@@ -9,7 +9,7 @@ const InventorySchema: Schema = new Schema({
   },
   name: {
     type: String,
-    required: true,
+    required: [true, "Inventory product name is required"],
   },
   description: {
     type: String,
@@ -19,11 +19,13 @@ const InventorySchema: Schema = new Schema({
   },
   quantity: {
     type: Number,
-    required: true,
+    // required: [true, "Inventory product quantity is required"],
+    min: [1, "Must be at least 1 unit."],
   },
   price: {
     type: Number,
-    required: true,
+    // required: [true, "Inventory product price is required"],
+    min: [1, "Price should be greater than 0."],
   },
   supplier: {
     type: String,
@@ -34,7 +36,7 @@ const InventorySchema: Schema = new Schema({
   inStock: Boolean,
   kitchen: {
     type: String,
-    required: true,
+    required: [true, "Inventory  kitchen is required"],
   },
   createdAt: {
     type: String,

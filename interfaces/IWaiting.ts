@@ -1,21 +1,17 @@
 import { Document } from "mongoose";
 import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../config/enums";
 
-export interface IOrder extends Document {
+export interface IWaiting extends Document {
   mId: string;
   pids: any[];
-  tableIds: string[];
+  //tableIds: string[];
   customerName: string;
   customerMobile: string;
   department: DEPARTMENT;
-  allocatedKitchen: KITCHEN;
+  //   allocatedKitchen: KITCHEN;
   status: ORDER_STATUS;
+  WaitingToken: number;
   orderValue: number;
-  isPaid?: boolean;
-  paymentId?: string;
-  paymentMode?: "CASH" | "CARD" | "UPI";
-  captainId?: string;
-  WaitingToken: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
