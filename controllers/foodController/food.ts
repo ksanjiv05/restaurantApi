@@ -152,13 +152,18 @@ export const getFoodProducts = async (req: Request, res: Response) => {
       .sort("-createdAt")
       .skip(skip)
       .limit(Number(perPage));
+
+    const count = await FoodProduct.find().count()
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
       msg: "your Food Products",
       error: null,
       resObj: res,
-      data: FoodProducts,
+      data: {
+        products: FoodProducts,
+        total: count
+      },
     });
   } catch (error) {
     logging.error("Get Food Products", "unable to get Food Products", error);

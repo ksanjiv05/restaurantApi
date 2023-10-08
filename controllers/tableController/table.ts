@@ -277,13 +277,17 @@ export const updateTables = async (req: Request, res: Response) => {
 export const getTables = async (req: Request, res: Response) => {
   try {
     const tables = await Table.find();
+    const count = await Table.find().count()
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
       msg: "your Tables",
       error: null,
       resObj: res,
-      data: tables,
+      data: {
+        tables: tables,
+        total: count
+      },
     });
   } catch (error) {
     logging.error("Get Tables", "unable to get Tables", error);
