@@ -212,13 +212,14 @@ export const getInventories = async (req: Request, res: Response) => {
     const inventories = await Inventory.find()
       .skip(Number(skip))
       .limit(Number(perPage));
+    const total = await Inventory.find().count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
       msg: "your inventories",
       error: null,
       resObj: res,
-      data: inventories,
+      data: { inventories, total },
     });
   } catch (error) {
     logging.error("Get Inventories", "unable to get Inventories", error);

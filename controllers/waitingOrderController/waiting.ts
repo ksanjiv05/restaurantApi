@@ -146,14 +146,22 @@ export const updateWaitingOrder = async (req: Request, res: Response) => {
 
 export const getWaitingOrders = async (req: Request, res: Response) => {
   try {
-    const waitings = await Waiting.find();
+    const { page = 0, perPage = 10 } = req.query;
+    // page //perPage
+    const skip = (Number(page) - 1) * Number(perPage);
+
+    const waitings = await Waiting.find()
+      .sort("-createdAt")
+      .skip(Number(skip))
+      .limit(Number(perPage));
+    const total = await Waiting.find().count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
       msg: "your Waiting Orders",
       error: null,
       resObj: res,
-      data: waitings,
+      data: { waitings, total },
     });
   } catch (error) {
     logging.error("Get Waiting Order", "unable to get Waitings", error);

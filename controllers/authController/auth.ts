@@ -134,7 +134,7 @@ export const login = (req: Request, res: Response) => {
     _id,
     updateAt,
     createdAt,
-  }: IUser = req.user;
+  }: any = req.user;
   const roleObj: any = roles.find((r) => r.name === staffRole);
 
   return responseObj({
@@ -420,20 +420,20 @@ export const getUsers = async (req: Request, res: Response) => {
       });
     }
     const { page = 0, perPage = 10 } = req.query;
-    // page //perPage
+
     const skip = (Number(page) - 1) * Number(perPage);
 
     const users = await User.find({ staffRole })
       .skip(Number(skip))
       .limit(Number(perPage));
-
+    const count = await User.find({ staffRole }).count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
       msg: "user list ",
       error: null,
       resObj: res,
-      data: users,
+      data: { users, total: count },
     });
   } catch (error: any) {
     logging.error("Get Users", "unable to get users", error);

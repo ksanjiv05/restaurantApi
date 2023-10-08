@@ -147,13 +147,14 @@ export const getOrders = async (req: Request, res: Response) => {
     const skip = (Number(page) - 1) * Number(perPage);
 
     const orders = await Order.find().skip(Number(skip)).limit(Number(perPage));
+    const total = await Order.find().count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
       msg: "your orders",
       error: null,
       resObj: res,
-      data: orders,
+      data: { orders, total },
     });
   } catch (error) {
     logging.error("Get orders", "unable to get orders", error);
