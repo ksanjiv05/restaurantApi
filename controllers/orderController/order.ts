@@ -142,9 +142,11 @@ export const updateOrder = async (req: Request, res: Response) => {
 
 export const getOrders = async (req: Request, res: Response) => {
   try {
-    const { limit = 10, skip = 0 } = req.query;
+    const { page = 0, perPage = 10 } = req.query;
+    // page //perPage
+    const skip = (Number(page) - 1) * Number(perPage);
 
-    const orders = await Order.find().skip(Number(skip)).limit(Number(limit));
+    const orders = await Order.find().skip(Number(skip)).limit(Number(perPage));
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

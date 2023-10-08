@@ -206,10 +206,12 @@ export const updateInventory = async (req: Request, res: Response) => {
 
 export const getInventories = async (req: Request, res: Response) => {
   try {
-    const { limit = 10, skip = 0 } = req.query;
+    const { page = 0, perPage = 10 } = req.query;
+    // page //perPage
+    const skip = (Number(page) - 1) * Number(perPage);
     const inventories = await Inventory.find()
       .skip(Number(skip))
-      .limit(Number(limit));
+      .limit(Number(perPage));
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

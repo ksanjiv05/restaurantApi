@@ -13,5 +13,5 @@ export async function getHashPassword(password: string) {
 
 export const getToken = function (user) {
   // This helps us to create the JSON Web Token
-  return jwt.sign(user, SECRET_KEY, { expiresIn: 3600 });
+  return jwt.sign(user, SECRET_KEY, { expiresIn: "1d" });
 };
