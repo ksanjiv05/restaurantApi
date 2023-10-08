@@ -419,8 +419,13 @@ export const getUsers = async (req: Request, res: Response) => {
         data: null,
       });
     }
+    const { page = 0, perPage = 10 } = req.query;
+    // page //perPage
+    const skip = (Number(page) - 1) * Number(perPage);
 
-    const users = await User.find({ staffRole });
+    const users = await User.find({ staffRole })
+      .skip(Number(skip))
+      .limit(Number(perPage));
 
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,

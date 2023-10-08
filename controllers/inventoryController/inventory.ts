@@ -206,7 +206,10 @@ export const updateInventory = async (req: Request, res: Response) => {
 
 export const getInventories = async (req: Request, res: Response) => {
   try {
-    const inventories = await Inventory.find();
+    const { limit = 10, skip = 0 } = req.query;
+    const inventories = await Inventory.find()
+      .skip(Number(skip))
+      .limit(Number(limit));
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

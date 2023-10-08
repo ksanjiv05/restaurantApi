@@ -144,7 +144,14 @@ export const updateFoodProduct = async (req: Request, res: Response) => {
 
 export const getFoodProducts = async (req: Request, res: Response) => {
   try {
-    const FoodProducts = await FoodProduct.find().sort("-createdAt");
+    const { page = 0, perPage = 10 } = req.query;
+    // page //perPage
+    const skip = (Number(page) - 1) * Number(perPage);
+
+    const FoodProducts = await FoodProduct.find()
+      .sort("-createdAt")
+      .skip(skip)
+      .limit(Number(perPage));
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
