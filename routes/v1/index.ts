@@ -64,6 +64,7 @@ router.post("/login", passport.authenticate("local"), login);
 //get user profile
 
 //inventory
+router.post("/inventory/bulk", verifyUser,upload.single("inventory"), addInventory);
 router.post("/inventory", verifyUser, addInventory);
 router.put("/inventory", verifyUser, updateInventory);
 router.get("/inventory", verifyUser, getInventories);

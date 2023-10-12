@@ -146,12 +146,18 @@ export const getFoodProducts = async (req: Request, res: Response) => {
   try {
     const { page = 0, perPage = 10 } = req.query;
     // page //perPage
-    const skip = (Number(page) - 1) * Number(perPage);
+    const skip =
+      perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
 
-    const FoodProducts = await FoodProduct.find()
-      .sort("-createdAt")
-      .skip(Number(skip))
-      .limit(Number(perPage));
+    let FoodProducts = null;
+    if (skip) {
+      FoodProducts = await FoodProduct.find()
+        .sort("-createdAt")
+        .skip(Number(skip))
+        .limit(Number(perPage));
+    } else {
+      FoodProducts = await FoodProduct.find();
+    }
 
     const count = await FoodProduct.find().count();
     return responseObj({

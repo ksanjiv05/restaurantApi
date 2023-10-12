@@ -48,7 +48,7 @@ const InventorySchema: Schema = new Schema({
   },
 });
 
-InventorySchema.index({ name: 1, brand: 1 }, { unique: true });
+InventorySchema.index({ name: 1, kitchen: 1 }, { unique: true });
 
 InventorySchema.pre<IInventory>("save", async function (next) {
   next();

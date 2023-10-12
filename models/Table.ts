@@ -24,6 +24,10 @@ const TableSchema: Schema = new Schema({
     type: Number,
     required: [true, "Table number is required"],
   },
+  isAvailable:{
+    type:Boolean,
+    default:true
+  },
   isAc: {
     type: Boolean,
     required: true,

@@ -276,15 +276,18 @@ export const updateTables = async (req: Request, res: Response) => {
 
 export const getTables = async (req: Request, res: Response) => {
   try {
-<<<<<<< HEAD
     const { page = 0, perPage = 10 } = req.query;
     // page //perPage
-    const skip = (Number(page) - 1) * Number(perPage);
-    const tables = await Table.find().skip(Number(skip)).limit(Number(perPage));
-=======
-    const tables = await Table.find();
+    const skip = perPage !== 'all' ? (Number(page) - 1) * Number(perPage) : false;
+    let tables = null;
+    
+    if(skip) {
+      tables = await Table.find().skip(Number(skip)).limit(Number(perPage));
+    }else {
+      tables = await Table.find();
+    }
+
     const count = await Table.find().count()
->>>>>>> 66f65410ca75c218bf92d99f1410c7289e85efc1
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
