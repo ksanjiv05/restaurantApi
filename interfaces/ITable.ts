@@ -10,5 +10,6 @@ export interface ITable extends Document {
   isAc: boolean;
   isMerged?: boolean;
   isSifted?: boolean;
+  isAvailable?:boolean;
   mergeTables?: string[];
 }

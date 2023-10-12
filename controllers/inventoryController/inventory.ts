@@ -7,63 +7,63 @@ import Inventory from "../../models/Inventory";
 import { csvToJson } from "../../helper/utils";
 import { KITCHEN } from "../../config/enums";
 
-// export const addBulkInventory = async (req: Request, res: Response) => {
-//   try {
-//     if (!req.file)
-//       return responseObj({
-//         statusCode: HTTP_RESPONSE.BED_REQUEST,
-//         type: "error",
-//         msg: "please provide a csv file",
-//         error: null,
-//         resObj: res,
-//         data: null,
-//       });
+export const addBulkInventory = async (req: Request, res: Response) => {
+  try {
+    if (!req.file)
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "please provide a csv file",
+        error: null,
+        resObj: res,
+        data: null,
+      });
 
-//     const csvData = await csvToJson(req.file?.path);
+    const csvData = await csvToJson(req.file?.path);
 
-//     const response = await Inventory.bulkWrite(csvData.map((doc:IInventory)=>{
-//       let docupdated= {...doc,inStock: doc.quantity>0};
-//       return {
-//         insertOne:{
-//           document:docupdated
-//         }
-//       }
-//     }))
+    const response = await Inventory.bulkWrite(csvData.map((doc:IInventory)=>{
+      let docupdated= {...doc,inStock: doc.quantity>0};
+      return {
+        insertOne:{
+          document:docupdated
+        }
+      }
+    }))
 
-//     return responseObj({
-//       statusCode: HTTP_RESPONSE.SUCCESS,
-//       type: "success",
-//       msg: "hey, you are successfully uploaded Inventories",
-//       error: null,
-//       resObj: res,
-//       data: response,
-//     });
-//   } catch (error: any) {
-//     logging.error("Add Bulk Inventory", "unable to add Inventory", error);
+    return responseObj({
+      statusCode: HTTP_RESPONSE.SUCCESS,
+      type: "success",
+      msg: "hey, you are successfully uploaded Inventories",
+      error: null,
+      resObj: res,
+      data: response,
+    });
+  } catch (error: any) {
+    logging.error("Add Bulk Inventory", "unable to add Inventory", error);
 
-//     if (error?.message) {
-//       return responseObj({
-//         statusCode: HTTP_RESPONSE.BED_REQUEST,
-//         type: "error",
-//         msg: error.message.includes("E11000 duplicate key")
-//           ? "duplicate Inventory"
-//           : error.message,
-//         error: null,
-//         resObj: res,
-//         data: null,
-//       });
-//     }
+    if (error?.message) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: error.message.includes("E11000 duplicate key")
+          ? "duplicate Inventory"
+          : error.message,
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
 
-//     return responseObj({
-//       statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
-//       type: "error",
-//       msg: error?.message || "unable to process your request",
-//       error: null,
-//       resObj: res,
-//       data: null,
-//     });
-//   }
-// };
+    return responseObj({
+      statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
+      type: "error",
+      msg: error?.message || "unable to process your request",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  }
+};
 
 export const addInventory = async (req: Request, res: Response) => {
   try {
@@ -92,6 +92,7 @@ export const addInventory = async (req: Request, res: Response) => {
     // }
 
     const expdate = new Date(expiration).toDateString();
+    
     const inStock = quantity > 0;
     delete req.body.expiration;
     delete req.body.inStock;
