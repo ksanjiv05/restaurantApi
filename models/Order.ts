@@ -19,6 +19,10 @@ const OrderSchema: Schema = new Schema({
     type: String,
     required: [true, "Manager Id is required"],
   },
+  managerName: {
+    type: String,
+    required: [true, "Manager name is required"],
+  },
   tableIds: {
     type: [String],
     validate: {

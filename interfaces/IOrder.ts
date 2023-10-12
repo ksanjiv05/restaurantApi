@@ -3,6 +3,7 @@ import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../config/enums";
 
 export interface IOrder extends Document {
   mId: string;
+  managerName: string;
   pids: any[];
   tableIds: string[];
   customerName: string;
