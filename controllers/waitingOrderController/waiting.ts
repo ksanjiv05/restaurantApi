@@ -45,11 +45,12 @@ export const addWaitingOrder = async (req: Request, res: Response) => {
     });
     let error: any = newWaiting.validateSync();
     let errors = {};
-
-    Object.keys(error.errors).forEach((key) => {
-      errors[key] = error.errors[key].message;
-    });
+    
     if (error) {
+      Object.keys(error.errors).forEach((key) => {
+        errors[key] = error.errors[key].message;
+      });
+
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -59,6 +60,7 @@ export const addWaitingOrder = async (req: Request, res: Response) => {
         data: null,
       });
     }
+    
     await newWaiting.save();
 
     return responseObj({

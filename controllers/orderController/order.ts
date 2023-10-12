@@ -5,6 +5,7 @@ import { responseObj } from "../../helper/response";
 import { IOrder } from "../../interfaces/IOrder";
 import Order from "../../models/Order";
 import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../../config/enums";
+import Table from "../../models/Table";
 
 export const addOrder = async (req: Request, res: Response) => {
   try {
@@ -39,17 +40,17 @@ export const addOrder = async (req: Request, res: Response) => {
     //     data: null,
     //   });
     // }
-
+    req.body.status=ORDER_STATUS.PLACED;
     const newOrder: IOrder = new Order({
       ...req.body,
     });
     let error: any = newOrder.validateSync();
     let errors = {};
 
-    Object.keys(error.errors).forEach((key) => {
-      errors[key] = error.errors[key].message;
-    });
     if (error) {
+      Object.keys(error.errors).forEach((key) => {
+        errors[key] = error.errors[key].message;
+      });
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -60,7 +61,11 @@ export const addOrder = async (req: Request, res: Response) => {
       });
     }
     await newOrder.save();
-
+    await Table.updateOne({_id:{$in:req.body.tableIds}},{
+      $set:{
+        isAvailable:false
+      }
+    })
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
