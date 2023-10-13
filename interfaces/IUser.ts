@@ -10,7 +10,7 @@ interface IUser extends Document {
   shift: string;
   email?: string;
   address?: string;
-  addhar?: string;
+  aadhar?: string;
   department?: string;
   checkIn?: string; //timestamp
   checkOut?: string; //timestamp
