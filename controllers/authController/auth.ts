@@ -424,6 +424,7 @@ export const getUsers = async (req: Request, res: Response) => {
     const skip = (Number(page) - 1) * Number(perPage);
 
     const users = await User.find({ staffRole })
+      .sort("-createdAt")
       .skip(Number(skip))
       .limit(Number(perPage));
     const count = await User.find({ staffRole }).count();
