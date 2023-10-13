@@ -40,7 +40,7 @@ export const addOrder = async (req: Request, res: Response) => {
     //     data: null,
     //   });
     // }
-    req.body.status=ORDER_STATUS.PLACED;
+    req.body.status = ORDER_STATUS.PLACED;
     const newOrder: IOrder = new Order({
       ...req.body,
     });
@@ -61,11 +61,14 @@ export const addOrder = async (req: Request, res: Response) => {
       });
     }
     await newOrder.save();
-    await Table.updateOne({_id:{$in:req.body.tableIds}},{
-      $set:{
-        isAvailable:false
+    await Table.updateOne(
+      { _id: { $in: req.body.tableIds } },
+      {
+        $set: {
+          isAvailable: false,
+        },
       }
-    })
+    );
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

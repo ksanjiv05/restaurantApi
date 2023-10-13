@@ -4,6 +4,67 @@ import { HTTP_RESPONSE } from "../../helper/constants";
 import { responseObj } from "../../helper/response";
 import { IFoodProduct } from "../../interfaces/IFoodProduct";
 import FoodProduct from "../../models/FoodProduct";
+import { csvToJson } from "../../helper/utils";
+
+export const addBulkFood = async (req: Request, res: Response) => {
+  try {
+    if (!req.file)
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "please provide a csv file",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+
+    const csvData: IFoodProduct[] = await csvToJson(req.file?.path);
+    // console.log("csvData", csvData);
+    const response = await FoodProduct.bulkWrite(
+      csvData.map((doc: IFoodProduct) => {
+        let docupdated = { ...doc };
+        return {
+          insertOne: {
+            document: docupdated,
+          },
+        };
+      })
+    );
+
+    return responseObj({
+      statusCode: HTTP_RESPONSE.SUCCESS,
+      type: "success",
+      msg: "hey, you are successfully uploaded Inventories",
+      error: null,
+      resObj: res,
+      data: response,
+    });
+  } catch (error: any) {
+    logging.error("Add Bulk Inventory", "unable to add Inventory", error);
+
+    if (error?.message) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: error.message.includes("E11000 duplicate key")
+          ? "duplicate Inventory"
+          : error.message,
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
+
+    return responseObj({
+      statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
+      type: "error",
+      msg: error?.message || "unable to process your request",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  }
+};
 
 export const addFoodProduct = async (req: Request, res: Response) => {
   try {
@@ -49,10 +110,10 @@ export const addFoodProduct = async (req: Request, res: Response) => {
     let error: any = newFoodProduct.validateSync();
     let errors = {};
 
-    Object.keys(error.errors).forEach((key) => {
-      errors[key] = error.errors[key].message;
-    });
     if (error) {
+      Object.keys(error.errors).forEach((key) => {
+        errors[key] = error.errors[key].message;
+      });
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -146,11 +207,13 @@ export const getFoodProducts = async (req: Request, res: Response) => {
   try {
     const { page = 0, perPage = 10 } = req.query;
     // page //perPage
-    const skip =
-      perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
-
+    // const skip =
+    //   perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
+    const skip = (Number(page) - 1) * Number(perPage);
+    console.log("skip", skip, page, perPage);
     let FoodProducts = null;
-    if (skip) {
+
+    if (perPage !== "all") {
       FoodProducts = await FoodProduct.find()
         .sort("-createdAt")
         .skip(Number(skip))

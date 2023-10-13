@@ -12,7 +12,7 @@ const FoodProductSchema: Schema = new Schema({
     type: String,
   },
   code: {
-    type: Number,
+    type: String,
     required: [true, "Product code is required"],
   },
   isVeg: {

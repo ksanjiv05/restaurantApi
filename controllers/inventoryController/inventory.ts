@@ -21,14 +21,16 @@ export const addBulkInventory = async (req: Request, res: Response) => {
 
     const csvData = await csvToJson(req.file?.path);
 
-    const response = await Inventory.bulkWrite(csvData.map((doc:IInventory)=>{
-      let docupdated= {...doc,inStock: doc.quantity>0};
-      return {
-        insertOne:{
-          document:docupdated
-        }
-      }
-    }))
+    const response = await Inventory.bulkWrite(
+      csvData.map((doc: IInventory) => {
+        let docupdated = { ...doc, inStock: doc.quantity > 0 };
+        return {
+          insertOne: {
+            document: docupdated,
+          },
+        };
+      })
+    );
 
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
@@ -92,7 +94,7 @@ export const addInventory = async (req: Request, res: Response) => {
     // }
 
     const expdate = new Date(expiration).toDateString();
-    
+
     const inStock = quantity > 0;
     delete req.body.expiration;
     delete req.body.inStock;
@@ -115,10 +117,10 @@ export const addInventory = async (req: Request, res: Response) => {
     let error: any = newInventory.validateSync();
     let errors = {};
 
-    Object.keys(error.errors).forEach((key) => {
-      errors[key] = error.errors[key].message;
-    });
     if (error) {
+      Object.keys(error.errors).forEach((key) => {
+        errors[key] = error.errors[key].message;
+      });
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",

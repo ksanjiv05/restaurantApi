@@ -52,11 +52,10 @@ export const addTable = async (req: Request, res: Response) => {
 
     let error: any = newTable.validateSync();
     let errors = {};
-
-    Object.keys(error.errors).forEach((key) => {
-      errors[key] = error.errors[key].message;
-    });
     if (error) {
+      Object.keys(error.errors).forEach((key) => {
+        errors[key] = error.errors[key].message;
+      });
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -278,16 +277,17 @@ export const getTables = async (req: Request, res: Response) => {
   try {
     const { page = 0, perPage = 10 } = req.query;
     // page //perPage
-    const skip = perPage !== 'all' ? (Number(page) - 1) * Number(perPage) : false;
+    const skip =
+      perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
     let tables = null;
-    
-    if(skip) {
+
+    if (skip) {
       tables = await Table.find().skip(Number(skip)).limit(Number(perPage));
-    }else {
+    } else {
       tables = await Table.find();
     }
 
-    const count = await Table.find().count()
+    const count = await Table.find().count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
@@ -296,7 +296,7 @@ export const getTables = async (req: Request, res: Response) => {
       resObj: res,
       data: {
         tables: tables,
-        total: count
+        total: count,
       },
     });
   } catch (error) {

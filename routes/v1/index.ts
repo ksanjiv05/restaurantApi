@@ -21,6 +21,7 @@ import {
   updateTable,
 } from "../../controllers/tableController/table";
 import {
+  addBulkInventory,
   addInventory,
   deleteInventory,
   getInventories,
@@ -35,6 +36,7 @@ import {
 } from "../../controllers/orderController/order";
 import { addStaticImage } from "../../controllers/staticController/static";
 import {
+  addBulkFood,
   addFoodProduct,
   deleteFoodProduct,
   getFoodProduct,
@@ -64,7 +66,7 @@ router.post("/login", passport.authenticate("local"), login);
 //get user profile
 
 //inventory
-router.post("/inventory/bulk", verifyUser,upload.single("inventory"), addInventory);
+// router.post("/inventory/bulk", upload.single("inventory"), addBulkInventory);
 router.post("/inventory", verifyUser, addInventory);
 router.put("/inventory", verifyUser, updateInventory);
 router.get("/inventory", verifyUser, getInventories);
@@ -87,6 +89,8 @@ router.get("/static/upload", upload.single("food"), addStaticImage);
 
 // //order
 router.post("/food", verifyUser, upload.single("image"), addFoodProduct);
+router.post("/food/bulk", verifyUser, upload.single("food"), addBulkFood);
+
 router.put("/food", verifyUser, updateFoodProduct);
 router.get("/food", verifyUser, getFoodProducts);
 router.get("/food/:id", verifyUser, getFoodProduct);

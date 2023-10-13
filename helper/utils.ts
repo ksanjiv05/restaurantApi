@@ -15,19 +15,36 @@ export const csvParser = async (filePath: string) => {
   return data;
 };
 
+// name: string;
+//   image: string;
+//   code: string;
+//   isVeg: boolean;
+//   category: string;
+//   subCategory: string;
+//   price: number;
+//   isReadyToServe?: boolean;
+//   tag?: string; //bestseller
+//   isAvailable?: boolean;
+//   expiryDate?: string;
+
 export const csvToJson = async (filePath: string) => {
   try {
+    console.log("filePath", filePath);
     const jsonArray = await csv().fromFile(filePath);
-    return jsonArray.map((item) => ({
-      name: item.field1,
-      price: item.field2,
-      image: "https://picsum.photos/200/300",
-      quantity: 1,
-      isVeg:
-        item.field1.includes("VEG") ||
-        item.field1.includes("VAG") ||
-        item.field1.includes("PANEER"),
-    }));
+    return jsonArray.map((item) => {
+      console.log("item", item);
+      return {
+        name: item?.Name,
+        price: item?.Price,
+        image: item?.Image,
+        code: item?.Code,
+        category: item?.Category,
+        subCategory: item?.Subcategory,
+        // isAvailable: true,
+        quantity: 1,
+        isVeg: !item["Veg/non-veg"]?.includes("non-veg"),
+      };
+    });
   } catch (err) {
     logging.error("CSV TO JSON", "unable to parse csv", err);
     return [];
