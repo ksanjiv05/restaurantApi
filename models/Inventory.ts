@@ -22,6 +22,11 @@ const InventorySchema: Schema = new Schema({
     // required: [true, "Inventory product quantity is required"],
     min: [1, "Must be at least 1 unit."],
   },
+  unit: {
+    type: String,
+    required: [true, "Inventory product unit is required"],
+  },
+  note: String,
   price: {
     type: Number,
     // required: [true, "Inventory product price is required"],

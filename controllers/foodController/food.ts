@@ -88,7 +88,7 @@ export const addFoodProduct = async (req: Request, res: Response) => {
     //     data: null,
     //   });
     // }
-    const date = new Date(expiryDate);
+    // const date = new Date(expiryDate);
 
     // if (
     //   isReadyToServe &&

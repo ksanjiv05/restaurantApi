@@ -9,6 +9,8 @@ export interface IInventory extends Document {
   quantity: number;
   price: number;
   supplier: string;
+  note: string;
+  unit: string;
   expiration: string;
   inStock: boolean;
   kitchen: KITCHEN;

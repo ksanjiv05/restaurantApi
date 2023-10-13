@@ -57,7 +57,14 @@ const OrderSchema: Schema = new Schema({
   },
   paymentId: String,
   paymentMode: String,
-  captainId: String,
+  captainId: {
+    type: String,
+    required: [true, "Captain Id is required"],
+  },
+  captainName: {
+    type: String,
+    required: [true, "Captain Id is required"],
+  },
   WaitingToken: {
     type: Number,
     default: 0,

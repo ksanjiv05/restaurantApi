@@ -93,25 +93,24 @@ export const addInventory = async (req: Request, res: Response) => {
     //   });
     // }
 
-    const expdate = new Date(expiration).toDateString();
+    // const expdate = new Date(expiration).toDateString();
 
     const inStock = quantity > 0;
     delete req.body.expiration;
     delete req.body.inStock;
 
-    if (expdate.includes("Invalid"))
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: "please provide valid expiration date",
-        error: null,
-        resObj: res,
-        data: null,
-      });
+    // if (expdate.includes("Invalid"))
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
+    //     type: "error",
+    //     msg: "please provide valid expiration date",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
 
     const newInventory: IInventory = new Inventory({
       ...req.body,
-      expiration: expdate,
       inStock,
     });
     let error: any = newInventory.validateSync();
