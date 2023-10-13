@@ -150,12 +150,26 @@ export const updateOrder = async (req: Request, res: Response) => {
 
 export const getOrders = async (req: Request, res: Response) => {
   try {
-    const { page = 0, perPage = 10 } = req.query;
+    const {
+      page = 0,
+      perPage = 10,
+      department = DEPARTMENT.UNKNOWN,
+      allocatedKitchen = KITCHEN.UNKNOWN,
+      status = ORDER_STATUS.UNKNOWN,
+    } = req.query;
     // page //perPage
     const skip = (Number(page) - 1) * Number(perPage);
 
-    const orders = await Order.find().skip(Number(skip)).limit(Number(perPage));
-    const total = await Order.find().count();
+    const filter = {
+      ...(department === DEPARTMENT.UNKNOWN ? {} : { department }),
+      ...(allocatedKitchen === KITCHEN.UNKNOWN ? {} : { allocatedKitchen }),
+      ...(status === ORDER_STATUS.UNKNOWN ? {} : { status }),
+    };
+
+    const orders = await Order.find(filter)
+      .skip(Number(skip))
+      .limit(Number(perPage));
+    const total = await Order.find(filter).count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

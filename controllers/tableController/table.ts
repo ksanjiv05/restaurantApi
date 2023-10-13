@@ -275,16 +275,22 @@ export const updateTables = async (req: Request, res: Response) => {
 
 export const getTables = async (req: Request, res: Response) => {
   try {
-    const { page = 0, perPage = 10 } = req.query;
+    const {
+      page = 0,
+      perPage = 10,
+      department = DEPARTMENT.VEG_RESTAURANT,
+    } = req.query;
     // page //perPage
     const skip =
       perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
     let tables = null;
 
     if (skip) {
-      tables = await Table.find().skip(Number(skip)).limit(Number(perPage));
+      tables = await Table.find({ department })
+        .skip(Number(skip))
+        .limit(Number(perPage));
     } else {
-      tables = await Table.find();
+      tables = await Table.find({ department });
     }
 
     const count = await Table.find().count();

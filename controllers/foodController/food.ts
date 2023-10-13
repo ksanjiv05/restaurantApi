@@ -213,6 +213,10 @@ export const getFoodProducts = async (req: Request, res: Response) => {
     console.log("skip", skip, page, perPage);
     let FoodProducts = null;
 
+    // const filter = {
+    //   ...(kitchen === KITCHEN.UNKNOWN ? {} : { kitchen }),
+    // };
+
     if (perPage !== "all") {
       FoodProducts = await FoodProduct.find()
         .sort("-createdAt")

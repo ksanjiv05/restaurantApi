@@ -209,13 +209,18 @@ export const updateInventory = async (req: Request, res: Response) => {
 
 export const getInventories = async (req: Request, res: Response) => {
   try {
-    const { page = 0, perPage = 10 } = req.query;
+    const { page = 0, perPage = 10, kitchen = KITCHEN.UNKNOWN } = req.query;
     // page //perPage
     const skip = (Number(page) - 1) * Number(perPage);
-    const inventories = await Inventory.find()
+
+    const filter = {
+      ...(kitchen === KITCHEN.UNKNOWN ? {} : { kitchen }),
+    };
+
+    const inventories = await Inventory.find({ filter })
       .skip(Number(skip))
       .limit(Number(perPage));
-    const total = await Inventory.find().count();
+    const total = await Inventory.find(filter).count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

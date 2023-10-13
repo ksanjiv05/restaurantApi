@@ -72,6 +72,8 @@ const OrderSchema: Schema = new Schema({
   },
 });
 
+OrderSchema.index({ managerName: "text", mId: "text" });
+
 OrderSchema.pre<IOrder>("save", async function (next) {
   next();
 });
