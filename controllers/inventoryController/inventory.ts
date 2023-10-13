@@ -216,7 +216,7 @@ export const getInventories = async (req: Request, res: Response) => {
       ...(kitchen === KITCHEN.UNKNOWN ? {} : { kitchen }),
     };
 
-    const inventories = await Inventory.find({ filter })
+    const inventories = await Inventory.find(filter)
       .skip(Number(skip))
       .limit(Number(perPage));
     const total = await Inventory.find(filter).count();
