@@ -312,7 +312,7 @@ export const updateUser = async (req: Request, res: Response) => {
       });
     }
     delete req.body.password;
-    console.log("req ", req.body);
+    // console.log("req ", req.body);
     await User.updateOne(
       {
         _id: req.body._id,
@@ -429,10 +429,13 @@ export const getUsers = async (req: Request, res: Response) => {
 
     const skip = (Number(page) - 1) * Number(perPage);
 
-    const users = await User.find({ staffRole })
-      .sort("-createdAt")
-      .skip(Number(skip))
-      .limit(Number(perPage));
+    const users =
+      perPage == "all"
+        ? await User.find({ staffRole }).sort("-createdAt")
+        : await User.find({ staffRole })
+            .sort("-createdAt")
+            .skip(Number(skip))
+            .limit(Number(perPage));
     const count = await User.find({ staffRole }).count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
