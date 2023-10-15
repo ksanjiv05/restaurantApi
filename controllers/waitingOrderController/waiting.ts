@@ -155,8 +155,8 @@ export const getWaitingOrders = async (req: Request, res: Response) => {
     } = req.query;
     // page //perPage
 
-    console.log("req.user", req.user);
-    const _id = req.user?._id || "";
+    const _id = req.user?._id.toString() || "";
+    console.log("req.user", page,perPage);
 
     const skip = (Number(page) - 1) * Number(perPage);
     const filter = {
@@ -174,7 +174,7 @@ export const getWaitingOrders = async (req: Request, res: Response) => {
       msg: "your Waiting Orders",
       error: null,
       resObj: res,
-      data: { waitings, total },
+      data: { waiting_orders: waitings, total },
     });
   } catch (error) {
     logging.error("Get Waiting Order", "unable to get Waitings", error);

@@ -30,13 +30,16 @@ const WaitingSchema: Schema = new Schema({
   status: {
     type: String,
     // enum: ["PENDING", "ACCEPTED", "REJECTED", "COMPLETED"],
-    default: "PENDING",
+    default: "WAITING",
   },
   WaitingToken: {
     type: Number,
     required: [false, "Waiting Value is required"],
   },
-
+  orderValue: {
+    type: Number,
+    required: [true, "Order Value is required"],
+  },
   updatedAt: {
     type: Date,
     default: Date.now,

@@ -205,16 +205,16 @@ export const updateFoodProduct = async (req: Request, res: Response) => {
 
 export const getFoodProducts = async (req: Request, res: Response) => {
   try {
-    const { page = 0, perPage = 10, isVeg } = req.query;
+    const { page = 0, perPage = 10, isVeg="" } = req.query;
     // page //perPage
     // const skip =
     //   perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
 
     const skip = (Number(page) - 1) * Number(perPage);
-    console.log("skip", skip, page, perPage);
+    console.log("skip",isVeg, skip, page, perPage);
     let FoodProducts = null;
     const filter = {
-      ...(isVeg == "" ? {} : { isVeg: Boolean(isVeg) }),
+      ...(isVeg == "" ? {} : { isVeg }),
     };
     // const filter = {
     //   ...(kitchen === KITCHEN.UNKNOWN ? {} : { kitchen }),
