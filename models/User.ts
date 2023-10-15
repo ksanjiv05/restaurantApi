@@ -12,6 +12,7 @@ const UserSchema: Schema = new Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
   },
   mobile: {
     type: String,
@@ -51,14 +52,16 @@ const UserSchema: Schema = new Schema({
     type: Boolean,
     default: false,
   },
-  permissions: {
-    type: Array,
-    default: [],
-    // default: [{
-    //   permissionType: "view",
-    //   permissionArray: ["all"],
-    // }],
-  },
+  permissions: [
+    {
+      permissionType: {
+        type: String,
+      },
+      permissionArray: {
+        type: [String],
+      },
+    },
+  ],
   updateAt: {
     type: String,
     default: Date.now,
@@ -72,10 +75,8 @@ const UserSchema: Schema = new Schema({
 const salt = 10;
 
 UserSchema.pre<IUser>("save", async function (next) {
-  // const user = this;
-  // if (user.isModified("password")) {
-  //   user.password = await bcryptjs.hash(user.password, salt);
-  // }
+  const user = this;
+  console.log("before user", user);
   next();
 });
 

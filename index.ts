@@ -18,6 +18,21 @@ import { hasPermission } from "./helper/check_permission";
 import { createRootUser } from "./scripts";
 import { csvParser, csvToJson } from "./helper/utils";
 import FoodProduct from "./models/FoodProduct";
+import {
+  CREATE,
+  OPERATIONAL_MANAGER,
+  FB_MANAGER,
+  CASHIER,
+  ADMIN,
+  MANAGER,
+  CAPTAIN,
+  ORDER,
+  INVENTORY,
+  REPORTS,
+  UPDATE,
+  READ,
+  DELETE,
+} from "./config/config";
 
 dotenv.config();
 
@@ -73,15 +88,73 @@ server.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 });
 
-console.log("permission ", hasPermission("FB_MANAGER", "READ", "INVENTORY"));
+// console.log("permission ", hasPermission("FB_MANAGER", "READ", "INVENTORY"));
 
 // createRootUser({
 //   name: "Root User",
-//   mobile: "9999999999",
-//   username: "9999999999",
+//   mobile: "8799999982",
+//   username: "8799999982",
 //   staffRole: "DIRECTOR",
 //   password: "Test@1234",
 //   isActive: true,
+//   permissions: [
+//     {
+//       permissionType: CREATE,
+//       permissionArray: [
+//         OPERATIONAL_MANAGER,
+//         FB_MANAGER,
+//         CASHIER,
+//         ADMIN,
+//         MANAGER,
+//         CAPTAIN,
+//         ORDER,
+//         INVENTORY,
+//         REPORTS,
+//       ],
+//     },
+//     {
+//       permissionType: UPDATE,
+//       permissionArray: [
+//         OPERATIONAL_MANAGER,
+//         FB_MANAGER,
+//         CASHIER,
+//         ADMIN,
+//         MANAGER,
+//         CAPTAIN,
+//         ORDER,
+//         INVENTORY,
+//         REPORTS,
+//       ],
+//     },
+//     {
+//       permissionType: READ,
+//       permissionArray: [
+//         OPERATIONAL_MANAGER,
+//         FB_MANAGER,
+//         CASHIER,
+//         ADMIN,
+//         MANAGER,
+//         CAPTAIN,
+//         ORDER,
+//         INVENTORY,
+//         REPORTS,
+//       ],
+//     },
+//     {
+//       permissionType: DELETE,
+//       permissionArray: [
+//         OPERATIONAL_MANAGER,
+//         FB_MANAGER,
+//         CASHIER,
+//         ADMIN,
+//         MANAGER,
+//         CAPTAIN,
+//         ORDER,
+//         INVENTORY,
+//         REPORTS,
+//       ],
+//     },
+//   ],
 // });
 
 // const runTest = async () => {

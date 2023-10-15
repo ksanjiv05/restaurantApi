@@ -11,6 +11,7 @@ interface IUser extends Document {
   email?: string;
   address?: string;
   aadhar?: string;
+  permissions: Array<{ permissionType: string; permissionArray: string[] }>;
   department?: string;
   checkIn?: string; //timestamp
   checkOut?: string; //timestamp

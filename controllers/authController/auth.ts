@@ -79,6 +79,7 @@ export const addUser = async (req: Request, res: Response) => {
           _id,
           updateAt,
           createdAt,
+          permissions,
         } = user;
         return responseObj({
           statusCode: HTTP_RESPONSE.SUCCESS,
@@ -95,6 +96,7 @@ export const addUser = async (req: Request, res: Response) => {
             department,
             aadhar,
             address,
+            permissions,
             _id,
             updateAt,
             createdAt,
