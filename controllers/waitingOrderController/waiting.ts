@@ -2,46 +2,16 @@ import { Request, Response } from "express";
 import logging from "../../config/logging";
 import { HTTP_RESPONSE } from "../../helper/constants";
 import { responseObj } from "../../helper/response";
-import { IWaiting } from "../../interfaces/IWaiting";
-import Waiting from "../../models/Waiting";
-import { DEPARTMENT, KITCHEN, Waiting_STATUS } from "../../config/enums";
+import { IOrder } from "../../interfaces/IOrder";
+import Order from "../../models/Order";
+import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../../config/enums";
 
 export const addWaitingOrder = async (req: Request, res: Response) => {
   try {
-    // const {
-    //   mId = "",
-    //   pids = [],
-    //   tableIds = [],
-    //   customerName = "",
-    //   // customerMobile="",
-    //   department = DEPARTMENT.UNKNOWN,
-    //   allocatedKitchen = KITCHEN.UNKNOWN,
-    //   status = Waiting_STATUS.PLACED,
-    //   waitingTime = "10",
-    //   WaitingValue = 0,
-    // }: IWaiting = req.body;
-
-    // if (
-    //   mId == "" ||
-    //   pids.length == 0 ||
-    //   tableIds.length == 0 ||
-    //   customerName == "" ||
-    //   WaitingValue == 0 ||
-    //   department == DEPARTMENT.UNKNOWN ||
-    //   allocatedKitchen == KITCHEN.UNKNOWN
-    // ) {
-    //   return responseObj({
-    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
-    //     type: "error",
-    //     msg: " please provide manager Id, product ids, table Id, customer Name, department, Waiting value and allocated Kitchen",
-    //     error: null,
-    //     resObj: res,
-    //     data: null,
-    //   });
-    // }
-    const lastOrder = await Waiting.findOne().sort({ createdAt: -1 });
+    req.body.status = ORDER_STATUS.WAITING;
+    const lastOrder = await Order.findOne().sort({ createdAt: -1 });
     req.body.WaitingToken = (lastOrder && lastOrder?.WaitingToken + 1) || 1;
-    const newWaiting: IWaiting = new Waiting({
+    const newWaiting: IOrder = new Order({
       ...req.body,
     });
     let error: any = newWaiting.validateSync();
@@ -102,23 +72,23 @@ export const updateWaitingOrder = async (req: Request, res: Response) => {
   try {
     const {
       _id = "",
-      status = Waiting_STATUS.ACCEPTED,
-      WaitingToken = 0,
-    }: IWaiting = req.body;
-    if (_id == "" || status == Waiting_STATUS.PLACED)
+      status = ORDER_STATUS.ACCEPTED,
+      tableIds = [],
+    }: IOrder = req.body;
+    if (_id == "" || tableIds.length == 0)
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
-        msg: "please provide a valid Waiting ID and status",
+        msg: "please provide a valid Order ID and tableId ",
         error: null,
         resObj: res,
         data: null,
       });
 
-    await Waiting.updateOne(
+    await Order.updateOne(
       { _id },
       {
-        $set: { WaitingToken },
+        $set: { tableIds, status: ORDER_STATUS.ACCEPTED },
       }
     );
     return responseObj({
@@ -163,11 +133,11 @@ export const getWaitingOrders = async (req: Request, res: Response) => {
       ...(department === DEPARTMENT.UNKNOWN ? {} : { department }),
       ...(_id === "" ? {} : { mId: _id }),
     };
-    const waitings = await Waiting.find(filter)
+    const waitings = await Order.find(filter)
       .sort("-createdAt")
       .skip(Number(skip))
       .limit(Number(perPage));
-    const total = await Waiting.find(filter).count();
+    const total = await Order.find(filter).count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
@@ -201,7 +171,7 @@ export const getWaitingOrder = async (req: Request, res: Response) => {
         resObj: res,
         data: null,
       });
-    const waiting = await Waiting.findOne({ _id: id });
+    const waiting = await Order.findOne({ _id: id });
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
@@ -235,7 +205,7 @@ export const deleteWaitingOrder = async (req: Request, res: Response) => {
         resObj: res,
         data: null,
       });
-    await Waiting.deleteOne({ _id: id });
+    await Order.deleteOne({ _id: id });
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

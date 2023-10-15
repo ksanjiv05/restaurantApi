@@ -25,12 +25,12 @@ const OrderSchema: Schema = new Schema({
   },
   tableIds: {
     type: [String],
-    validate: {
-      validator: function (v: string[]) {
-        return v.length > 0;
-      },
-      message: () => `table id is required!`,
-    },
+    // validate: {
+    //   validator: function (v: string[]) {
+    //     return v.length > 0;
+    //   },
+    //   message: () => `table id is required!`,
+    // },
   },
   customerName: String,
   customerMobile: String,
@@ -45,7 +45,7 @@ const OrderSchema: Schema = new Schema({
   status: {
     type: String,
     //enum: ["PENDING", "ACCEPTED", "REJECTED", "COMPLETED"],
-    default: "PENDING",
+    default: "WAITING",
   },
   orderValue: {
     type: Number,

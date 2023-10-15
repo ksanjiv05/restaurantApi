@@ -9,37 +9,18 @@ import Table from "../../models/Table";
 
 export const addOrder = async (req: Request, res: Response) => {
   try {
-    // const {
-    //   mId = "",
-    //   pids = [],
-    //   tableIds = [],
-    //   customerName = "",
-    //   // customerMobile="",
-    //   department = DEPARTMENT.UNKNOWN,
-    //   allocatedKitchen = KITCHEN.UNKNOWN,
-    //   status = ORDER_STATUS.PLACED,
-    //   waitingTime = "10",
-    //   orderValue = 0,
-    // }: IOrder = req.body;
+    const { tableIds = [] }: IOrder = req.body;
 
-    // if (
-    //   mId == "" ||
-    //   pids.length == 0 ||
-    //   tableIds.length == 0 ||
-    //   customerName == "" ||
-    //   orderValue == 0 ||
-    //   department == DEPARTMENT.UNKNOWN ||
-    //   allocatedKitchen == KITCHEN.UNKNOWN
-    // ) {
-    //   return responseObj({
-    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
-    //     type: "error",
-    //     msg: " please provide manager Id, product ids, table Id, customer Name, department, order value and allocated Kitchen",
-    //     error: null,
-    //     resObj: res,
-    //     data: null,
-    //   });
-    // }
+    if (tableIds.length == 0) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: " please provide  table Id!",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
     req.body.status = ORDER_STATUS.PLACED;
     const newOrder: IOrder = new Order({
       ...req.body,
@@ -156,7 +137,7 @@ export const getOrders = async (req: Request, res: Response) => {
       department = DEPARTMENT.UNKNOWN,
       allocatedKitchen = KITCHEN.UNKNOWN,
       status = ORDER_STATUS.UNKNOWN,
-      mid = ''
+      mid = "",
     } = req.query;
     // page //perPage
     const skip = (Number(page) - 1) * Number(perPage);
@@ -164,7 +145,7 @@ export const getOrders = async (req: Request, res: Response) => {
     const filter = {
       ...(department === DEPARTMENT.UNKNOWN ? {} : { department }),
       ...(allocatedKitchen === KITCHEN.UNKNOWN ? {} : { allocatedKitchen }),
-      ...(mid === '' ? {} : { mId:mid }),
+      ...(mid === "" ? {} : { mId: mid }),
       ...(status === ORDER_STATUS.UNKNOWN ? {} : { status }),
     };
 

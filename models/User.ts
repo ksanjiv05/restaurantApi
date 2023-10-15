@@ -50,6 +50,10 @@ const UserSchema: Schema = new Schema({
     type: Boolean,
     default: false,
   },
+  // permissions:{
+  //   type: Array,
+  //   default: [""],
+  // },
   updateAt: {
     type: String,
     default: Date.now,
