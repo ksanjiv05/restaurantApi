@@ -39,13 +39,14 @@ export const addWaitingOrder = async (req: Request, res: Response) => {
     //     data: null,
     //   });
     // }
-
+    const lastOrder = await Waiting.findOne().sort({ createdAt: -1 });
+    req.body.WaitingToken = (lastOrder && lastOrder?.WaitingToken + 1) || 1;
     const newWaiting: IWaiting = new Waiting({
       ...req.body,
     });
     let error: any = newWaiting.validateSync();
     let errors = {};
-    
+
     if (error) {
       Object.keys(error.errors).forEach((key) => {
         errors[key] = error.errors[key].message;
@@ -60,7 +61,6 @@ export const addWaitingOrder = async (req: Request, res: Response) => {
         data: null,
       });
     }
-    
     await newWaiting.save();
 
     return responseObj({

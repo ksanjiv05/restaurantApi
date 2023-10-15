@@ -205,25 +205,28 @@ export const updateFoodProduct = async (req: Request, res: Response) => {
 
 export const getFoodProducts = async (req: Request, res: Response) => {
   try {
-    const { page = 0, perPage = 10 } = req.query;
+    const { page = 0, perPage = 10, isVeg } = req.query;
     // page //perPage
     // const skip =
     //   perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
+
     const skip = (Number(page) - 1) * Number(perPage);
     console.log("skip", skip, page, perPage);
     let FoodProducts = null;
-
+    const filter = {
+      ...(isVeg == "" ? {} : { isVeg: Boolean(isVeg) }),
+    };
     // const filter = {
     //   ...(kitchen === KITCHEN.UNKNOWN ? {} : { kitchen }),
     // };
 
     if (perPage !== "all") {
-      FoodProducts = await FoodProduct.find()
+      FoodProducts = await FoodProduct.find(filter)
         .sort("-createdAt")
         .skip(Number(skip))
         .limit(Number(perPage));
     } else {
-      FoodProducts = await FoodProduct.find();
+      FoodProducts = await FoodProduct.find(filter);
     }
 
     const count = await FoodProduct.find().count();

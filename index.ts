@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
   startListening(socket);
 });
 // socket io configuration end
-
+app.use("/static", express.static("uploads"));
 app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {

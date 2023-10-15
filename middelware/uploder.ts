@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import multer from "multer"
-import mkdirp from "mkdirp"
-import {v4} from "uuid"
+import multer from "multer";
+import mkdirp from "mkdirp";
+import { v4 } from "uuid";
 
 const storage = multer.diskStorage({
-  destination: function (req:Request, file, cb) {
-    mkdirp.sync(globalThis.__dirname + "/uploads/inventory");
-    cb(null, globalThis.__dirname + "/uploads/inventory");
+  destination: function (req: Request, file, cb) {
+    mkdirp.sync(globalThis.__dirname + "/uploads");
+    cb(null, globalThis.__dirname + "/uploads");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = v4();
