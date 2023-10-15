@@ -16,6 +16,7 @@ const UserSchema: Schema = new Schema({
   mobile: {
     type: String,
     required: true,
+    unique: true,
   },
   alternateMobile: {
     type: String,
@@ -50,10 +51,14 @@ const UserSchema: Schema = new Schema({
     type: Boolean,
     default: false,
   },
-  // permissions:{
-  //   type: Array,
-  //   default: [""],
-  // },
+  permissions: {
+    type: Array,
+    default: [],
+    // default: [{
+    //   permissionType: "view",
+    //   permissionArray: ["all"],
+    // }],
+  },
   updateAt: {
     type: String,
     default: Date.now,
