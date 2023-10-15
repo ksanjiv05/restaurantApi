@@ -132,6 +132,7 @@ export const getWaitingOrders = async (req: Request, res: Response) => {
     const filter = {
       ...(department === DEPARTMENT.UNKNOWN ? {} : { department }),
       ...(_id === "" ? {} : { mId: _id }),
+      status:ORDER_STATUS.WAITING
     };
     const waitings = await Order.find(filter)
       .sort("-createdAt")
