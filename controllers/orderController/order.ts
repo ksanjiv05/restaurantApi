@@ -9,13 +9,38 @@ import Table from "../../models/Table";
 
 export const addOrder = async (req: Request, res: Response) => {
   try {
-    const { tableIds = [] }: IOrder = req.body;
+    const {
+      tableIds = [],
+      captainId = "",
+      captainName = "",
+    }: IOrder = req.body;
 
     if (tableIds.length == 0) {
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
         msg: " please provide  table Id!",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
+
+    if (captainId == "") {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: " Please provide  captain Id!",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
+    if (captainName == "") {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: " Please provide  captain Name!",
         error: null,
         resObj: res,
         data: null,
@@ -146,7 +171,9 @@ export const getOrders = async (req: Request, res: Response) => {
       ...(department === DEPARTMENT.UNKNOWN ? {} : { department }),
       ...(allocatedKitchen === KITCHEN.UNKNOWN ? {} : { allocatedKitchen }),
       ...(mid === "" ? {} : { mId: mid }),
-      ...(status === ORDER_STATUS.UNKNOWN ? {} : { status }),
+      ...(status === ORDER_STATUS.UNKNOWN
+        ? { status: { $ne: ORDER_STATUS.WAITING } }
+        : { status }),
     };
 
     const orders = await Order.find(filter)
