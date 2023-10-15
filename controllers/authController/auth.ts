@@ -142,6 +142,7 @@ export const login = (req: Request, res: Response) => {
     _id,
     updateAt,
     createdAt,
+    permissions,
   }: any = req.user;
   const roleObj: any = roles.find((r) => r.name === staffRole);
 
@@ -162,7 +163,7 @@ export const login = (req: Request, res: Response) => {
         _id,
         updateAt,
         createdAt,
-        permission: roleObj?.permissions,
+        permissions,
       },
       token,
     },
