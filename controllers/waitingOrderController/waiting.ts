@@ -154,9 +154,14 @@ export const getWaitingOrders = async (req: Request, res: Response) => {
       department = DEPARTMENT.UNKNOWN,
     } = req.query;
     // page //perPage
+
+    console.log("req.user", req.user);
+    const _id = req.user?._id || "";
+
     const skip = (Number(page) - 1) * Number(perPage);
     const filter = {
       ...(department === DEPARTMENT.UNKNOWN ? {} : { department }),
+      ...(_id === "" ? {} : { mId: _id }),
     };
     const waitings = await Waiting.find(filter)
       .sort("-createdAt")
