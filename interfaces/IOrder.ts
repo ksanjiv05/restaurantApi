@@ -16,6 +16,7 @@ export interface IOrder extends Document {
   paymentId?: string;
   paymentMode?: "CASH" | "CARD" | "UPI";
   captainId?: string;
+  captainName?: string;
   WaitingToken: string;
   createdAt?: Date;
   updatedAt?: Date;

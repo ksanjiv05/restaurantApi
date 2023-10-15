@@ -156,6 +156,7 @@ export const getOrders = async (req: Request, res: Response) => {
       department = DEPARTMENT.UNKNOWN,
       allocatedKitchen = KITCHEN.UNKNOWN,
       status = ORDER_STATUS.UNKNOWN,
+      mid = ''
     } = req.query;
     // page //perPage
     const skip = (Number(page) - 1) * Number(perPage);
@@ -163,6 +164,7 @@ export const getOrders = async (req: Request, res: Response) => {
     const filter = {
       ...(department === DEPARTMENT.UNKNOWN ? {} : { department }),
       ...(allocatedKitchen === KITCHEN.UNKNOWN ? {} : { allocatedKitchen }),
+      ...(mid === '' ? {} : { mId:mid }),
       ...(status === ORDER_STATUS.UNKNOWN ? {} : { status }),
     };
 
