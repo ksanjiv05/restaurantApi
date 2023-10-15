@@ -63,7 +63,7 @@ const OrderSchema: Schema = new Schema({
   },
   captainName: {
     type: String,
-    required: [true, "Captain Id is required"],
+    required: [true, "Captain Name is required"],
   },
   WaitingToken: {
     type: Number,
