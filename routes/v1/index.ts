@@ -79,6 +79,15 @@ router.put("/table", verifyUser, updateTable);
 router.get("/table", verifyUser, getTables);
 router.get("/table/:id", verifyUser, getTable);
 router.delete("/table/:id", verifyUser, deleteTable);
+
+// //order
+router.post("/order/waiting", verifyUser, addWaitingOrder);
+router.put("/order/waiting", verifyUser, updateWaitingOrder);
+router.get("/order/waiting", verifyUser, getWaitingOrders);
+router.get("/order/waiting/:id", verifyUser, getWaitingOrder);
+router.delete("/order/waiting/:id", verifyUser, deleteWaitingOrder);
+
+
 // //order
 router.post("/order", addOrder);
 router.put("/order", verifyUser, updateOrder);
@@ -96,11 +105,5 @@ router.get("/food", verifyUser, getFoodProducts);
 router.get("/food/:id", verifyUser, getFoodProduct);
 router.delete("/food/:id", verifyUser, deleteFoodProduct);
 
-// //order
-router.post("/order/waiting", verifyUser, addWaitingOrder);
-router.put("/order/waiting", verifyUser, updateWaitingOrder);
-router.get("/order/waiting", verifyUser, getWaitingOrders);
-router.get("/order/waiting/:id", verifyUser, getWaitingOrder);
-router.delete("/order/waiting/:id", verifyUser, deleteWaitingOrder);
 
 export default router;
