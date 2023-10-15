@@ -148,15 +148,21 @@ export const updateWaitingOrder = async (req: Request, res: Response) => {
 
 export const getWaitingOrders = async (req: Request, res: Response) => {
   try {
-    const { page = 0, perPage = 10 } = req.query;
+    const {
+      page = 0,
+      perPage = 10,
+      department = DEPARTMENT.UNKNOWN,
+    } = req.query;
     // page //perPage
     const skip = (Number(page) - 1) * Number(perPage);
-
-    const waitings = await Waiting.find()
+    const filter = {
+      ...(department === DEPARTMENT.UNKNOWN ? {} : { department }),
+    };
+    const waitings = await Waiting.find(filter)
       .sort("-createdAt")
       .skip(Number(skip))
       .limit(Number(perPage));
-    const total = await Waiting.find().count();
+    const total = await Waiting.find(filter).count();
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
