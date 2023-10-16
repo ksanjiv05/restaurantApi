@@ -278,22 +278,26 @@ export const getTables = async (req: Request, res: Response) => {
     const {
       page = 0,
       perPage = 10,
-      department = DEPARTMENT.VEG_RESTAURANT,
+      department = DEPARTMENT.UNKNOWN,
     } = req.query;
     // page //perPage
-    const skip =
-      perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
+    const skip = (Number(page) - 1) * Number(perPage);
     let tables = null;
 
-    if (skip) {
+    const filter = {
+      ...(department === DEPARTMENT.UNKNOWN ? {} : { department }),
+    };
+    let count = 0;
+    if (department === DEPARTMENT.UNKNOWN) {
+      tables = await Table.find({}).skip(Number(skip)).limit(Number(perPage));
+      count = await Table.find({}).count();
+    } else {
       tables = await Table.find({ department })
         .skip(Number(skip))
         .limit(Number(perPage));
-    } else {
-      tables = await Table.find({ department });
+      count = await Table.find({ department }).count();
     }
-
-    const count = await Table.find().count();
+    // console.log("tables ", tables);
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

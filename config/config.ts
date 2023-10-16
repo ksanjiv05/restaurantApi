@@ -28,6 +28,8 @@ export const CAPTAIN: string = "CAPTAIN";
 //actions
 export const INVENTORY: string = "INVENTORY";
 export const FOOD: string = "FOOD";
+export const TABLE: string = "TABLE";
+
 export const ORDER: string = "ORDER";
 export const REPORTS: string = "REPORTS";
 export const USER_MANAGEMENT: string = "USER_MANAGEMENT";
