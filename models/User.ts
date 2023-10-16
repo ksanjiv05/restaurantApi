@@ -76,7 +76,6 @@ const salt = 10;
 
 UserSchema.pre<IUser>("save", async function (next) {
   const user = this;
-  console.log("before user", user);
   next();
 });
 
