@@ -79,8 +79,9 @@ export const addUser = async (req: Request, res: Response) => {
           _id,
           updateAt,
           createdAt,
-          permissions,
         } = user;
+        const roleObj: any = roles.find((r) => r.name === staffRole);
+
         return responseObj({
           statusCode: HTTP_RESPONSE.SUCCESS,
           type: "success",
@@ -142,7 +143,6 @@ export const login = (req: Request, res: Response) => {
     _id,
     updateAt,
     createdAt,
-    permissions,
   }: any = req.user;
   const roleObj: any = roles.find((r) => r.name === staffRole);
 
@@ -190,7 +190,7 @@ export const profile = (req: Request, res: Response) => {
     _id,
     updateAt,
     createdAt,
-  }: IUser = req.user;
+  }: any = req.user;
   const roleObj: any = roles.find((r) => r.name === staffRole);
 
   return responseObj({

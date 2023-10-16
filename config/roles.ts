@@ -9,6 +9,7 @@ import {
   ORDER,
   INVENTORY,
   REPORTS,
+  FOOD,
 } from "./config";
 
 export default [
@@ -33,6 +34,7 @@ export default [
         ORDER,
         INVENTORY,
         REPORTS,
+        FOOD,
       ],
       UPDATE: [
         OPERATIONAL_MANAGER,
@@ -79,6 +81,7 @@ export default [
         ORDER,
         INVENTORY,
         REPORTS,
+        FOOD,
       ],
       UPDATE: [FB_MANAGER, CASHIER, ADMIN, MANAGER, CAPTAIN],
       DELETE: [
@@ -104,7 +107,16 @@ export default [
         INVENTORY,
         REPORTS,
       ],
-      READ: [FB_MANAGER, CASHIER, MANAGER, CAPTAIN, ORDER, INVENTORY, REPORTS],
+      READ: [
+        FB_MANAGER,
+        CASHIER,
+        MANAGER,
+        CAPTAIN,
+        ORDER,
+        INVENTORY,
+        REPORTS,
+        FOOD,
+      ],
       UPDATE: [
         FB_MANAGER,
         CASHIER,
@@ -129,7 +141,7 @@ export default [
     name: FB_MANAGER,
     permissions: {
       CREATE: [CASHIER, MANAGER, CAPTAIN, ORDER, INVENTORY],
-      READ: [CASHIER, MANAGER, CAPTAIN, ORDER, INVENTORY],
+      READ: [CASHIER, MANAGER, CAPTAIN, ORDER, INVENTORY, FOOD],
       UPDATE: [CASHIER, MANAGER, CAPTAIN, ORDER, INVENTORY],
       DELETE: [CASHIER, MANAGER, CAPTAIN],
     },
