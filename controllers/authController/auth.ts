@@ -179,6 +179,17 @@ export const login = (req: Request, res: Response) => {
   }: any = req.user;
   const roleObj: any = roles.find((r) => r.name === staffRole);
 
+if(!isActive)
+return responseObj({
+  statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+  type: "success",
+  msg: "You are successfully logged in!",
+  error: null,
+  resObj: res,
+  data: null
+});
+
+
   return responseObj({
     statusCode: HTTP_RESPONSE.SUCCESS,
     type: "success",
