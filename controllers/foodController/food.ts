@@ -153,6 +153,7 @@ export const updateFoodProduct = async (req: Request, res: Response) => {
     if (file) {
       req.body.image = file?.filename;
     }
+    console.log("__",req.body)
     if (_id == "")
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,

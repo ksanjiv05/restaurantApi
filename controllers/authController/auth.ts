@@ -8,6 +8,7 @@ import { getHashPassword, getToken } from "../../helper/auth";
 import { hasPermission } from "../../helper/check_permission";
 import { MANAGER } from "../../config/config";
 import roles from "../../config/roles";
+import { DEPARTMENT } from "../../config/enums";
 
 export const addUser = async (req: Request, res: Response) => {
   try {
@@ -16,6 +17,8 @@ export const addUser = async (req: Request, res: Response) => {
       mobile = "",
       password = "",
       staffRole = "",
+      department = "",
+      shift = "",
     }: IUser = req.body;
 
     if (name == "" || mobile == "" || password == "" || staffRole == "") {
@@ -23,6 +26,27 @@ export const addUser = async (req: Request, res: Response) => {
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
         msg: "Name, mobile,staff role and password are required",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
+
+    if (staffRole === MANAGER && department == "") {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "Department is required",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
+    if (staffRole === MANAGER && shift == "") {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "shift is required",
         error: null,
         resObj: res,
         data: null,
@@ -58,6 +82,15 @@ export const addUser = async (req: Request, res: Response) => {
       function (err, user) {
         if (err) {
           logging.error("Add User", "unable to add user", err);
+          if (err?.message)
+            return responseObj({
+              statusCode: HTTP_RESPONSE.BED_REQUEST,
+              type: "error",
+              msg: err?.message,
+              error: null,
+              resObj: res,
+              data: null,
+            });
           return responseObj({
             statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
             type: "error",
@@ -79,9 +112,8 @@ export const addUser = async (req: Request, res: Response) => {
           _id,
           updateAt,
           createdAt,
-      
         } = user;
-  const roleObj: any = roles.find((r) => r.name === staffRole);
+        const roleObj: any = roles.find((r) => r.name === staffRole);
 
         return responseObj({
           statusCode: HTTP_RESPONSE.SUCCESS,
@@ -107,7 +139,7 @@ export const addUser = async (req: Request, res: Response) => {
       }
     );
   } catch (error: any) {
-    logging.error("Add User", "unable to add user", error);
+    logging.error("Add User", "unable to add user-----", error?.message);
     if (error?.message)
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
@@ -144,9 +176,19 @@ export const login = (req: Request, res: Response) => {
     _id,
     updateAt,
     createdAt,
-    
   }: any = req.user;
   const roleObj: any = roles.find((r) => r.name === staffRole);
+
+if(!isActive)
+return responseObj({
+  statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+  type: "success",
+  msg: "You are successfully logged in!",
+  error: null,
+  resObj: res,
+  data: null
+});
+
 
   return responseObj({
     statusCode: HTTP_RESPONSE.SUCCESS,
@@ -165,7 +207,7 @@ export const login = (req: Request, res: Response) => {
         _id,
         updateAt,
         createdAt,
-        permission:roleObj?.permissions,
+        permission: roleObj?.permissions,
       },
       token,
     },
@@ -180,6 +222,7 @@ export const login = (req: Request, res: Response) => {
 
 export const profile = (req: Request, res: Response) => {
   // Response
+  // console.log("user ", req.user);
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
   const {
@@ -316,7 +359,7 @@ export const updateUser = async (req: Request, res: Response) => {
         data: null,
       });
     }
-    delete req.body.password;
+    // delete req.body.password;
     // console.log("req ", req.body);
     await User.updateOne(
       {
@@ -327,6 +370,29 @@ export const updateUser = async (req: Request, res: Response) => {
       }
     );
 
+    //   User.findOne({ _id: req.body._id }, function (err, user) {
+    //     if (!err) {
+    //         user.changePassword(req.body.oldPassword, req.body.newPassword, function (err) {
+    //             if (!err) {
+    //                 console.log(password)
+    //             } else {
+    //                 console.log(err);
+    //             }
+    //         })
+    //     } else {
+    //         console.log(err);
+    //     }
+    //  })
+    if (req.body.password && req.body.password !== "") {
+      let userToReset = await User.findOne({ _id: req.body._id });
+      userToReset.setPassword(req.body.password, async (err) => {
+        if (err) {
+          console.log("unable to reset password");
+        }
+        await userToReset.save();
+      });
+    }
+    console.log("req update ", req.body);
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
@@ -337,6 +403,16 @@ export const updateUser = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     logging.error("Update User", "unable to update user", error);
+    if (error?.message?.includes("E11000 duplicate key")) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "May be you try that number already exists!",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
     if (error?.message)
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
