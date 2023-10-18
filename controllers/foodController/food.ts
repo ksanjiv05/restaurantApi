@@ -5,6 +5,7 @@ import { responseObj } from "../../helper/response";
 import { IFoodProduct } from "../../interfaces/IFoodProduct";
 import FoodProduct from "../../models/FoodProduct";
 import { foodCsvToJson } from "../../helper/utils";
+import { DEPARTMENT } from "../../config/enums";
 
 export const addBulkFood = async (req: Request, res: Response) => {
   try {
@@ -118,7 +119,7 @@ export const updateFoodProduct = async (req: Request, res: Response) => {
     if (file) {
       req.body.image = file?.filename;
     }
-    console.log("__",req.body)
+    console.log("__", req.body);
     if (_id == "")
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
@@ -171,7 +172,12 @@ export const updateFoodProduct = async (req: Request, res: Response) => {
 
 export const getFoodProducts = async (req: Request, res: Response) => {
   try {
-    const { page = 0, perPage = 10, isVeg = "" } = req.query;
+    const {
+      page = 0,
+      perPage = 10,
+      isVeg = "",
+      department = DEPARTMENT.UNKNOWN,
+    } = req.query;
     // page //perPage
     // const skip =
     //   perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
@@ -181,6 +187,7 @@ export const getFoodProducts = async (req: Request, res: Response) => {
     let FoodProducts = null;
     const filter = {
       ...(isVeg == "" ? {} : { isVeg }),
+      ...(department == DEPARTMENT.UNKNOWN ? {} : { department }),
     };
     // const filter = {
     //   ...(kitchen === KITCHEN.UNKNOWN ? {} : { kitchen }),
