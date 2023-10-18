@@ -11,6 +11,7 @@ const OrderSchema: Schema = new Schema({
         productName: String,
         quantity: Number,
         price: Number,
+        allocatedKitchen: String,
       },
     ],
     validate: {

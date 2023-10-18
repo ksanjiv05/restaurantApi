@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import logging from "../../config/logging";
 import { HTTP_RESPONSE } from "../../helper/constants";
 import { responseObj } from "../../helper/response";
-import { IOrder } from "../../interfaces/IOrder";
+import { IOrder, TableProps } from "../../interfaces/IOrder";
 import Order from "../../models/Order";
 import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../../config/enums";
 import Table from "../../models/Table";
@@ -81,7 +81,8 @@ export const addOrder = async (req: Request, res: Response) => {
       {
         _id: {
           $in: req.body.tableIds.map(
-            (id: string) => new mongoose.Types.ObjectId(id)
+            (tableObj: TableProps) =>
+              new mongoose.Types.ObjectId(tableObj.tableId)
           ),
         },
       },

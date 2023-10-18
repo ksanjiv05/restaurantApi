@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../config/enums";
 
-type TableProps = {
+export type TableProps = {
   tableId: string;
   tableNumber: number;
   availableSeat: number;
@@ -12,6 +12,7 @@ type ProductProps = {
   productName: string;
   quantity: number;
   price: number;
+  allocatedKitchen: string;
 };
 
 export interface IOrder extends Document {
@@ -20,7 +21,7 @@ export interface IOrder extends Document {
   pids: ProductProps[];
   tableIds: TableProps[];
   department: DEPARTMENT;
-  allocatedKitchen: KITCHEN;
+  // allocatedKitchen: KITCHEN;
   status: ORDER_STATUS;
   orderValue: number;
   isPaid?: boolean;
