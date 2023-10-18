@@ -99,7 +99,7 @@ router.get("/static/upload", upload.single("food"), addStaticImage);
 router.post("/food", verifyUser, upload.single("image"), addFoodProduct);
 router.post("/food/bulk", upload.single("food"), addBulkFood);
 
-router.put("/food", verifyUser, updateFoodProduct);
+router.post("/food/update", verifyUser, upload.single("image"),updateFoodProduct);
 router.get("/food", verifyUser, getFoodProducts);
 router.get("/food/:id", verifyUser, getFoodProduct);
 router.delete("/food/:id", verifyUser, deleteFoodProduct);
