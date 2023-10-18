@@ -50,10 +50,10 @@ const OrderSchema: Schema = new Schema({
     type: String,
     required: [true, "Department is required"],
   },
-  allocatedKitchen: {
-    type: String,
-    required: [true, "Kitchen is required"],
-  },
+  // allocatedKitchen: {
+  //   type: String,
+  //   required: [true, "Kitchen is required"],
+  // },
   status: {
     type: String,
     default: "PLACED",
