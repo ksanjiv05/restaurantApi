@@ -15,6 +15,7 @@ const TableSchema: Schema = new Schema({
   },
   occupiedSeat: {
     type: Number,
+    default: 0,
     validate: {
       validator: function (v) {
         return this.totalSeats <= v;
