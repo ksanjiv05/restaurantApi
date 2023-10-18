@@ -9,10 +9,6 @@ const TableSchema: Schema = new Schema({
     required: true,
     unique: true,
   },
-  availableSeats: {
-    type: Number,
-  },
-
   totalSeats: {
     type: Number,
     required: [true, "Total  occupancy is required"],
