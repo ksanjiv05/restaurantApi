@@ -126,7 +126,7 @@ export const getKitchens = async (req: Request, res: Response) => {
       error: null,
       resObj: res,
       data: {
-        Kitchens: kitchens,
+        kitchens: kitchens,
         total: count,
       },
     });
