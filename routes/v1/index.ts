@@ -66,7 +66,7 @@ router.get("/user/profile", verifyUser, profile);
 router.get("/user/:staffRole", verifyUser, getUsers);
 
 router.delete("/user/:id/:staffRole", verifyUser, deleteUser);
-router.put("/user/manager", verifyUser, assignUserAreaAndStatus);
+router.put("/user/captain", verifyUser, assignUserAreaAndStatus);
 router.put("/user", verifyUser, updateUser);
 router.post("/login", passport.authenticate("local"), login);
 
