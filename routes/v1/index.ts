@@ -50,6 +50,13 @@ import {
   getWaitingOrders,
   updateWaitingOrder,
 } from "../../controllers/waitingOrderController/waiting";
+import {
+  addKitchen,
+  deleteKitchen,
+  getKitchen,
+  getKitchens,
+  updateKitchen,
+} from "../../controllers/kitchenController/kitchen";
 const router = express.Router();
 
 //user
@@ -88,18 +95,29 @@ router.get("/order/waiting/:id", verifyUser, getWaitingOrder);
 router.delete("/order/waiting/:id", verifyUser, deleteWaitingOrder);
 
 // //order
-router.post("/order", addOrder);
+router.post("/order", verifyUser, addOrder);
 router.put("/order", verifyUser, updateOrder);
 router.get("/order", verifyUser, getOrders);
 router.get("/order/:id", verifyUser, getOrder);
+
+router.post("/kitchen", addKitchen);
+router.put("/kitchen", verifyUser, updateKitchen);
+router.get("/kitchen", verifyUser, getKitchens);
+router.get("/kitchen/:id", verifyUser, getKitchen);
+router.delete("/kitchen/:id", verifyUser, deleteKitchen);
 
 router.get("/static/upload", upload.single("food"), addStaticImage);
 
 // //order
 router.post("/food", verifyUser, upload.single("image"), addFoodProduct);
-router.post("/food/bulk", upload.single("food"), addBulkFood);
+router.post("/food/bulk", verifyUser, upload.single("food"), addBulkFood);
 
-router.post("/food/update", verifyUser, upload.single("image"),updateFoodProduct);
+router.post(
+  "/food/update",
+  verifyUser,
+  upload.single("image"),
+  updateFoodProduct
+);
 router.get("/food", verifyUser, getFoodProducts);
 router.get("/food/:id", verifyUser, getFoodProduct);
 router.delete("/food/:id", verifyUser, deleteFoodProduct);
