@@ -4,7 +4,7 @@ import { HTTP_RESPONSE } from "../../helper/constants";
 import { responseObj } from "../../helper/response";
 import { IFoodProduct } from "../../interfaces/IFoodProduct";
 import FoodProduct from "../../models/FoodProduct";
-import { csvToJson } from "../../helper/utils";
+import { foodCsvToJson } from "../../helper/utils";
 
 export const addBulkFood = async (req: Request, res: Response) => {
   try {
@@ -18,7 +18,7 @@ export const addBulkFood = async (req: Request, res: Response) => {
         data: null,
       });
 
-    const csvData: IFoodProduct[] = await csvToJson(req.file?.path);
+    const csvData: IFoodProduct[] = await foodCsvToJson(req.file?.path);
     // console.log("csvData", csvData);
     const response = await FoodProduct.bulkWrite(
       csvData.map((doc: IFoodProduct) => {
@@ -69,42 +69,7 @@ export const addBulkFood = async (req: Request, res: Response) => {
 export const addFoodProduct = async (req: Request, res: Response) => {
   try {
     const file = req.file;
-    const {
-      name = "",
-      image = "",
-      price = 0,
-      expiryDate = "",
-      isReadyToServe = false,
-      category = "",
-    }: IFoodProduct = req.body;
 
-    // if (name == "" || price == 0 || category == "") {
-    //   return responseObj({
-    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
-    //     type: "error",
-    //     msg: "please provide a valid name, image, price and category",
-    //     error: null,
-    //     resObj: res,
-    //     data: null,
-    //   });
-    // }
-    // const date = new Date(expiryDate);
-
-    // if (
-    //   isReadyToServe &&
-    //   (expiryDate == undefined ||
-    //     expiryDate == "" ||
-    //     date.getTime() <= new Date().getTime())
-    // ) {
-    //   return responseObj({
-    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
-    //     type: "error",
-    //     msg: "please add valid expiry date to beacuse this is ready to serve food product",
-    //     error: null,
-    //     resObj: res,
-    //     data: null,
-    //   });
-    // }
     req.body.image = file?.filename;
     const newFoodProduct: IFoodProduct = new FoodProduct(req.body);
     let error: any = newFoodProduct.validateSync();
@@ -205,13 +170,13 @@ export const updateFoodProduct = async (req: Request, res: Response) => {
 
 export const getFoodProducts = async (req: Request, res: Response) => {
   try {
-    const { page = 0, perPage = 10, isVeg="" } = req.query;
+    const { page = 0, perPage = 10, isVeg = "" } = req.query;
     // page //perPage
     // const skip =
     //   perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
 
     const skip = (Number(page) - 1) * Number(perPage);
-    console.log("skip",isVeg, skip, page, perPage);
+    console.log("skip", isVeg, skip, page, perPage);
     let FoodProducts = null;
     const filter = {
       ...(isVeg == "" ? {} : { isVeg }),

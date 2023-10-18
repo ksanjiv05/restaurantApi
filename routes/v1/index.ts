@@ -87,7 +87,6 @@ router.get("/order/waiting", verifyUser, getWaitingOrders);
 router.get("/order/waiting/:id", verifyUser, getWaitingOrder);
 router.delete("/order/waiting/:id", verifyUser, deleteWaitingOrder);
 
-
 // //order
 router.post("/order", addOrder);
 router.put("/order", verifyUser, updateOrder);
@@ -98,12 +97,11 @@ router.get("/static/upload", upload.single("food"), addStaticImage);
 
 // //order
 router.post("/food", verifyUser, upload.single("image"), addFoodProduct);
-router.post("/food/bulk", verifyUser, upload.single("food"), addBulkFood);
+router.post("/food/bulk", upload.single("food"), addBulkFood);
 
 router.put("/food", verifyUser, updateFoodProduct);
 router.get("/food", verifyUser, getFoodProducts);
 router.get("/food/:id", verifyUser, getFoodProduct);
 router.delete("/food/:id", verifyUser, deleteFoodProduct);
-
 
 export default router;

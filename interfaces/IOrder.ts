@@ -1,13 +1,24 @@
 import { Document } from "mongoose";
 import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../config/enums";
 
+type TableProps = {
+  tableId: string;
+  tableNumber: number;
+  availableSeat: number;
+};
+
+type ProductProps = {
+  productId: string;
+  productName: string;
+  quantity: number;
+  price: number;
+};
+
 export interface IOrder extends Document {
   mId: string;
-  managerName: string;
-  pids: any[];
-  tableIds: string[];
-  customerName: string;
-  customerMobile: string;
+  captainName: string;
+  pids: ProductProps[];
+  tableIds: TableProps[];
   department: DEPARTMENT;
   allocatedKitchen: KITCHEN;
   status: ORDER_STATUS;
@@ -15,9 +26,10 @@ export interface IOrder extends Document {
   isPaid?: boolean;
   paymentId?: string;
   paymentMode?: "CASH" | "CARD" | "UPI";
-  captainId?: string;
-  captainName?: string;
-  WaitingToken: string;
+  waiterId?: string;
+  waiterName?: string;
+  customerName?: string;
+  customerMobile?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

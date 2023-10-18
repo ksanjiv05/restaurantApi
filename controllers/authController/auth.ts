@@ -6,7 +6,7 @@ import { responseObj } from "../../helper/response";
 import { HTTP_RESPONSE } from "../../helper/constants";
 import { getHashPassword, getToken } from "../../helper/auth";
 import { hasPermission } from "../../helper/check_permission";
-import { MANAGER } from "../../config/config";
+import { CAPTAIN } from "../../config/config";
 import roles from "../../config/roles";
 import { DEPARTMENT } from "../../config/enums";
 
@@ -32,7 +32,7 @@ export const addUser = async (req: Request, res: Response) => {
       });
     }
 
-    if (staffRole === MANAGER && department == "") {
+    if (staffRole === CAPTAIN && department == "") {
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -42,7 +42,7 @@ export const addUser = async (req: Request, res: Response) => {
         data: null,
       });
     }
-    if (staffRole === MANAGER && shift == "") {
+    if (staffRole === CAPTAIN && shift == "") {
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -266,7 +266,7 @@ export const assignUserAreaAndStatus = async (req: Request, res: Response) => {
     }
 
     const authorized_user_role = req.user?.staffRole;
-    if (!hasPermission(authorized_user_role, "UPDATE", MANAGER)) {
+    if (!hasPermission(authorized_user_role, "UPDATE", CAPTAIN)) {
       return responseObj({
         statusCode: HTTP_RESPONSE.UNAUTHORIZED,
         type: "error",
@@ -349,7 +349,7 @@ export const updateUser = async (req: Request, res: Response) => {
       });
     }
     // delete req.body.password;
-    // console.log("req ", req.body);
+    console.log("req ", req.body);
     await User.updateOne(
       {
         _id: req.body._id,

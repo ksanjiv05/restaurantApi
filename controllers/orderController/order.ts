@@ -6,46 +6,47 @@ import { IOrder } from "../../interfaces/IOrder";
 import Order from "../../models/Order";
 import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../../config/enums";
 import Table from "../../models/Table";
+import mongoose from "mongoose";
 
 export const addOrder = async (req: Request, res: Response) => {
   try {
-    const {
-      tableIds = [],
-      captainId = "",
-      captainName = "",
-    }: IOrder = req.body;
+    // const {
+    //   tableIds = [],
+    //   captainId = "",
+    //   captainName = "",
+    // }: IOrder = req.body;
 
-    if (tableIds.length == 0) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: " please provide  table Id!",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // if (tableIds.length == 0) {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
+    //     type: "error",
+    //     msg: " please provide  table Id!",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
 
-    if (captainId == "") {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: " Please provide  captain Id!",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
-    if (captainName == "") {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: " Please provide  captain Name!",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // if (captainId == "") {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
+    //     type: "error",
+    //     msg: " Please provide  captain Id!",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
+    // if (captainName == "") {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.BED_REQUEST,
+    //     type: "error",
+    //     msg: " Please provide  captain Name!",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
     req.body.status = ORDER_STATUS.PLACED;
     const newOrder: IOrder = new Order({
       ...req.body,
@@ -68,7 +69,13 @@ export const addOrder = async (req: Request, res: Response) => {
     }
     await newOrder.save();
     await Table.updateOne(
-      { _id: { $in: req.body.tableIds } },
+      {
+        _id: {
+          $in: req.body.tableIds.map(
+            (id: string) => new mongoose.Types.ObjectId(id)
+          ),
+        },
+      },
       {
         $set: {
           isAvailable: false,
@@ -112,11 +119,7 @@ export const addOrder = async (req: Request, res: Response) => {
 
 export const updateOrder = async (req: Request, res: Response) => {
   try {
-    const {
-      _id = "",
-      status = ORDER_STATUS.ACCEPTED,
-      captainId = "",
-    }: IOrder = req.body;
+    const { _id = "", status = ORDER_STATUS.ACCEPTED }: IOrder = req.body;
     if (_id == "" || status == ORDER_STATUS.PLACED)
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
@@ -130,7 +133,7 @@ export const updateOrder = async (req: Request, res: Response) => {
     await Order.updateOne(
       { _id },
       {
-        $set: { status, captainId },
+        $set: { status },
       }
     );
     return responseObj({
@@ -163,6 +166,7 @@ export const getOrders = async (req: Request, res: Response) => {
       allocatedKitchen = KITCHEN.UNKNOWN,
       status = ORDER_STATUS.UNKNOWN,
       mid = "",
+      tableId = "",
     } = req.query;
     // page //perPage
     const skip = (Number(page) - 1) * Number(perPage);
@@ -174,6 +178,7 @@ export const getOrders = async (req: Request, res: Response) => {
       ...(status === ORDER_STATUS.UNKNOWN
         ? { status: { $ne: ORDER_STATUS.WAITING } }
         : { status }),
+      ...(tableId === "" ? {} : { tableIds: { $elemMatch: { tableId } } }),
     };
 
     const orders = await Order.find(filter)

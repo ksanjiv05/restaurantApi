@@ -21,9 +21,10 @@ export const DIRECTOR: string = "DIRECTOR";
 export const OPERATIONAL_MANAGER: string = "OPERATIONAL_MANAGER";
 export const ADMIN: string = "ADMIN";
 export const FB_MANAGER: string = "FB_MANAGER";
-export const MANAGER: string = "MANAGER";
+// export const MANAGER: string = "MANAGER";
 export const CASHIER: string = "CASHIER";
 export const CAPTAIN: string = "CAPTAIN";
+export const WAITER: string = "WAITER";
 
 //actions
 export const INVENTORY: string = "INVENTORY";

@@ -1,14 +1,14 @@
 import { Document } from "mongoose";
-import { PRODUCT_CATEGORIES, PRODUCT_QUALITIES } from "../config/enums";
 
 export interface IFoodProduct extends Document {
   name: string;
-  image: string;
+  image?: string;
   code: string;
   isVeg: boolean;
-  category: string;
+  category: string; //kitchen allocates
   subCategory: string;
   price: number;
+  department: string;
   isReadyToServe?: boolean;
   tag?: string; //bestseller
   isAvailable?: boolean;

@@ -33,6 +33,10 @@ const FoodProductSchema: Schema = new Schema({
     type: Number,
     required: [true, "Product price is required"],
   },
+  department: {
+    type: String,
+    required: [true, "Department is required"],
+  },
   isReadyToServe: {
     type: Boolean,
     default: false,
@@ -47,7 +51,10 @@ const FoodProductSchema: Schema = new Schema({
     default: Date.now,
   },
 });
-FoodProductSchema.index({ name: 1, isVeg: 1, price: 1 }, { unique: true });
+FoodProductSchema.index(
+  { name: 1, isVeg: 1, price: 1, department: 1 },
+  { unique: true }
+);
 FoodProductSchema.index({ name: "text", description: "text" });
 
 FoodProductSchema.pre<IFoodProduct>("save", async function (next) {

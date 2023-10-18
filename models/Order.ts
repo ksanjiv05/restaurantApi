@@ -5,47 +5,57 @@ import { IOrder } from "../interfaces/IOrder";
 
 const OrderSchema: Schema = new Schema({
   pids: {
-    type: [],
+    type: [
+      {
+        productId: String,
+        productName: String,
+        quantity: Number,
+        price: Number,
+      },
+    ],
     validate: {
       validator: function (v: any[]) {
         return v.length > 0;
       },
       message: () => `product id is required!`,
     },
-    // required: [true, "Product Id is required"],
   },
 
-  mId: {
+  cId: {
     type: String,
     required: [true, "Manager Id is required"],
   },
-  managerName: {
+  captainName: {
     type: String,
     required: [true, "Manager name is required"],
   },
   tableIds: {
-    type: [String],
-    // validate: {
-    //   validator: function (v: string[]) {
-    //     return v.length > 0;
-    //   },
-    //   message: () => `table id is required!`,
-    // },
+    type: [
+      {
+        tableId: String,
+        tableNumber: Number,
+        availableSeat: Number,
+      },
+    ],
+    validate: {
+      validator: function (v: string[]) {
+        return v.length > 0;
+      },
+      message: () => `table id is required!`,
+    },
   },
-  customerName: String,
-  customerMobile: String,
+
   department: {
     type: String,
     required: [true, "Department is required"],
   },
   allocatedKitchen: {
     type: String,
-    // required: true,
+    required: [true, "Kitchen is required"],
   },
   status: {
     type: String,
-    //enum: ["PENDING", "ACCEPTED", "REJECTED", "COMPLETED"],
-    default: "WAITING",
+    default: "PLACED",
   },
   orderValue: {
     type: Number,
@@ -57,18 +67,17 @@ const OrderSchema: Schema = new Schema({
   },
   paymentId: String,
   paymentMode: String,
-  captainId: {
+  waiterId: {
     type: String,
-    // required: [true, "Captain Id is required"],
+    required: [true, "waiter Id is required"],
   },
-  captainName: {
+  waiterName: {
     type: String,
-    // required: [true, "Captain Name is required"],
+    required: [true, "waiter name is required"],
   },
-  WaitingToken: {
-    type: Number,
-    default: 0,
-  },
+
+  customerName: String,
+  customerMobile: String,
   updatedAt: {
     type: Date,
     default: Date.now,

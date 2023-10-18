@@ -27,7 +27,7 @@ export const csvParser = async (filePath: string) => {
 //   isAvailable?: boolean;
 //   expiryDate?: string;
 
-export const csvToJson = async (filePath: string) => {
+export const foodCsvToJson = async (filePath: string) => {
   try {
     console.log("filePath", filePath);
     const jsonArray = await csv().fromFile(filePath);
@@ -40,7 +40,7 @@ export const csvToJson = async (filePath: string) => {
         code: item?.Code,
         category: item?.Category,
         subCategory: item?.Subcategory,
-        // isAvailable: true,
+        department: item?.Department,
         quantity: 1,
         isVeg: !item["Veg/non-veg"]?.includes("non-veg"),
       };
