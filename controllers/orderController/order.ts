@@ -67,8 +67,17 @@ export const addOrder = async (req: Request, res: Response) => {
         data: null,
       });
     }
-    await newOrder.save();
-    await Table.updateOne(
+    // const tables = await Table.find(
+    //   {
+    //     _id: {
+    //       $in: req.body.tableIds.map(
+    //         (id: string) => new mongoose.Types.ObjectId(id)
+    //       ),
+    //     },
+    //   },
+    // );
+
+    await Table.updateMany(
       {
         _id: {
           $in: req.body.tableIds.map(
@@ -77,11 +86,11 @@ export const addOrder = async (req: Request, res: Response) => {
         },
       },
       {
-        $set: {
-          isAvailable: false,
-        },
+        $inc: { occupiedSeat: 1 },
       }
     );
+    await newOrder.save();
+
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",

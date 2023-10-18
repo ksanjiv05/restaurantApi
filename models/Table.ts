@@ -12,9 +12,19 @@ const TableSchema: Schema = new Schema({
   availableSeats: {
     type: Number,
   },
+
   totalSeats: {
     type: Number,
     required: [true, "Total  occupancy is required"],
+  },
+  occupiedSeat: {
+    type: Number,
+    validate: {
+      validator: function (v) {
+        return this.totalSeats <= v;
+      },
+      message: (props) => `seat not avilable!`,
+    },
   },
   department: {
     type: String,
@@ -24,9 +34,9 @@ const TableSchema: Schema = new Schema({
     type: Number,
     required: [true, "Table number is required"],
   },
-  isAvailable:{
-    type:Boolean,
-    default:true
+  isAvailable: {
+    type: Boolean,
+    default: true,
   },
   isAc: {
     type: Boolean,
@@ -52,6 +62,8 @@ TableSchema.index({ department: 1, tableNumber: 1 }, { unique: true });
 TableSchema.pre<ITable>("save", async function (next) {
   next();
 });
+
+// TableSchema.pre('updateOne', { document: true, query: false })
 
 TableSchema.post<ITable>("save", function () {
   logging.info("Mongo", "New Table just added: ");
