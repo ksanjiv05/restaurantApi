@@ -130,7 +130,7 @@ export const addOrder = async (req: Request, res: Response) => {
 export const updateOrder = async (req: Request, res: Response) => {
   try {
     const { _id = "", status = ORDER_STATUS.ACCEPTED }: IOrder = req.body;
-    if (_id == "" || status == ORDER_STATUS.PLACED)
+    if (_id == "")
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -143,7 +143,7 @@ export const updateOrder = async (req: Request, res: Response) => {
     await Order.updateOne(
       { _id },
       {
-        $set: { status },
+        ...req.body
       }
     );
     return responseObj({
@@ -180,7 +180,7 @@ export const updateOrderItems = async (req: Request, res: Response) => {
         data: null,
       });
 
-    const order = await Order.findOne({ _id });
+    // const order = await Order.findOne({ _id });
     if (!order)
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
@@ -190,8 +190,9 @@ export const updateOrderItems = async (req: Request, res: Response) => {
         resObj: res,
         data: null,
       });
-    order.pids = [...order.pids, ...pids];
-    await order.save();
+    // order.pids =pids// [...order.pids, ...pids];
+    // await order.save();
+    // await Order.updateOne({_id},)
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
