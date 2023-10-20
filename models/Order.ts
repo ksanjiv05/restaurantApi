@@ -34,7 +34,7 @@ const OrderSchema: Schema = new Schema({
     type: [
       {
         tableId: String,
-        tableNumber: Number,
+        tableNumber: String,
         availableSeat: Number,
       },
     ],
@@ -45,7 +45,7 @@ const OrderSchema: Schema = new Schema({
       message: () => `table id is required!`,
     },
   },
-
+  note: String,
   department: {
     type: String,
     required: [true, "Department is required"],

@@ -3,7 +3,7 @@ import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../config/enums";
 
 export type TableProps = {
   tableId: string;
-  tableNumber: number;
+  tableNumber: string;
   availableSeat: number;
 };
 
@@ -21,12 +21,13 @@ export interface IOrder extends Document {
   pids: ProductProps[];
   tableIds: TableProps[];
   department: DEPARTMENT;
-  // allocatedKitchen: KITCHEN;
+  // allocatedKitchen: string;
   status: ORDER_STATUS;
   orderValue: number;
   isPaid?: boolean;
   paymentId?: string;
   paymentMode?: "CASH" | "CARD" | "UPI";
+  note?: string;
   waiterId?: string;
   waiterName?: string;
   customerName?: string;

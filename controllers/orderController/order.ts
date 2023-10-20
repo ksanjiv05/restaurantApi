@@ -167,6 +167,52 @@ export const updateOrder = async (req: Request, res: Response) => {
   }
 };
 
+export const updateOrderItems = async (req: Request, res: Response) => {
+  try {
+    const { _id = "", pids = [] }: IOrder = req.body;
+    if (_id == "")
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "please provide a valid Order ID ",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+
+    const order = await Order.findOne({ _id });
+    if (!order)
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "please provide a valid Order ID ",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    order.pids = [...order.pids, ...pids];
+    await order.save();
+    return responseObj({
+      statusCode: HTTP_RESPONSE.SUCCESS,
+      type: "success",
+      msg: "hey, you are successfully updated Order",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  } catch (error) {
+    logging.error("Update Order", "unable to update Order", error);
+    return responseObj({
+      statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
+      type: "error",
+      msg: "unable to process your request",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  }
+};
+
 export const getOrders = async (req: Request, res: Response) => {
   try {
     const {
