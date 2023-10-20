@@ -33,6 +33,7 @@ import {
   updateOrder,
   getOrders,
   getOrder,
+  updateOrderItems,
 } from "../../controllers/orderController/order";
 import { addStaticImage } from "../../controllers/staticController/static";
 import {
@@ -97,6 +98,8 @@ router.delete("/order/waiting/:id", verifyUser, deleteWaitingOrder);
 // //order
 router.post("/order", verifyUser, addOrder);
 router.put("/order", verifyUser, updateOrder);
+router.put("/order/food", verifyUser, updateOrderItems);
+
 router.get("/order", verifyUser, getOrders);
 router.get("/order/:id", verifyUser, getOrder);
 
