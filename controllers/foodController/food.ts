@@ -77,13 +77,13 @@ export const addFoodProduct = async (req: Request, res: Response) => {
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
-        msg: "de[atment wise price is needed",
+        msg: "department wise price is needed",
         error: null,
         resObj: res,
         data: null,
       });
     }
-    delete req.body.price;
+   
     // console.log("___",price)
     // const arrObj = price.map(v=>({
     //   ...v,
@@ -194,7 +194,8 @@ export const getFoodProducts = async (req: Request, res: Response) => {
       page = 0,
       perPage = 10,
       isVeg = "",
-      department = DEPARTMENT.UNKNOWN,
+      department = "",
+      isTable=false
     } = req.query;
     // page //perPage
     // const skip =
@@ -207,42 +208,42 @@ export const getFoodProducts = async (req: Request, res: Response) => {
       ...(isVeg == "" ? {} : { isVeg }),
       // ...(department == DEPARTMENT.UNKNOWN ? {} : { department }),
     };
-    // const filter = {
-    //   ...(kitchen === KITCHEN.UNKNOWN ? {} : { kitchen }),
-    // };
-
-    // .aggregate([
-    //   { $match: { _id: 1 } },
-    //   { $unwind: '$events' },
-    //   { $match: { 'events.event': { $in: ['user', 'bot'] } } },
-    // ]);
+    console.log("skip--- ",skip,isTable)
+    let count =0;
+    if(isTable){
+      if (perPage !== "all") {
+        FoodProducts = await FoodProduct.find({})
+          .sort("-createdAt")
+          .skip(Number(skip))
+          .limit(Number(perPage));
+           count = await FoodProduct.find().count();
+       
+      } else {
+        FoodProducts = await FoodProduct.find({});
+        count = await FoodProduct.find().count();
+        
+      }
+    }else{
 
     if (perPage !== "all") {
-      // FoodProducts = await FoodProduct.find(filter)
-      //   .sort("-createdAt")
-      //   .skip(Number(skip))
-      //   .limit(Number(perPage));
+
       FoodProducts = await FoodProduct.aggregate([
-        { $match: filter },
+        // { $match: {} },
         { $unwind: "$price" },
         { $match: { "price.department": department } },
         { $sort: { createdAt: -1 } },
-        { $skip: Number(skip) },
-        { $limit: Number(perPage) },
       ]);
     } else {
-      // FoodProducts = await FoodProduct.find(filter);
+      let departmentLower= department+"".toLowerCase()
       FoodProducts = await FoodProduct.aggregate([
-        { $match: filter },
+        // { $match: {} },
         { $unwind: "$price" },
-        { $match: { "price.department": department } },
-        { $sort: { createdAt: -1 } },
-        { $skip: Number(skip) },
-        { $limit: Number(perPage) },
+        //{ $match: { "price.department": departmentLower } },
+        // { $sort: { createdAt: -1 } },
       ]);
+      console.log("departmar ",department,departmentLower,FoodProducts)
     }
-
-    const count = await FoodProduct.find().count();
+  }
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
