@@ -83,7 +83,7 @@ export const addFoodProduct = async (req: Request, res: Response) => {
         data: null,
       });
     }
-   
+
     // console.log("___",price)
     // const arrObj = price.map(v=>({
     //   ...v,
@@ -195,12 +195,8 @@ export const getFoodProducts = async (req: Request, res: Response) => {
       perPage = 10,
       isVeg = "",
       department = "",
-      isTable=false
+      isTable = false,
     } = req.query;
-    // page //perPage
-    // const skip =
-    //   perPage !== "all" ? (Number(page) - 1) * Number(perPage) : false;
-
     const skip = (Number(page) - 1) * Number(perPage);
     console.log("skip", isVeg, skip, page, perPage);
     let FoodProducts = null;
@@ -208,42 +204,64 @@ export const getFoodProducts = async (req: Request, res: Response) => {
       ...(isVeg == "" ? {} : { isVeg }),
       // ...(department == DEPARTMENT.UNKNOWN ? {} : { department }),
     };
-    console.log("skip--- ",skip,isTable)
-    let count =0;
-    if(isTable){
+    let count = 0;
+    if (isTable) {
       if (perPage !== "all") {
         FoodProducts = await FoodProduct.find({})
           .sort("-createdAt")
           .skip(Number(skip))
           .limit(Number(perPage));
-           count = await FoodProduct.find().count();
-       
+        count = await FoodProduct.find().count();
       } else {
         FoodProducts = await FoodProduct.find({});
         count = await FoodProduct.find().count();
-        
       }
-    }else{
-
-    if (perPage !== "all") {
-
-      FoodProducts = await FoodProduct.aggregate([
-        // { $match: {} },
-        { $unwind: "$price" },
-        { $match: { "price.department": department } },
-        { $sort: { createdAt: -1 } },
-      ]);
     } else {
-      let departmentLower= department+"".toLowerCase()
-      FoodProducts = await FoodProduct.aggregate([
-        // { $match: {} },
-        { $unwind: "$price" },
-        //{ $match: { "price.department": departmentLower } },
-        // { $sort: { createdAt: -1 } },
-      ]);
-      console.log("departmar ",department,departmentLower,FoodProducts)
+      if (perPage !== "all") {
+        FoodProducts = await FoodProduct.aggregate([
+          // { $match: {} },
+          { $unwind: "$price" },
+          { $match: { "price.department": department } },
+          { $sort: { createdAt: -1 } },
+        ]);
+      } else {
+        let departmentLower = department.toString().toLocaleLowerCase();
+        console.log("departmar-- ", departmentLower);
+        FoodProducts = await FoodProduct.aggregate([
+          { $match: {} },
+          { $unwind: "$price" },
+          { $match: { "price.department": departmentLower } },
+          // { $sort: { createdAt: -1 } },
+        ]);
+        count = FoodProducts.length;
+
+        // FoodProducts = await FoodProduct.aggregate([
+        //   { $match: { "price.department": departmentLower } },
+        //   {
+        //     $replaceWith: {
+        //       $arrayElemAt: [
+        //         {
+        //           $filter: {
+        //             input: "$price",
+        //             cond: { $eq: ["$$this.department", departmentLower] },
+        //           },
+        //         },
+        //         0,
+        //       ],
+        //     },
+        //   },
+        // ]);
+
+        console.log(
+          "departmar ",
+          department,
+          departmentLower,
+          FoodProducts,
+          "++++++++"
+          // FoodProductsx
+        );
+      }
     }
-  }
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
