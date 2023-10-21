@@ -29,14 +29,13 @@ const FoodProductSchema: Schema = new Schema({
     lowercase: true,
     default: "unknown",
   },
-  price: {
-    type: Number,
-    required: [true, "Product price is required"],
-  },
-  department: {
-    type: String,
-    required: [true, "Department is required"],
-  },
+
+  price: [
+    {
+      department: String,
+      price: Number,
+    },
+  ],
   isReadyToServe: {
     type: Boolean,
     default: false,

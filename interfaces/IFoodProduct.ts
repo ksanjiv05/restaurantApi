@@ -7,8 +7,8 @@ export interface IFoodProduct extends Document {
   isVeg: boolean;
   category: string; //kitchen allocates
   subCategory: string;
-  price: number;
-  department: string;
+  price: { price: number; department: string }[];
+  // department: string;
   isReadyToServe?: boolean;
   tag?: string; //bestseller
   isAvailable?: boolean;

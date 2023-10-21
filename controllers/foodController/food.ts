@@ -72,8 +72,8 @@ export const addFoodProduct = async (req: Request, res: Response) => {
     // const file = req.file;
 
     // req.body.image = file?.filename;
-    const {price=[]}= req.body;
-    if(price.length<1){
+    const { price = [] } = req.body;
+    if (price.length < 1) {
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
@@ -85,12 +85,12 @@ export const addFoodProduct = async (req: Request, res: Response) => {
     }
     delete req.body.price;
     // console.log("___",price)
-    const arrObj = price.map(v=>({
-      ...v,
-      ...req.body
-    }))
-// console.log("++_",arrObj)
-    const newFoodProduct: IFoodProduct = new FoodProduct(arrObj[0]);
+    // const arrObj = price.map(v=>({
+    //   ...v,
+    //   ...req.body
+    // }))
+    // console.log("++_",arrObj)
+    const newFoodProduct: IFoodProduct = new FoodProduct(req.body);
     let error: any = newFoodProduct.validateSync();
     let errors = {};
 
@@ -107,7 +107,7 @@ export const addFoodProduct = async (req: Request, res: Response) => {
         data: null,
       });
     }
-    const many = await FoodProduct.insertMany(arrObj,{ordered:false})
+    await newFoodProduct.save();
     // console.log("many",many)
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
@@ -115,7 +115,7 @@ export const addFoodProduct = async (req: Request, res: Response) => {
       msg: "hey, you are successfully posted new Food Product",
       error: null,
       resObj: res,
-      data: many,
+      data: newFoodProduct,
     });
   } catch (error) {
     logging.error("Add Food Product", "unable to add Food Product", error);
