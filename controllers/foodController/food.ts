@@ -205,19 +205,41 @@ export const getFoodProducts = async (req: Request, res: Response) => {
     let FoodProducts = null;
     const filter = {
       ...(isVeg == "" ? {} : { isVeg }),
-      ...(department == DEPARTMENT.UNKNOWN ? {} : { department }),
+      // ...(department == DEPARTMENT.UNKNOWN ? {} : { department }),
     };
     // const filter = {
     //   ...(kitchen === KITCHEN.UNKNOWN ? {} : { kitchen }),
     // };
 
+    // .aggregate([
+    //   { $match: { _id: 1 } },
+    //   { $unwind: '$events' },
+    //   { $match: { 'events.event': { $in: ['user', 'bot'] } } },
+    // ]);
+
     if (perPage !== "all") {
-      FoodProducts = await FoodProduct.find(filter)
-        .sort("-createdAt")
-        .skip(Number(skip))
-        .limit(Number(perPage));
+      // FoodProducts = await FoodProduct.find(filter)
+      //   .sort("-createdAt")
+      //   .skip(Number(skip))
+      //   .limit(Number(perPage));
+      FoodProducts = await FoodProduct.aggregate([
+        { $match: filter },
+        { $unwind: "$price" },
+        { $match: { "price.department": department } },
+        { $sort: { createdAt: -1 } },
+        { $skip: Number(skip) },
+        { $limit: Number(perPage) },
+      ]);
     } else {
-      FoodProducts = await FoodProduct.find(filter);
+      // FoodProducts = await FoodProduct.find(filter);
+      FoodProducts = await FoodProduct.aggregate([
+        { $match: filter },
+        { $unwind: "$price" },
+        { $match: { "price.department": department } },
+        { $sort: { createdAt: -1 } },
+        { $skip: Number(skip) },
+        { $limit: Number(perPage) },
+      ]);
     }
 
     const count = await FoodProduct.find().count();
