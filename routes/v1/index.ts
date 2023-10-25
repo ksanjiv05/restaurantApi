@@ -84,7 +84,7 @@ router.delete("/inventory/:id", verifyUser, deleteInventory);
 //table
 router.post("/table", verifyUser, addTable);
 router.put("/table", verifyUser, updateTable);
-router.get("/table", verifyUser, getTables);
+router.get("/table", getTables);
 router.get("/table/:id", verifyUser, getTable);
 router.delete("/table/:id", verifyUser, deleteTable);
 
@@ -100,7 +100,7 @@ router.post("/order", verifyUser, addOrder);
 router.put("/order", verifyUser, updateOrder);
 router.put("/order/food", verifyUser, updateOrderItems);
 
-router.get("/order", verifyUser, getOrders);
+router.get("/order", getOrders);
 router.get("/order/:id", verifyUser, getOrder);
 
 router.post("/kitchen", addKitchen);
