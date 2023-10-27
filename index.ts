@@ -163,4 +163,4 @@ server.listen(port, () => {
 //   FoodProduct.insertMany(data, { ordered: false });
 // };
 // runTest();
-export default io;
+export default app;
