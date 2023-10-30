@@ -58,71 +58,121 @@ import {
   getKitchens,
   updateKitchen,
 } from "../../controllers/kitchenController/kitchen";
+import { authorizationCheck } from "../../middelware/authorization_check";
 const router = express.Router();
 
 //user
-router.post("/user", verifyUser, addUser);
-router.get("/user", verifyUser, getUsers);
-router.get("/user/profile", verifyUser, profile);
-router.get("/user/:staffRole", verifyUser, getUsers);
+router.post("/user", verifyUser, authorizationCheck, addUser);
+router.get("/user", verifyUser, authorizationCheck, getUsers);
+router.get("/user/profile", verifyUser, authorizationCheck, profile);
+router.get("/user/:staffRole", verifyUser, authorizationCheck, getUsers);
 
-router.delete("/user/:id/:staffRole", verifyUser, deleteUser);
-router.put("/user/captain", verifyUser, assignUserAreaAndStatus);
-router.put("/user", verifyUser, updateUser);
+router.delete(
+  "/user/:id/:staffRole",
+  verifyUser,
+  authorizationCheck,
+  deleteUser
+);
+router.put(
+  "/user/captain",
+  verifyUser,
+  authorizationCheck,
+  assignUserAreaAndStatus
+);
+router.put("/user", verifyUser, authorizationCheck, updateUser);
 router.post("/login", passport.authenticate("local"), login);
 
 //get user profile
 
 //inventory
 // router.post("/inventory/bulk", upload.single("inventory"), addBulkInventory);
-router.post("/inventory", verifyUser, addInventory);
-router.put("/inventory", verifyUser, updateInventory);
-router.get("/inventory", verifyUser, getInventories);
-router.get("/inventory/:id", verifyUser, getInventory);
-router.delete("/inventory/:id", verifyUser, deleteInventory);
+router.post("/inventory", verifyUser, authorizationCheck, addInventory);
+router.put("/inventory", verifyUser, authorizationCheck, updateInventory);
+router.get("/inventory", verifyUser, authorizationCheck, getInventories);
+router.get(
+  "/inventory/:id",
+  authorizationCheck,
+  verifyUser,
+  authorizationCheck,
+  getInventory
+);
+router.delete(
+  "/inventory/:id",
+  verifyUser,
+  authorizationCheck,
+  deleteInventory
+);
 
 //table
-router.post("/table", verifyUser, addTable);
-router.put("/table", verifyUser, updateTable);
+router.post("/table", verifyUser, authorizationCheck, addTable);
+router.put("/table", verifyUser, authorizationCheck, updateTable);
 router.get("/table", getTables);
-router.get("/table/:id", verifyUser, getTable);
-router.delete("/table/:id", verifyUser, deleteTable);
+router.get("/table/:id", verifyUser, authorizationCheck, getTable);
+router.delete("/table/:id", verifyUser, authorizationCheck, deleteTable);
 
 // //order
-router.post("/order/waiting", verifyUser, addWaitingOrder);
-router.put("/order/waiting", verifyUser, updateWaitingOrder);
-router.get("/order/waiting", verifyUser, getWaitingOrders);
-router.get("/order/waiting/:id", verifyUser, getWaitingOrder);
-router.delete("/order/waiting/:id", verifyUser, deleteWaitingOrder);
+router.post("/order/waiting", verifyUser, authorizationCheck, addWaitingOrder);
+router.put(
+  "/order/waiting",
+  verifyUser,
+  authorizationCheck,
+  updateWaitingOrder
+);
+router.get("/order/waiting", verifyUser, authorizationCheck, getWaitingOrders);
+router.get(
+  "/order/waiting/:id",
+  verifyUser,
+  authorizationCheck,
+  getWaitingOrder
+);
+router.delete(
+  "/order/waiting/:id",
+  verifyUser,
+  authorizationCheck,
+  deleteWaitingOrder
+);
 
 // //order
-router.post("/order", verifyUser, addOrder);
-router.put("/order", verifyUser, updateOrder);
-router.put("/order/food", verifyUser, updateOrderItems);
+router.post("/order", verifyUser, authorizationCheck, addOrder);
+router.put("/order", verifyUser, authorizationCheck, updateOrder);
+router.put("/order/food", verifyUser, authorizationCheck, updateOrderItems);
 
 router.get("/order", getOrders);
-router.get("/order/:id", verifyUser, getOrder);
+router.get("/order/:id", verifyUser, authorizationCheck, getOrder);
 
 router.post("/kitchen", addKitchen);
-router.put("/kitchen", verifyUser, updateKitchen);
-router.get("/kitchen", verifyUser, getKitchens);
-router.get("/kitchen/:id", verifyUser, getKitchen);
-router.delete("/kitchen/:id", verifyUser, deleteKitchen);
+router.put("/kitchen", verifyUser, authorizationCheck, updateKitchen);
+router.get("/kitchen", verifyUser, authorizationCheck, getKitchens);
+router.get("/kitchen/:id", verifyUser, authorizationCheck, getKitchen);
+router.delete("/kitchen/:id", verifyUser, authorizationCheck, deleteKitchen);
 
 router.get("/static/upload", upload.single("food"), addStaticImage);
 
 // //order
-router.post("/food", verifyUser, upload.single("image"), addFoodProduct);
-router.post("/food/bulk", verifyUser, upload.single("food"), addBulkFood);
+router.post(
+  "/food",
+  verifyUser,
+  authorizationCheck,
+  upload.single("image"),
+  addFoodProduct
+);
+router.post(
+  "/food/bulk",
+  verifyUser,
+  authorizationCheck,
+  upload.single("food"),
+  addBulkFood
+);
 
 router.post(
   "/food/update",
   verifyUser,
+  authorizationCheck,
   upload.single("image"),
   updateFoodProduct
 );
-router.get("/food", verifyUser, getFoodProducts);
-router.get("/food/:id", verifyUser, getFoodProduct);
-router.delete("/food/:id", verifyUser, deleteFoodProduct);
+router.get("/food", verifyUser, authorizationCheck, getFoodProducts);
+router.get("/food/:id", verifyUser, authorizationCheck, getFoodProduct);
+router.delete("/food/:id", verifyUser, authorizationCheck, deleteFoodProduct);
 
 export default router;

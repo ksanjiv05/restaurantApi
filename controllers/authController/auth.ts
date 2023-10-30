@@ -53,18 +53,18 @@ export const addUser = async (req: Request, res: Response) => {
       });
     }
 
-    console.log("req.user", req.user);
-    const authorized_user_role = req.user?.staffRole;
-    if (!hasPermission(authorized_user_role, "CREATE", staffRole)) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.UNAUTHORIZED,
-        type: "error",
-        msg: "Have no permission to create user with this role",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // console.log("req.user", req.user);
+    // const authorized_user_role = req.user?.staffRole;
+    // if (!hasPermission(authorized_user_role, "CREATE", staffRole)) {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+    //     type: "error",
+    //     msg: "Have no permission to create user with this role",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
     // const hashPassword = await getHashPassword(password);
     // delete req.body.password;
     // const newUser = new User(
@@ -176,9 +176,9 @@ export const login = (req: Request, res: Response) => {
     _id,
     updateAt,
     createdAt,
-    permissions
+    permissions,
   }: any = req.user;
-  const roleObj: any = roles.find((r) => r.name === staffRole);
+  // const roleObj: any = roles.find((r) => r.name === staffRole);
 
   if (!isActive)
     return responseObj({
@@ -207,18 +207,12 @@ export const login = (req: Request, res: Response) => {
         _id,
         updateAt,
         createdAt,
-        permissions
+        permissions,
         // permission: roleObj?.permissions,
       },
       token,
     },
   });
-  // res.json({
-  //   success: true,
-  //   token: token,
-
-  //   status: "You are successfully logged in!",
-  // });
 };
 
 export const profile = (req: Request, res: Response) => {
@@ -236,9 +230,9 @@ export const profile = (req: Request, res: Response) => {
     _id,
     updateAt,
     createdAt,
-    permissions
+    permissions,
   }: any = req.user;
-  const roleObj: any = roles.find((r) => r.name === staffRole);
+  // const roleObj: any = roles.find((r) => r.name === staffRole);
 
   return responseObj({
     statusCode: HTTP_RESPONSE.SUCCESS,
@@ -257,7 +251,7 @@ export const profile = (req: Request, res: Response) => {
         _id,
         updateAt,
         createdAt,
-        permissions
+        permissions,
         // permission: roleObj?.permissions,
       },
     },
@@ -279,17 +273,17 @@ export const assignUserAreaAndStatus = async (req: Request, res: Response) => {
       });
     }
 
-    const authorized_user_role = req.user?.staffRole;
-    if (!hasPermission(authorized_user_role, "UPDATE", CAPTAIN)) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.UNAUTHORIZED,
-        type: "error",
-        msg: "Have no permission to create user with this role",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // const authorized_user_role = req.user?.staffRole;
+    // if (!hasPermission(authorized_user_role, "UPDATE", CAPTAIN)) {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+    //     type: "error",
+    //     msg: "Have no permission to create user with this role",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
 
     await User.updateOne(
       {
@@ -351,17 +345,17 @@ export const updateUser = async (req: Request, res: Response) => {
       });
     }
 
-    const authorized_user_role = req.user?.staffRole;
-    if (!hasPermission(authorized_user_role, "CREATE", staffRole)) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.UNAUTHORIZED,
-        type: "error",
-        msg: "Have no permission to create user with this role",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // const authorized_user_role = req.user?.staffRole;
+    // if (!hasPermission(authorized_user_role, "CREATE", staffRole)) {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+    //     type: "error",
+    //     msg: "Have no permission to create user with this role",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
     // delete req.body.password;
     console.log("req ", req.body);
     await User.updateOne(
@@ -451,17 +445,17 @@ export const deleteUser = async (req: Request, res: Response) => {
       });
     }
 
-    const authorized_user_role = req.user?.staffRole;
-    if (!hasPermission(authorized_user_role, "DELETE", staffRole)) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.UNAUTHORIZED,
-        type: "error",
-        msg: "Have no permission to delete user with this role",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // const authorized_user_role = req.user?.staffRole;
+    // if (!hasPermission(authorized_user_role, "DELETE", staffRole)) {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+    //     type: "error",
+    //     msg: "Have no permission to delete user with this role",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
 
     await User.deleteOne({ _id: id });
 
@@ -498,17 +492,17 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const { staffRole = "" } = req.params;
-    const authorized_user_role = req.user?.staffRole;
-    if (!hasPermission(authorized_user_role, "READ", staffRole)) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.UNAUTHORIZED,
-        type: "error",
-        msg: "Have no permission to delete user with this role",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
+    // const authorized_user_role = req.user?.staffRole;
+    // if (!hasPermission(authorized_user_role, "READ", staffRole)) {
+    //   return responseObj({
+    //     statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+    //     type: "error",
+    //     msg: "Have no permission to delete user with this role",
+    //     error: null,
+    //     resObj: res,
+    //     data: null,
+    //   });
+    // }
     const { page = 0, perPage = 10 } = req.query;
 
     const skip = (Number(page) - 1) * Number(perPage);

@@ -30,19 +30,20 @@ const getAction = (method: string) => {
 };
 
 const getPermission = (uri: string) => {
-  uri = uri.toLowerCase();
+  uri = uri.toLowerCase().split("/")[2];
+
   switch (uri) {
-    case "/api/user":
+    case "user":
       return USER_MANAGEMENT;
-    case "/api/inventory":
+    case "inventory":
       return INVENTORY;
-    case "/api/order":
+    case "order":
       return ORDER;
-    case "/api/kitchen":
+    case "kitchen":
       return KITCHEN;
-    case "/api/table":
+    case "table":
       return TABLE;
-    case "/api/food":
+    case "food":
       return FOOD;
     default:
       return undefined;
@@ -55,6 +56,8 @@ export const authorizationCheck = (
   next: Function
 ) => {
   const { user = null }: any = req;
+  const { method, originalUrl } = req;
+  console.log("user", method, originalUrl, originalUrl.split("/")[3]);
   if (!user) {
     return res.status(401).json({
       message: "You are not authorized",
@@ -67,7 +70,7 @@ export const authorizationCheck = (
       message: "You are not authorized to perform this action",
     });
   }
-  const { method, originalUrl } = req;
+  // const { method, originalUrl } = req;
   const action = getAction(method);
   const { staffRole } = req.body;
   const permission = permissions.find(
