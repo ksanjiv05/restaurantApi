@@ -32,6 +32,8 @@ import {
   UPDATE,
   READ,
   DELETE,
+  WAITER,
+  USER_MANAGEMENT,
 } from "./config/config";
 
 dotenv.config();
@@ -90,72 +92,73 @@ server.listen(port, () => {
 
 // console.log("permission ", hasPermission("FB_MANAGER", "READ", "INVENTORY"));
 
-// createRootUser({
-//   name: "Root User",
-//   mobile: "8799999982",
-//   username: "8799999982",
-//   staffRole: "DIRECTOR",
-//   password: "Test@1234",
-//   isActive: true,
-//   permissions: [
-//     {
-//       permissionType: CREATE,
-//       permissionArray: [
-//         OPERATIONAL_MANAGER,
-//         FB_MANAGER,
-//         CASHIER,
-//         ADMIN,
-//         MANAGER,
-//         CAPTAIN,
-//         ORDER,
-//         INVENTORY,
-//         REPORTS,
-//       ],
-//     },
-//     {
-//       permissionType: UPDATE,
-//       permissionArray: [
-//         OPERATIONAL_MANAGER,
-//         FB_MANAGER,
-//         CASHIER,
-//         ADMIN,
-//         MANAGER,
-//         CAPTAIN,
-//         ORDER,
-//         INVENTORY,
-//         REPORTS,
-//       ],
-//     },
-//     {
-//       permissionType: READ,
-//       permissionArray: [
-//         OPERATIONAL_MANAGER,
-//         FB_MANAGER,
-//         CASHIER,
-//         ADMIN,
-//         MANAGER,
-//         CAPTAIN,
-//         ORDER,
-//         INVENTORY,
-//         REPORTS,
-//       ],
-//     },
-//     {
-//       permissionType: DELETE,
-//       permissionArray: [
-//         OPERATIONAL_MANAGER,
-//         FB_MANAGER,
-//         CASHIER,
-//         ADMIN,
-//         MANAGER,
-//         CAPTAIN,
-//         ORDER,
-//         INVENTORY,
-//         REPORTS,
-//       ],
-//     },
-//   ],
-// });
+createRootUser({
+  name: "Root User",
+  mobile: "7000000000",
+  username: "7000000000",
+  staffRole: "DIRECTOR",
+  password: "Test@1234",
+  isActive: true,
+  permissions: [
+    {
+      permissionType: CREATE,
+      permissionArray: [
+        OPERATIONAL_MANAGER,
+        FB_MANAGER,
+        CASHIER,
+        ADMIN,
+        WAITER,
+        CAPTAIN,
+        ORDER,
+        INVENTORY,
+        REPORTS,
+        USER_MANAGEMENT,
+      ],
+    },
+    {
+      permissionType: UPDATE,
+      permissionArray: [
+        OPERATIONAL_MANAGER,
+        FB_MANAGER,
+        CASHIER,
+        ADMIN,
+        WAITER,
+        CAPTAIN,
+        ORDER,
+        INVENTORY,
+        REPORTS,
+      ],
+    },
+    {
+      permissionType: READ,
+      permissionArray: [
+        OPERATIONAL_MANAGER,
+        FB_MANAGER,
+        CASHIER,
+        ADMIN,
+        WAITER,
+        CAPTAIN,
+        ORDER,
+        INVENTORY,
+        REPORTS,
+      ],
+    },
+    {
+      permissionType: DELETE,
+      permissionArray: [
+        OPERATIONAL_MANAGER,
+        FB_MANAGER,
+        CASHIER,
+        ADMIN,
+        MANAGER,
+        CAPTAIN,
+        ORDER,
+        INVENTORY,
+        REPORTS,
+      ],
+    },
+  ],
+});
 
 // const runTest = async () => {
 //   const data = await csvToJson("food.csv");

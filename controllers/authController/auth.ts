@@ -162,7 +162,7 @@ export const addUser = async (req: Request, res: Response) => {
 
 export const login = (req: Request, res: Response) => {
   // Create a token
-  const token = getToken({ _id: req.user._id });
+  const token = getToken({ _id: req.user?._id });
   // Response
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
@@ -179,16 +179,15 @@ export const login = (req: Request, res: Response) => {
   }: any = req.user;
   const roleObj: any = roles.find((r) => r.name === staffRole);
 
-if(!isActive)
-return responseObj({
-  statusCode: HTTP_RESPONSE.UNAUTHORIZED,
-  type: "success",
-  msg: "You are successfully logged in!",
-  error: null,
-  resObj: res,
-  data: null
-});
-
+  if (!isActive)
+    return responseObj({
+      statusCode: HTTP_RESPONSE.UNAUTHORIZED,
+      type: "success",
+      msg: "You are successfully logged in!",
+      error: null,
+      resObj: res,
+      data: null,
+    });
 
   return responseObj({
     statusCode: HTTP_RESPONSE.SUCCESS,

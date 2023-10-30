@@ -24,69 +24,13 @@ export const createRootUser = async (
     mobile = "9999999999",
     password = "Test@1234",
     name = "Root User",
-    permissions = [
-      {
-        permissionType: CREATE,
-        permissionArray: [
-          OPERATIONAL_MANAGER,
-          FB_MANAGER,
-          CASHIER,
-          ADMIN,
-          MANAGER,
-          CAPTAIN,
-          ORDER,
-          INVENTORY,
-          REPORTS,
-        ],
-      },
-      {
-        permissionType: UPDATE,
-        permissionArray: [
-          OPERATIONAL_MANAGER,
-          FB_MANAGER,
-          CASHIER,
-          ADMIN,
-          MANAGER,
-          CAPTAIN,
-          ORDER,
-          INVENTORY,
-          REPORTS,
-        ],
-      },
-      {
-        permissionType: READ,
-        permissionArray: [
-          OPERATIONAL_MANAGER,
-          FB_MANAGER,
-          CASHIER,
-          ADMIN,
-          MANAGER,
-          CAPTAIN,
-          ORDER,
-          INVENTORY,
-          REPORTS,
-        ],
-      },
-      {
-        permissionType: DELETE,
-        permissionArray: [
-          OPERATIONAL_MANAGER,
-          FB_MANAGER,
-          CASHIER,
-          ADMIN,
-          MANAGER,
-          CAPTAIN,
-          ORDER,
-          INVENTORY,
-          REPORTS,
-        ],
-      },
-    ],
+    permissions = [],
     aadhar = "1234567897654",
   },
   rest
 ) => {
   try {
+    console.log("___", permissions);
     User.register(
       { username, mobile, name, permissions, aadhar, staffRole },
       password,
