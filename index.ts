@@ -92,6 +92,7 @@ server.listen(port, () => {
 
 // console.log("permission ", hasPermission("FB_MANAGER", "READ", "INVENTORY"));
 
+/*
 createRootUser({
   name: "Root User",
   mobile: "7000000000",
@@ -159,6 +160,7 @@ createRootUser({
     },
   ],
 });
+*/
 
 // const runTest = async () => {
 //   const data = await csvToJson("food.csv");

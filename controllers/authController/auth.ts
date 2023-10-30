@@ -176,6 +176,7 @@ export const login = (req: Request, res: Response) => {
     _id,
     updateAt,
     createdAt,
+    permissions
   }: any = req.user;
   const roleObj: any = roles.find((r) => r.name === staffRole);
 
@@ -183,7 +184,7 @@ export const login = (req: Request, res: Response) => {
     return responseObj({
       statusCode: HTTP_RESPONSE.UNAUTHORIZED,
       type: "success",
-      msg: "You are successfully logged in!",
+      msg: "You are  UNAUTHORIZED!",
       error: null,
       resObj: res,
       data: null,
@@ -206,7 +207,8 @@ export const login = (req: Request, res: Response) => {
         _id,
         updateAt,
         createdAt,
-        permission: roleObj?.permissions,
+        permissions
+        // permission: roleObj?.permissions,
       },
       token,
     },
@@ -234,6 +236,7 @@ export const profile = (req: Request, res: Response) => {
     _id,
     updateAt,
     createdAt,
+    permissions
   }: any = req.user;
   const roleObj: any = roles.find((r) => r.name === staffRole);
 
@@ -254,7 +257,8 @@ export const profile = (req: Request, res: Response) => {
         _id,
         updateAt,
         createdAt,
-        permission: roleObj?.permissions,
+        permissions
+        // permission: roleObj?.permissions,
       },
     },
   });
