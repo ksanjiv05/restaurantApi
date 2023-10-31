@@ -63,9 +63,9 @@ const router = express.Router();
 
 //user
 router.post("/user", verifyUser, authorizationCheck, addUser);
-router.get("/user", verifyUser, authorizationCheck, getUsers);
-router.get("/user/profile", verifyUser, authorizationCheck, profile);
-router.get("/user/:staffRole", verifyUser, authorizationCheck, getUsers);
+router.get("/user", verifyUser, getUsers);
+router.get("/user/profile", verifyUser, profile);
+router.get("/user/:staffRole", verifyUser, getUsers);
 
 router.delete(
   "/user/:id/:staffRole",
@@ -79,7 +79,8 @@ router.put(
   authorizationCheck,
   assignUserAreaAndStatus
 );
-router.put("/user", verifyUser, authorizationCheck, updateUser);
+//authorizationCheck
+router.put("/user", verifyUser, updateUser);
 router.post("/login", passport.authenticate("local"), login);
 
 //get user profile

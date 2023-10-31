@@ -3,6 +3,7 @@ import { IUser } from "../interfaces/IUser";
 import {
   CREATE,
   DELETE,
+  DIRECTOR,
   FOOD,
   INVENTORY,
   KITCHEN,
@@ -29,12 +30,11 @@ const getAction = (method: string) => {
   }
 };
 
-const getPermission = (uri: string) => {
-  uri = uri.toLowerCase().split("/")[2];
-
+const getPermission = (uri: string,userRole:string) => {
+  uri = uri.toLowerCase().split("/")[3];
   switch (uri) {
     case "user":
-      return USER_MANAGEMENT;
+      return userRole;
     case "inventory":
       return INVENTORY;
     case "order":
@@ -50,6 +50,14 @@ const getPermission = (uri: string) => {
   }
 };
 
+// const getPermissionHerarchy=(role:string)=>{
+//   switch(role){
+//     case DIRECTOR:
+//       return 
+//   }
+// }
+
+
 export const authorizationCheck = (
   req: Request,
   res: Response,
@@ -64,7 +72,7 @@ export const authorizationCheck = (
     });
   }
 
-  const { permissions = [] } = user;
+  const { permissions = [],staffRole="UNKNOWN" } = user;
   if (permissions.length === 0) {
     return res.status(401).json({
       message: "You are not authorized to perform this action",
@@ -72,17 +80,20 @@ export const authorizationCheck = (
   }
   // const { method, originalUrl } = req;
   const action = getAction(method);
-  const { staffRole } = req.body;
+  // const { staffRole } = req.body;
   const permission = permissions.find(
     (pObj: any) => pObj.permissionType === action
   );
+  console.log("usr",user)
+
   if (!permission) {
     return res.status(401).json({
       message: "You are not authorized to perform this action",
     });
   } else {
-    const permissionName = getPermission(originalUrl);
+    const permissionName = getPermission(originalUrl,staffRole);
     const isPermission = permission.permissionArray.includes(permissionName);
+    console.log("permiss ion",permissionName,isPermission)
     if (isPermission) {
       next();
     } else {
