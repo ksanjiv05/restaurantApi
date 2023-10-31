@@ -30,8 +30,9 @@ const getAction = (method: string) => {
   }
 };
 
-const getPermission = (uri: string,userRole:string) => {
-  uri = uri.toLowerCase().split("/")[3];
+const getPermission = (uri: string, userRole: string) => {
+  uri = uri.toLowerCase().split(/[/?]/)[3];
+  console.log("uri", uri);
   switch (uri) {
     case "user":
       return userRole;
@@ -50,14 +51,6 @@ const getPermission = (uri: string,userRole:string) => {
   }
 };
 
-// const getPermissionHerarchy=(role:string)=>{
-//   switch(role){
-//     case DIRECTOR:
-//       return 
-//   }
-// }
-
-
 export const authorizationCheck = (
   req: Request,
   res: Response,
@@ -72,7 +65,7 @@ export const authorizationCheck = (
     });
   }
 
-  const { permissions = [],staffRole="UNKNOWN" } = user;
+  const { permissions = [] } = user;
   if (permissions.length === 0) {
     return res.status(401).json({
       message: "You are not authorized to perform this action",
@@ -80,20 +73,22 @@ export const authorizationCheck = (
   }
   // const { method, originalUrl } = req;
   const action = getAction(method);
-  // const { staffRole } = req.body;
+  let { staffRole = "UNKNOWN" } = req.params;
   const permission = permissions.find(
     (pObj: any) => pObj.permissionType === action
   );
-  console.log("usr",user)
+  if (action === CREATE || action === UPDATE) {
+    staffRole = req.body.staffRole;
+  }
 
   if (!permission) {
     return res.status(401).json({
       message: "You are not authorized to perform this action",
     });
   } else {
-    const permissionName = getPermission(originalUrl,staffRole);
+    const permissionName = getPermission(originalUrl, staffRole);
     const isPermission = permission.permissionArray.includes(permissionName);
-    console.log("permiss ion",permissionName,isPermission)
+    console.log("permission ---- ", permissionName, isPermission);
     if (isPermission) {
       next();
     } else {

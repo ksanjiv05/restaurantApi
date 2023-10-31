@@ -63,9 +63,9 @@ const router = express.Router();
 
 //user
 router.post("/user", verifyUser, authorizationCheck, addUser);
-router.get("/user", verifyUser, getUsers);
+// router.get("/user", verifyUser, getUsers);
 router.get("/user/profile", verifyUser, profile);
-router.get("/user/:staffRole", verifyUser, getUsers);
+router.get("/user/:staffRole", verifyUser, authorizationCheck, getUsers);
 
 router.delete(
   "/user/:id/:staffRole",
