@@ -31,6 +31,7 @@ export const INVENTORY: string = "INVENTORY";
 export const FOOD: string = "FOOD";
 export const TABLE: string = "TABLE";
 export const KITCHEN: string = "KITCHEN";
+export const CHEF: string = "CHEF";
 
 export const ORDER: string = "ORDER";
 export const REPORTS: string = "REPORTS";
