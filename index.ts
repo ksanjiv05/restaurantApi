@@ -37,6 +37,7 @@ import {
   FOOD,
   TABLE,
   KITCHEN,
+  CHEF,
 } from "./config/config";
 
 dotenv.config();
@@ -118,6 +119,7 @@ server.listen(port, () => {
 //         TABLE,
 //         REPORTS,
 //         KITCHEN,
+//         CHEF
 //       ],
 //     },
 //     {
@@ -135,6 +137,7 @@ server.listen(port, () => {
 //         TABLE,
 //         REPORTS,
 //         KITCHEN,
+//         CHEF
 //       ],
 //     },
 //     {
@@ -152,6 +155,7 @@ server.listen(port, () => {
 //         TABLE,
 //         REPORTS,
 //         KITCHEN,
+//         CHEF
 //       ],
 //     },
 //     {
@@ -169,6 +173,7 @@ server.listen(port, () => {
 //         TABLE,
 //         REPORTS,
 //         KITCHEN,
+//         CHEF
 //       ],
 //     },
 //   ],

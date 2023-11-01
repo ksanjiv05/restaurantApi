@@ -108,7 +108,7 @@ router.delete(
 router.post("/table", verifyUser, authorizationCheck, addTable);
 router.put("/table", verifyUser, authorizationCheck, updateTable);
 router.get("/table", getTables);
-router.get("/table/:id", verifyUser, authorizationCheck, getTable);
+router.get("/table/:id", verifyUser, getTable);
 router.delete("/table/:id", verifyUser, authorizationCheck, deleteTable);
 
 // //order
@@ -172,8 +172,8 @@ router.post(
   upload.single("image"),
   updateFoodProduct
 );
-router.get("/food", verifyUser, authorizationCheck, getFoodProducts);
-router.get("/food/:id", verifyUser, authorizationCheck, getFoodProduct);
+router.get("/food", verifyUser, getFoodProducts);
+router.get("/food/:id", verifyUser, getFoodProduct);
 router.delete("/food/:id", verifyUser, authorizationCheck, deleteFoodProduct);
 
 export default router;
