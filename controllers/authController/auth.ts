@@ -112,6 +112,7 @@ export const addUser = async (req: Request, res: Response) => {
           _id,
           updateAt,
           createdAt,
+          permissions
         } = user;
         const roleObj: any = roles.find((r) => r.name === staffRole);
 
@@ -130,7 +131,8 @@ export const addUser = async (req: Request, res: Response) => {
             department,
             aadhar,
             address,
-            permission: roleObj?.permissions,
+            // permission: roleObj?.permissions,
+            permissions,
             _id,
             updateAt,
             createdAt,
