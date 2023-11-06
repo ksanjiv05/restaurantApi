@@ -389,3 +389,18 @@ export const deleteTable = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const tableUpdateAfterBill = async (tableId: string) => {
+  try {
+    await Table.updateOne(
+      { _id: tableId },
+      {
+        $set: {
+          isAvailable: true,
+        },
+      }
+    );
+  } catch (error) {
+    logging.error("Update Table", "unable to update Table", error);
+  }
+};

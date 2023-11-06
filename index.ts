@@ -39,6 +39,7 @@ import {
   KITCHEN,
   CHEF,
 } from "./config/config";
+import { updateOrderAfterBill } from "./controllers/orderController/order";
 
 dotenv.config();
 
@@ -61,7 +62,9 @@ app.use(passport.session());
 
 //socket io configuration
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: { origin: "http://localhost:3000" },
+});
 
 declare global {
   var socketObj: Socket<
@@ -185,4 +188,5 @@ server.listen(port, () => {
 //   FoodProduct.insertMany(data, { ordered: false });
 // };
 // runTest();
+// updateOrderAfterBill({});
 export default app;

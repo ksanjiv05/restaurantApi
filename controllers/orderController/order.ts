@@ -7,6 +7,7 @@ import Order from "../../models/Order";
 import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../../config/enums";
 import Table from "../../models/Table";
 import mongoose from "mongoose";
+import { tableUpdateAfterBill } from "../tableController/table";
 
 export const addOrder = async (req: Request, res: Response) => {
   try {
@@ -143,9 +144,13 @@ export const updateOrder = async (req: Request, res: Response) => {
     await Order.updateOne(
       { _id },
       {
-        ...req.body
+        ...req.body,
       }
     );
+
+    if (status === ORDER_STATUS.COMPLETED) {
+      updateOrderAfterBill(req.body);
+    }
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
@@ -330,3 +335,36 @@ export const deleteOrder = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const updateOrderAfterBill = async (order: IOrder) => {
+  const { tableIds = [] } = order;
+  const table = String(tableIds[0].tableNumber);
+  const regx = new RegExp(table, "i");
+  const department = order.department;
+  console.log("regx", regx);
+  const orders = await Order.find({
+    department,
+    tableIds: { $elemMatch: { tableNumber: regx } },
+    status: ORDER_STATUS.COMPLETED,
+  });
+
+  // console.log("orders", JSON.stringify(orders));
+  if (orders.length == 0) {
+    const tableId = tableIds[0].tableId;
+    tableUpdateAfterBill(tableId);
+    global.socketObj?.emit("table_update", {
+      type: "success",
+      msg: "Table updated successfully!",
+      data: {
+        tableId,
+        tableNumber: table,
+      },
+    });
+  }
+};
+
+// {
+//   "tableId": "6540849aa0e79637407e53ea",
+//   "tableNumber": "1E",
+//   "_id": "6548fb1dab2f0e0acd2ae3ad"
+// }
