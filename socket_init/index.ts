@@ -34,12 +34,16 @@ export const startListening = (
       socket.emit("order_cancel_request_update", {
         type: "success",
         msg: " Cancel request updated successfully!",
+        data: {
+          ...data,
+          status: ORDER_STATUS.CANCEL_REQUEST,
+        },
       });
 
-      socket.emit("order_cancel_request", {
-        type: "success",
-        msg: " Cancel request sent successfully!",
-      });
+      // socket.emit("order_cancel_request", {
+      //   type: "success",
+      //   msg: " Cancel request sent successfully!",
+      // });
     }
 
     //here we assing to the waiter when order is ready and notify to the user
@@ -49,9 +53,10 @@ export const startListening = (
     console.log("__", data);
     const { _id = "", status = ORDER_STATUS.CANCEL_REQUEST }: IOrder = data;
     if (_id == "") {
-      socket.emit("order_cancel", {
+      socket.emit("order_cancel_request_confirm", {
         type: "error",
         msg: " Please provide  order Id!",
+        data: null,
       });
     }
 
@@ -68,6 +73,10 @@ export const startListening = (
       socket.emit("order_cancel_request_update", {
         type: "success",
         msg: " Cancel request updated successfully!",
+        data: {
+          ...data,
+          status: ORDER_STATUS.CANCEL,
+        },
       });
     }
 
@@ -83,6 +92,10 @@ export const startListening = (
       socket.emit("order_cancel_request_update", {
         type: "success",
         msg: " Cancel request updated successfully!",
+        data: {
+          ...data,
+          status: ORDER_STATUS.REJECTED,
+        },
       });
     }
 
