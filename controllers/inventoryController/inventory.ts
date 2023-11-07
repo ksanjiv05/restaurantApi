@@ -96,10 +96,6 @@ export const addInventory = async (req: Request, res: Response) => {
 
     // const expdate = new Date(expiration).toDateString();
 
-    const inStock = quantity;
-    delete req.body.expiration;
-    delete req.body.inStock;
-
     // if (expdate.includes("Invalid"))
     //   return responseObj({
     //     statusCode: HTTP_RESPONSE.BED_REQUEST,
@@ -120,6 +116,18 @@ export const addInventory = async (req: Request, res: Response) => {
         data: null,
       });
     }
+
+    // const sum = kitchenWiseQuantity.reduce((v) => parseFloat(v?.quantity), 0);
+
+    var sum = kitchenWiseQuantity.reduce((accumulator, currentValue) => {
+      // console.log("accumulator ", accumulator, currentValue);
+      return accumulator + currentValue.quantity;
+    }, 0);
+    // console.log("sum ", sum);
+    const inStock = sum;
+    delete req.body.expiration;
+    delete req.body.inStock;
+
     const newInventory: IInventory = new Inventory({
       ...req.body,
       inStock,
@@ -135,17 +143,6 @@ export const addInventory = async (req: Request, res: Response) => {
         type: "error",
         msg: "errors",
         error: errors,
-        resObj: res,
-        data: null,
-      });
-    }
-
-    if (kitchen.length == 0) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: "please provide at least one kitchen",
-        error: null,
         resObj: res,
         data: null,
       });
