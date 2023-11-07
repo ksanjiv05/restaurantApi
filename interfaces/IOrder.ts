@@ -13,6 +13,7 @@ type ProductProps = {
   quantity: number;
   price: number;
   allocatedKitchen: string;
+  note: string;
 };
 
 export interface IOrder extends Document {
