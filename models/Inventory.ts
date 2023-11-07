@@ -41,15 +41,17 @@ const InventorySchema: Schema = new Schema({
   inStock: String,
   kitchen: {
     type: [String],
-    required: [true, "Inventory  kitchen is required"],
+    // required: [true, "Inventory  kitchen is required"],
   },
-  productWiseQuantity: {
+  kitchenWiseQuantity: {
     type: [
       {
         product: {
           type: String,
           lowercase: true,
         },
+        productId: String,
+
         quantity: Number,
       },
     ],

@@ -73,7 +73,7 @@ export const addInventory = async (req: Request, res: Response) => {
       quantity = 0,
       expiration = "",
       kitchen = [],
-      productWiseQuantity,
+      kitchenWiseQuantity,
     }: IInventory = req.body;
 
     // if (
@@ -110,6 +110,16 @@ export const addInventory = async (req: Request, res: Response) => {
     //     data: null,
     //   });
 
+    if (kitchenWiseQuantity && kitchenWiseQuantity.length == 0) {
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "please provide at least one productWiseQuantity",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+    }
     const newInventory: IInventory = new Inventory({
       ...req.body,
       inStock,
@@ -135,16 +145,6 @@ export const addInventory = async (req: Request, res: Response) => {
         statusCode: HTTP_RESPONSE.BED_REQUEST,
         type: "error",
         msg: "please provide at least one kitchen",
-        error: null,
-        resObj: res,
-        data: null,
-      });
-    }
-    if (productWiseQuantity && productWiseQuantity.length == 0) {
-      return responseObj({
-        statusCode: HTTP_RESPONSE.BED_REQUEST,
-        type: "error",
-        msg: "please provide at least one productWiseQuantity",
         error: null,
         resObj: res,
         data: null,
