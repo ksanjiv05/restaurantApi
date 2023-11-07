@@ -397,9 +397,17 @@ export const tableUpdateAfterBill = async (tableId: string) => {
       {
         $set: {
           isAvailable: true,
+          occupiedSeat: 0,
         },
       }
     );
+    const table = await Table.findOne({ _id: tableId });
+    console.log("table update", table);
+    global.socketObj?.emit("table_update", {
+      type: "success",
+      msg: "table updated succesfully.",
+      data: table,
+    });
   } catch (error) {
     logging.error("Update Table", "unable to update Table", error);
   }

@@ -12,7 +12,7 @@ export interface IInventory extends Document {
   note: string;
   unit: string;
   expiration: string;
-  inStock: boolean;
+  inStock: string;
   kitchen: KITCHEN[]; ////kitchen allocates to inventory is reffred as order category
   productWiseQuantity: [
     {

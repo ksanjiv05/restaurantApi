@@ -13,38 +13,37 @@ export const startListening = (
 
   socket.on("order_cancel_request", async (data: IOrder) => {
     console.log("__", data);
-    const { _id = "", status = ORDER_STATUS.PLACED }: IOrder = data;
+    const { _id = "" }: IOrder = data;
     if (_id == "") {
-      socket.emit("order_cancel", {
+      socket.emit("order_cancel_request_update", {
         type: "error",
         msg: " Please provide  order Id!",
+        data: null,
       });
     }
 
-    if (status === ORDER_STATUS.CANCEL_REQUEST) {
-      //update cancle
-      await Order.updateOne(
-        { _id },
-        {
-          $set: {
-            status: ORDER_STATUS.CANCEL_REQUEST,
-          },
-        }
-      );
-      socket.emit("order_cancel_request_update", {
-        type: "success",
-        msg: " Cancel request updated successfully!",
-        data: {
-          ...data,
+    //update cancle
+    await Order.updateOne(
+      { _id },
+      {
+        $set: {
           status: ORDER_STATUS.CANCEL_REQUEST,
         },
-      });
+      }
+    );
+    socket.emit("order_cancel_request_update", {
+      type: "success",
+      msg: " Cancel request updated successfully!",
+      data: {
+        ...data,
+        status: ORDER_STATUS.CANCEL_REQUEST,
+      },
+    });
 
-      // socket.emit("order_cancel_request", {
-      //   type: "success",
-      //   msg: " Cancel request sent successfully!",
-      // });
-    }
+    // socket.emit("order_cancel_request", {
+    //   type: "success",
+    //   msg: " Cancel request sent successfully!",
+    // });
 
     //here we assing to the waiter when order is ready and notify to the user
   });

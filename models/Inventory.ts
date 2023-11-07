@@ -38,7 +38,7 @@ const InventorySchema: Schema = new Schema({
   expiration: {
     type: String,
   },
-  inStock: Boolean,
+  inStock: String,
   kitchen: {
     type: [String],
     required: [true, "Inventory  kitchen is required"],

@@ -345,10 +345,10 @@ export const updateOrderAfterBill = async (order: IOrder) => {
   const orders = await Order.find({
     department,
     tableIds: { $elemMatch: { tableNumber: regx } },
-    status: ORDER_STATUS.COMPLETED,
+    status: { $ne: ORDER_STATUS.COMPLETED },
   });
 
-  // console.log("orders", JSON.stringify(orders));
+  console.log("orders", JSON.stringify(orders));
   if (orders.length == 0) {
     const tableId = tableIds[0].tableId;
     tableUpdateAfterBill(tableId);

@@ -96,7 +96,7 @@ export const addInventory = async (req: Request, res: Response) => {
 
     // const expdate = new Date(expiration).toDateString();
 
-    const inStock = quantity > 0;
+    const inStock = quantity;
     delete req.body.expiration;
     delete req.body.inStock;
 
@@ -330,6 +330,13 @@ export const deleteInventory = async (req: Request, res: Response) => {
     });
   }
 };
+
+//pids
+// productId: string;
+// productName: string;
+// quantity: number;
+//  price: number;
+//   allocatedKitchen: string;
 
 const updateInventoryQuantity = async () => {
   try {
