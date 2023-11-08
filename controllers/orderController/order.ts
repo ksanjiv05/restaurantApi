@@ -211,6 +211,7 @@ export const orderCancelConfirm = async (req: Request, res: Response) => {
         remark,
         actionPerformedBy,
         actionPerformedId,
+        actionStatus: isApprove ? "Approved" : "Rejected",
       }
     );
 
@@ -219,14 +220,14 @@ export const orderCancelConfirm = async (req: Request, res: Response) => {
       msg: "Notification updated successfully!",
       data: order,
     });
-
+    const notification = await Notification.findOne({_id:nid})
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
       msg: "hey, you are successfully updated Order",
       error: null,
       resObj: res,
-      data: null,
+      data: notification,
     });
   } catch (error) {
     logging.error("Update Order", "unable to update Order", error);

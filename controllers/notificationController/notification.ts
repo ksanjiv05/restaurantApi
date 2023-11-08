@@ -170,6 +170,7 @@ export const getNotifications = async (req: Request, res: Response) => {
     const filter = {};
     let count = 0;
     let notifications = await Notification.find({})
+    .sort("-createdAt")
       .skip(Number(skip))
       .limit(Number(perPage));
     count = await Notification.find({}).count();
