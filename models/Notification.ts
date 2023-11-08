@@ -11,6 +11,7 @@ const NotificationSchema: Schema = new Schema({
   id: String, //regarding Order Inventory or Kitchen
   action: String,
   remark: String,
+  actionStatus: String,
   actionPerformedBy: String,
   actionPerformedId: String,
   type: String,
