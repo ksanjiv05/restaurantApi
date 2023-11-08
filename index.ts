@@ -63,7 +63,7 @@ app.use(passport.session());
 //socket io configuration
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "http://localhost:3000" },
+  cors: { origin: "*" },
 });
 
 declare global {
