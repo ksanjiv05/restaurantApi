@@ -34,6 +34,7 @@ import {
   getOrders,
   getOrder,
   updateOrderItems,
+  orderCancelConfirm,
 } from "../../controllers/orderController/order";
 import { addStaticImage } from "../../controllers/staticController/static";
 import {
@@ -136,6 +137,8 @@ router.delete(
 // //order
 router.post("/order", verifyUser, authorizationCheck, addOrder);
 router.put("/order", verifyUser, authorizationCheck, updateOrder);
+router.put("/order/cancel", verifyUser, authorizationCheck, orderCancelConfirm);
+
 router.put("/order/food", verifyUser, authorizationCheck, updateOrderItems);
 
 router.get("/order", getOrders);

@@ -3,6 +3,7 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { IOrder } from "../interfaces/IOrder";
 import { ORDER_STATUS } from "../config/enums";
 import Order from "../models/Order";
+import Notification from "../models/Notification";
 
 export const startListening = (
   socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
@@ -40,10 +41,21 @@ export const startListening = (
       },
     });
 
-    // socket.emit("order_cancel_request", {
-    //   type: "success",
-    //   msg: " Cancel request sent successfully!",
-    // });
+    const newNotification = new Notification({
+      title: "Order Cancel Request",
+      id: _id,
+      action: "Pending",
+      remark: "",
+      actionPerformedBy: "n/a",
+      actionPerformedId: "n/a",
+      isActive: true,
+    });
+    await newNotification.save();
+    global.socketObj?.emit("new_notification", {
+      type: "success",
+      msg: "Notification updated successfully!",
+      data: newNotification,
+    });
 
     //here we assing to the waiter when order is ready and notify to the user
   });

@@ -172,6 +172,55 @@ export const updateOrder = async (req: Request, res: Response) => {
   }
 };
 
+export const orderCancelConfirm = async (req: Request, res: Response) => {
+  try {
+    const { _id = "", isApprove = false } = req.body;
+    if (_id == "")
+      return responseObj({
+        statusCode: HTTP_RESPONSE.BED_REQUEST,
+        type: "error",
+        msg: "please provide a valid Order ID ",
+        error: null,
+        resObj: res,
+        data: null,
+      });
+
+    await Order.updateOne(
+      { _id },
+      {
+        $set: {
+          status: isApprove ? ORDER_STATUS.CANCEL : ORDER_STATUS.PLACED,
+        },
+      }
+    );
+    const order = await Order.findOne({ _id });
+    global.socketObj?.emit("order_cancel_request_update", {
+      type: "success",
+      msg: "Notification updated successfully!",
+      data: order,
+    });
+
+    return responseObj({
+      statusCode: HTTP_RESPONSE.SUCCESS,
+      type: "success",
+      msg: "hey, you are successfully updated Order",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  } catch (error) {
+    logging.error("Update Order", "unable to update Order", error);
+    return responseObj({
+      statusCode: HTTP_RESPONSE.INTERNAL_SERVER_ERROR,
+      type: "error",
+      msg: "unable to process your request",
+      error: null,
+      resObj: res,
+      data: null,
+    });
+  }
+};
+
 export const updateOrderItems = async (req: Request, res: Response) => {
   try {
     const { _id = "", pids = [] }: IOrder = req.body;
