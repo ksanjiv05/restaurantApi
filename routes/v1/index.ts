@@ -180,6 +180,6 @@ router.get("/food", verifyUser, getFoodProducts);
 router.get("/food/:id", verifyUser, getFoodProduct);
 router.delete("/food/:id", verifyUser, authorizationCheck, deleteFoodProduct);
 
-router.get("/notifications",getNotifications)
+router.get("/notifications", getNotifications);
 
 export default router;
