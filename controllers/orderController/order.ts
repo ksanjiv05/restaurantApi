@@ -8,6 +8,7 @@ import { DEPARTMENT, KITCHEN, ORDER_STATUS } from "../../config/enums";
 import Table from "../../models/Table";
 import mongoose from "mongoose";
 import { tableUpdateAfterBill } from "../tableController/table";
+import Notification from "../../models/Notification";
 
 export const addOrder = async (req: Request, res: Response) => {
   try {
@@ -174,7 +175,14 @@ export const updateOrder = async (req: Request, res: Response) => {
 
 export const orderCancelConfirm = async (req: Request, res: Response) => {
   try {
-    const { _id = "", isApprove = false } = req.body;
+    const {
+      _id = "",
+      isApprove = false,
+      nid = "",
+      actionPerformedBy = "",
+      actionPerformedId = "",
+      remark = "N/A",
+    } = req.body;
     if (_id == "")
       return responseObj({
         statusCode: HTTP_RESPONSE.BED_REQUEST,
@@ -194,7 +202,19 @@ export const orderCancelConfirm = async (req: Request, res: Response) => {
       }
     );
     const order = await Order.findOne({ _id });
-    global.socketObj?.emit("order_cancel_request_update", {
+    await Notification.updateOne(
+      {
+        _id: nid,
+      },
+      {
+        isActive: false,
+        remark,
+        actionPerformedBy,
+        actionPerformedId,
+      }
+    );
+
+    global.socketObj?.emit("order_cancel_request_confirmation", {
       type: "success",
       msg: "Notification updated successfully!",
       data: order,
