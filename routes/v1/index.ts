@@ -60,6 +60,7 @@ import {
   updateKitchen,
 } from "../../controllers/kitchenController/kitchen";
 import { authorizationCheck } from "../../middelware/authorization_check";
+import { getNotifications } from "../../controllers/notificationController/notification";
 const router = express.Router();
 
 //user
@@ -178,5 +179,7 @@ router.post(
 router.get("/food", verifyUser, getFoodProducts);
 router.get("/food/:id", verifyUser, getFoodProduct);
 router.delete("/food/:id", verifyUser, authorizationCheck, deleteFoodProduct);
+
+router.get("/notifications", getNotifications);
 
 export default router;
