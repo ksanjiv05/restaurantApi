@@ -5,6 +5,7 @@ export interface INotification extends Document {
   id: string; //regarding Order Inventory or Kitchen
   action: string;
   remark: string;
+  actionStatus: string;
   actionPerformedBy: string;
   actionPerformedId: string;
   isActive: boolean;

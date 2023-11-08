@@ -211,6 +211,7 @@ export const orderCancelConfirm = async (req: Request, res: Response) => {
         remark,
         actionPerformedBy,
         actionPerformedId,
+        actionStatus: isApprove ? "Approved" : "Rejected",
       }
     );
 
