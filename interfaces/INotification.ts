@@ -8,6 +8,7 @@ export interface INotification extends Document {
   actionStatus: string;
   actionPerformedBy: string;
   actionPerformedId: string;
+  notificationType: string;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;

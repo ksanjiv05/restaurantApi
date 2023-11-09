@@ -16,6 +16,10 @@ const NotificationSchema: Schema = new Schema({
   actionPerformedId: String,
   type: String,
   isActive: Boolean,
+  notificationType: {
+    type: String,
+    lowercase: true,
+  },
   updatedAt: {
     type: Date,
     default: Date.now,

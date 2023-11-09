@@ -48,6 +48,7 @@ export const startListening = (
       remark: "",
       actionPerformedBy: "n/a",
       actionPerformedId: "n/a",
+      notificationType: "order",
       isActive: true,
     });
     await newNotification.save();

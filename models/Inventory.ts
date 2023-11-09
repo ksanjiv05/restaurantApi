@@ -43,6 +43,10 @@ const InventorySchema: Schema = new Schema({
     type: [String],
     // required: [true, "Inventory  kitchen is required"],
   },
+  minQuantityToNotification: {
+    type: Number,
+    default: 0,
+  },
   kitchenWiseQuantity: {
     type: [
       {

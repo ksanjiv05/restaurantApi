@@ -6,6 +6,7 @@ import { IInventory } from "../../interfaces/IInventory";
 import Inventory from "../../models/Inventory";
 // import { csvToJson } from "../../helper/utils";
 import { KITCHEN } from "../../config/enums";
+import Notification from "../../models/Notification";
 
 // export const addBulkInventory = async (req: Request, res: Response) => {
 //   try {
@@ -198,12 +199,43 @@ export const updateInventory = async (req: Request, res: Response) => {
         data: null,
       });
 
+    var sum = req.body.kitchenWiseQuantity.reduce(
+      (accumulator, currentValue) => {
+        // console.log("accumulator ", accumulator, currentValue);
+        return accumulator + currentValue.quantity;
+      },
+      0
+    );
+    // console.log("sum ", sum);
+    const quantity = req.body.quantity;
+    req.body.inStock = sum;
+
     await Inventory.updateOne(
       { _id },
       {
         ...req.body,
       }
     );
+
+    if (req.body.minQuantityToNotification < sum) {
+      const newNotification = new Notification({
+        title: "Inventory running out notification",
+        id: _id,
+        action: "Pending",
+        remark: "",
+        actionPerformedBy: "n/a",
+        actionPerformedId: "n/a",
+        notificationType: "inventory",
+        isActive: true,
+      });
+      await newNotification.save();
+      global.socketObj?.emit("new_notification", {
+        type: "success",
+        msg: "Notification added successfully!",
+        data: newNotification,
+      });
+    }
+
     return responseObj({
       statusCode: HTTP_RESPONSE.SUCCESS,
       type: "success",
