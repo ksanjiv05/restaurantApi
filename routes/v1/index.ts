@@ -61,6 +61,7 @@ import {
 } from "../../controllers/kitchenController/kitchen";
 import { authorizationCheck } from "../../middelware/authorization_check";
 import { getNotifications } from "../../controllers/notificationController/notification";
+import { printKot, printOrder } from "../../controllers/printController/print";
 const router = express.Router();
 
 //user
@@ -181,5 +182,8 @@ router.get("/food/:id", verifyUser, getFoodProduct);
 router.delete("/food/:id", verifyUser, authorizationCheck, deleteFoodProduct);
 
 router.get("/notifications", getNotifications);
+
+router.post("/print/order", verifyUser, printOrder);
+router.post("/print/kot", verifyUser, printKot);
 
 export default router;

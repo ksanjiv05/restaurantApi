@@ -8,6 +8,8 @@ export const DB_URL_DEV: string = "localhost:27017";
 
 export const DB_NAME: string = "RCMSDB";
 
+export const BASE_URL =
+  "https://dd60-2409-40e5-99-e86f-bd18-e026-d45f-a4eb.ngrok-free.app"; //"https://therazzlegroup.com";
 //permissions Type
 export const CREATE = "CREATE";
 export const READ = "READ";

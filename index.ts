@@ -14,32 +14,33 @@ import LocalStrategy from "passport-local";
 import logging from "./config/logging";
 import { startListening } from "./socket_init";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { hasPermission } from "./helper/check_permission";
-import { createRootUser } from "./scripts";
-import { csvParser, csvToJson } from "./helper/utils";
-import FoodProduct from "./models/FoodProduct";
-import {
-  CREATE,
-  OPERATIONAL_MANAGER,
-  FB_MANAGER,
-  CASHIER,
-  ADMIN,
-  MANAGER,
-  CAPTAIN,
-  ORDER,
-  INVENTORY,
-  REPORTS,
-  UPDATE,
-  READ,
-  DELETE,
-  WAITER,
-  USER_MANAGEMENT,
-  FOOD,
-  TABLE,
-  KITCHEN,
-  CHEF,
-} from "./config/config";
-import { updateOrderAfterBill } from "./controllers/orderController/order";
+import path from "path";
+// import { hasPermission } from "./helper/check_permission";
+// import { createRootUser } from "./scripts";
+// import { csvParser, csvToJson } from "./helper/utils";
+// import FoodProduct from "./models/FoodProduct";
+// import {
+//   CREATE,
+//   OPERATIONAL_MANAGER,
+//   FB_MANAGER,
+//   CASHIER,
+//   ADMIN,
+//   MANAGER,
+//   CAPTAIN,
+//   ORDER,
+//   INVENTORY,
+//   REPORTS,
+//   UPDATE,
+//   READ,
+//   DELETE,
+//   WAITER,
+//   USER_MANAGEMENT,
+//   FOOD,
+//   TABLE,
+//   KITCHEN,
+//   CHEF,
+// } from "./config/config";
+// import { updateOrderAfterBill } from "./controllers/orderController/order";
 
 dotenv.config();
 
@@ -63,7 +64,9 @@ app.use(passport.session());
 //socket io configuration
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "*" },
+  cors: {
+    origin: ["http://localhost:3000", "https://resturant-ff7e7.web.app/"],
+  },
 });
 
 declare global {
@@ -86,7 +89,15 @@ io.on("connection", (socket) => {
   startListening(socket);
 });
 // socket io configuration end
-app.use("/static", express.static("uploads"));
+app.use(
+  "/static",
+  (req, res, next) => {
+    console.log("hii");
+    next();
+  },
+  // express.static("uploads")
+  express.static(path.join(__dirname, "uploads"))
+);
 app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
