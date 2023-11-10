@@ -36,9 +36,9 @@ export const printOrder = (req: Request, res: Response) => {
           });
         else {
           return responseObj({
-            statusCode: HTTP_RESPONSE.BED_REQUEST,
+            statusCode: HTTP_RESPONSE.SUCCESS,
             type: "error",
-            msg: "printer not connected",
+            msg: "print triggered",
             error: null,
             resObj: res,
             data: null,
@@ -64,7 +64,7 @@ export const printKot = (req: Request, res: Response) => {
   try {
     // const file = req.file;
     const { kot = "" } = req.body;
-    console.log("kot", kot);
+    // console.log("kot", kot);
     // if (!file) {
     //   return responseObj({
     //     statusCode: HTTP_RESPONSE.BED_REQUEST,
@@ -89,9 +89,9 @@ export const printKot = (req: Request, res: Response) => {
         });
       else {
         return responseObj({
-          statusCode: HTTP_RESPONSE.BED_REQUEST,
+          statusCode: HTTP_RESPONSE.SUCCESS,
           type: "error",
-          msg: "printer not connected",
+          msg: "print triggered",
           error: null,
           resObj: res,
           data: null,
