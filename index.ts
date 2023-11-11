@@ -91,10 +91,6 @@ io.on("connection", (socket) => {
 // socket io configuration end
 app.use(
   "/static",
-  (req, res, next) => {
-    console.log("hii");
-    next();
-  },
   // express.static("uploads")
   express.static(path.join(__dirname, "uploads"))
 );
